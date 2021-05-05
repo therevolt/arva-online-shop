@@ -1,0 +1,63 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.btn-auth {
+  border: none;
+  height: 48px;
+  width: 401px;
+  border-radius: 25px;
+  background: #DB3022;
+  font-family: Metropolis;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  color: #FFFFFF;
+}
+
+.btn-active-auth {
+  border: none;
+  height: 48px;
+  width: 123px;
+  background: #DB3022;
+  box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.05);
+  border-radius: 0px;
+  font-family: Metropolis;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  align-items: center;
+  color: #FFFFFF;
+}
+
+.btn-nonactive-auth {
+  height: 48px;
+  width: 123px;
+  border: 1px solid #9B9B9B;
+  box-sizing: border-box;
+  filter: drop-shadow(0px 1px 8px rgba(0, 0, 0, 0.05));
+  border-radius: 0px;
+  font-family: Metropolis;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  align-items: center;
+  color: #9B9B9B;
+}

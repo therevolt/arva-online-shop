@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import _ from "lodash";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Navbar } from "../../../src/component/module";
 function index() {
-  const { total } = useSelector((state) => state.myBag);
   const [dataMyBag, setDataMyBag] = useState([
     {
       id: 1,
@@ -19,38 +17,6 @@ function index() {
     },
   ]);
 
-  const [dataTotal, setDataTotal] = useState([]);
-
-  // const dispatch = useDispatch();
-  // let [quantity, setQuantity] = useState(1);
-  // // let [Price, setPrice] = useState(price);
-  // // let [subTotal, setSubTotal] = useState(price);
-
-  // const handleAdd = (itm) => {
-  //   dataMyBag.forEach((e) => {
-  //     if (e.id === itm.id) {
-  //       setQuantity(quantity + 1);
-  //       setActiveBtn(true);
-  //     }
-  //   });
-
-  //   // console.log(itm);
-  // };
-
-  // const handleRemove = (itm) => {
-  //   quantity > 0 ? setQuantity(quantity - 1) : setQuantity(0);
-  //   setActiveBtn(false);
-  //   console.log(itm);
-  // };
-
-  // useEffect(() => {
-  //   dispatch({ type: "ADD_TOTAL", payload: subTotal });
-  // }, [quantity, Price, subTotal, dispatch]);
-
-  // useEffect(() => {
-  //   setSubTotal(Price * quantity);
-  // }, [quantity, dispatch, Price]);
-
   return (
     <div>
       <Navbar />
@@ -63,7 +29,7 @@ function index() {
               <div className="card-body">
                 <div className="d-flex justify-content-between align-items-center">
                   <input
-                    className="form-check-input bg-danger border-0 rounded-0"
+                    className="form-check-input bg-danger border-0 rounded-0 shadow-none"
                     type="checkbox"
                     value=""
                     id="flexCheckDefault"
@@ -74,74 +40,34 @@ function index() {
                   <span className="text-muted ms-1 me-auto d-none d-md-block">
                     (2 items selected)
                   </span>
-                  <button className="btn text-danger fw-bold">Delete</button>
+                  <button className="btn text-danger fw-bold shadow-none">
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>
             {/* end selecet items */}
 
-            {/* Belum fix susah  handle data
-            <Listbag
-              titleProduct={`Men's formal suit - Black`}
-              seller={`Zalora Cloth`}
-              price={`20000`}
-            /> */}
             {dataMyBag.map((itm, idx) => {
-              let [quantity, setQuantity] = useState(0);
               const [activeBtn, setActiveBtn] = useState(false);
+
+              let [quantity, setQuantity] = useState(1);
 
               const handleAdd = (itm) => {
                 setQuantity(quantity + 1);
                 setActiveBtn(true);
-
-                let data = {
-                  id: itm.id,
-                  product: itm.name,
-                  price: itm.price,
-                  qty: 0,
-                };
-
-                const findOrder = _.find(dataTotal, (item) => {
-                  if (item.id === data.id) {
-                    return item;
-                  }
-                });
-
-                if (findOrder === undefined) {
-                  setDataTotal((prevState) => {
-                    return [...prevState, data];
-                  });
-                } else {
-                  {
-                    /* const index = _.findIndex(dataTotal, { id: data.id });
-                  let newData = {
-                    id: dataTotal[index].id,
-                    product: dataTotal[index].product,
-                    price: dataTotal[index].price,
-                    qty: dataTotal[index].qty + 1,
-                  };
-                  const newOrder = _.remove(dataTotal, (item) => {
-                    return item.id !== data.id;
-                  });
-                  newOrder.push(newData);
-                  setDataTotal(newOrder);
-                  console.log(dataTotal); */
-                  }
-                }
               };
-
               const handleRemove = (itm) => {
                 quantity > 0 ? setQuantity(quantity - 1) : setQuantity(0);
                 setActiveBtn(false);
                 console.log(itm);
               };
-
               return (
                 <div className="card card-shadow border-0 mb-3" key={idx}>
                   <div className="card-body">
                     <div className="d-sm-block d-md-flex justify-content-between align-items-center">
                       <input
-                        className="d-sm-inline-block form-check-input bg-danger border-0 rounded-0"
+                        className="d-sm-inline-block form-check-input bg-danger border-0 rounded-0 shadow-none"
                         type="checkbox"
                         value=""
                         id="flexCheckDefault"
@@ -159,7 +85,7 @@ function index() {
                           <span className="text-muted">{itm.brand}</span>
                         </div>
                       </div>
-                      <div className="d-block d-md-none bg-danger py-2 rounded  text-center mt-2">
+                      <div className="d-block d-md-none bg-danger py-2 rounded   text-center mt-2">
                         <img
                           alt="item"
                           src={require("../../../public/img/jas.png")}
@@ -171,7 +97,7 @@ function index() {
                         style={{ width: "180px" }}
                       >
                         <button
-                          className={`btn btn-grup radius-50  ${
+                          className={`btn btn-grup radius-50 shadow-none  ${
                             activeBtn ? "" : "btn-active"
                           }`}
                           onClick={(e) => handleRemove(itm)}
@@ -179,13 +105,13 @@ function index() {
                           <span className="material-icons f-14 ">remove</span>
                         </button>
                         <p
-                          className="d-inline-block mx-3 "
+                          className="d-inline-block mx-3 fw-bold"
                           style={{ width: "40px" }}
                         >
-                          {dataTotal.qty ? dataTotal[0].qty : "0"}
+                          {quantity}
                         </p>
                         <button
-                          className={`btn btn-grup radius-50 text-center  ${
+                          className={`btn btn-grup radius-50 text-center shadow-none  ${
                             activeBtn ? "btn-active" : ""
                           }`}
                           onClick={(e) => handleAdd(itm)}
@@ -207,6 +133,7 @@ function index() {
               );
             })}
           </div>
+
           <div className="col-12 col-md-12 col-lg-4 ">
             {/* shopping summarry */}
             <div className="card card-shadow border-0">
@@ -214,11 +141,11 @@ function index() {
                 <p className="fw-bold">Shopping summary</p>
                 <div className="d-flex justify-content-between">
                   <span className="text-muted">Total price</span>
-                  <span className="fw-bold f-18">Rp {total}</span>
+                  <span className="fw-bold f-18">Rp 20000</span>
                 </div>
                 <div className="row justify-content-center">
                   <div className="col-sm-12 col-md-8 col-lg-12">
-                    <button className="mt-3 btn w-100 bg-danger round text-white  ">
+                    <button className="mt-3 btn w-100 bg-danger round text-white shadow-none btn-hover">
                       Buy
                     </button>
                   </div>
@@ -262,6 +189,13 @@ function index() {
         .btn-active {
           background: #d5d5d5;
           color: white;
+        }
+
+        .button {
+          transition-duration: 0.4s;
+        }
+        .btn-hover:hover {
+          background-color: rgba(219, 48, 34, 0.95) !important;
         }
 
         @media (max-width: 768px) {

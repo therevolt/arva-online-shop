@@ -1,7 +1,9 @@
-import test from './test'
-import { combineReducers } from 'redux'
+import test from "./test";
+import reducerMyBag from "./myBag";
+import { combineReducers } from "redux";
 const reducers = {
-    tests : test
-}
+  tests: test,
+  myBag: reducerMyBag,
+};
 
-export default combineReducers(reducers)
+export default combineReducers(reducers);

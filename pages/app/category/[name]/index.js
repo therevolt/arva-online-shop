@@ -1,8 +1,9 @@
 import React from "react";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-// import { getNewProduct, getPopularProduct } from "../../src/config/redux/actions/product";
-import { CardProduct } from "../../../src/component/base";
+import { getCategoryProduct } from "../../../../src/config/redux/actions/product";
+
+import { CardProduct } from "../../../../src/component/base";
 function index() {
   return (
     <div>

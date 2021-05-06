@@ -1,11 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import Link from 'next/link'
+import { useDispatch, useSelector } from "react-redux";
+import { getNewProduct, getPopularProduct } from "../../src/config/redux/actions/product";
 // import Carousel from 'react-multi-carousel';
 // import 'react-multi-carousel/lib/styles.css';
 import { NextArrow, PreviousArrow, CardProduct } from '../../src/component/base'
-import { Navbar } from '../../src/component/module'
+// import { Navbar } from '../../src/component/module'
+
 export default function App() {
+    const dispatch = useDispatch();
+    const { product, popular } = useSelector((state) => state.product);
+    console.log(popular);
     const [state, setState] = useState({
     })
     const responsive = {
@@ -27,6 +33,14 @@ export default function App() {
             items: 1
         }
     };
+
+    useEffect(() => {
+        dispatch(getNewProduct())
+        dispatch(getPopularProduct())
+        // .then((res) => {
+        //     setDataReceiver(res)
+    }, [dispatch]);
+
     return (
         <div className="">
             <div className="mt-7"></div>
@@ -45,8 +59,8 @@ export default function App() {
                 removeArrowOnDeviceType={["tablet", "mobile"]}
                 dotListClass="react-multi-carousel-dot-list"
                 itemClass="my-4"
-                customLeftArrow={<PreviousArrow/>}
-                customRightArrow={<NextArrow/>}
+                customLeftArrow={<PreviousArrow />}
+                customRightArrow={<NextArrow />}
             >
                 <div className="rounded-md overflow-hidden mx-3">
                     <Image src="/assets/img_1.jpg" layout="responsive" width={236} height={136} />
@@ -80,13 +94,46 @@ export default function App() {
                         <h2 className="mb-1">New</h2>
                         <p className="color-gray mb-0" style={{ fontSize: "12px" }}>You’ve never seen it before!</p>
                     </div>
-                    <CardProduct 
-                    image="/assets/default.png" 
-                    titleProduct="Men's formal suit - Black & White" 
-                    price="$ 40.0" 
-                    linkDetailProduct="" 
-                    seller="Zalora Cloth"
-                    />
+
+                    {product.map((item, index) => {
+                        return (
+                            <>
+                                <CardProduct
+                                    key={index}
+                                    image="/assets/default.png"
+                                    titleProduct={item.name}
+                                    price={`Rp.${item.price}`}
+                                    linkDetailProduct=""
+                                    seller="Zalora Cloth"
+                                />
+                            </>
+                        )
+                    })}
+
+                </div>
+            </div>
+            <div className="container">
+                <div className="row">
+                    <div>
+                        <h2 className="mb-1">Popular</h2>
+                        <p className="color-gray mb-0" style={{ fontSize: "12px" }}>Find clothes that are trending recently</p>
+                    </div>
+
+                    {popular.map((item, index) => {
+                        return (
+                            <>
+                                <CardProduct
+                                    key={index}
+                                    image="/assets/default.png"
+                                    titleProduct={item.name}
+                                    price={`Rp.${item.price}`}
+                                    linkDetailProduct=""
+                                    seller="Zalora Cloth"
+                                />
+                            </>
+                        )
+                    })}
+
                 </div>
             </div>
         </div>

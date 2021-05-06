@@ -29,9 +29,6 @@ export default function App() {
     };
     return (
         <div className="">
-            <Navbar
-            isLogin={true}
-            />
             <div className="mt-7"></div>
             {/* <Carousel
                 swipeable={true}

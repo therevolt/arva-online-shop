@@ -1,9 +1,9 @@
-import test from "./test";
 import reducerMyBag from "./myBag";
+import Helper from './helpers'
 import { combineReducers } from "redux";
 const reducers = {
-  tests: test,
   myBag: reducerMyBag,
+  Helpers: Helper
 };
 
 export default combineReducers(reducers);

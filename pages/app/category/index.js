@@ -1,11 +1,9 @@
 import React from "react";
 import Image from "next/image";
-import { Navbar } from "../../../src/component/module";
 import { CardProduct } from "../../../src/component/base";
 function index() {
   return (
     <div>
-      <Navbar isLogin={true} />
       <div className="container">
         <div className="row mt-7 mb-5">
           <nav aria-label="breadcrumb">

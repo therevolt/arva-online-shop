@@ -1,9 +1,10 @@
 import React from "react";
 import Swal from 'sweetalert2'
 import * as Yup from 'yup';
-import { useFormik, Formik } from "formik";
+import { useFormik } from "formik";
 import Link from "next/link"
 import axios from 'axios'
+import Image from "next/image";
 
 export default function ResetPassword() {
     const formik = useFormik({
@@ -30,8 +31,9 @@ export default function ResetPassword() {
     return (
         <div className="auth-login mt-4 mb-5">
             <div className="container">
-                <div className="flex">
-                    <img src="/img/logo.png" />
+                <div className="d-flex justify-content-center">
+                    <Image src="/img/logo_navbar.png" width={34} height={44} />
+                    <h4 className="text-danger ms-3 my-auto fw-bold">ARVA SHOP</h4>
                 </div>
                 <h1 className="mt-4">Reset password</h1>
                 <div className="tab-button-auth mt-4">
@@ -55,7 +57,7 @@ export default function ResetPassword() {
                         <button type="submit" className="btn-auth">
                             Send
                                 </button>
-                        <p className="text-center mt-4 text-account">Don’t have a shop.id account? <Link href="/auth/register"><a>Sign Up</a></Link> </p>
+                        <p className="text-center mt-4 text-account">Don’t have a arvashop.id account? <Link href="/auth/register"><a>Sign Up</a></Link> </p>
                     </form>
                 </div>
 

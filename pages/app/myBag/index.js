@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Navbar } from "../../../src/component/module";
 function index() {
   const [dataMyBag, setDataMyBag] = useState([
     {
@@ -19,7 +18,6 @@ function index() {
 
   return (
     <div>
-      <Navbar />
       <div className="container">
         <div className="row mt-7 mb-5">
           <h2 className="mt-3 fw-bold mb-4">My bag</h2>
@@ -97,9 +95,8 @@ function index() {
                         style={{ width: "180px" }}
                       >
                         <button
-                          className={`btn btn-grup radius-50 shadow-none  ${
-                            activeBtn ? "" : "btn-active"
-                          }`}
+                          className={`btn btn-grup radius-50 shadow-none  ${activeBtn ? "" : "btn-active"
+                            }`}
                           onClick={(e) => handleRemove(itm)}
                         >
                           <span className="material-icons f-14 ">remove</span>
@@ -111,9 +108,8 @@ function index() {
                           {quantity}
                         </p>
                         <button
-                          className={`btn btn-grup radius-50 text-center shadow-none  ${
-                            activeBtn ? "btn-active" : ""
-                          }`}
+                          className={`btn btn-grup radius-50 text-center shadow-none  ${activeBtn ? "btn-active" : ""
+                            }`}
                           onClick={(e) => handleAdd(itm)}
                         >
                           <span className="material-icons f-14 fw-bold">

@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { useRouter } from 'next/router'
 import axios from 'axios'
+import Image from "next/image";
 
 export default function Reset() {
     const { query } = useRouter();
@@ -55,8 +56,9 @@ export default function Reset() {
     return (
         <div className="auth-login mt-4 mb-5">
             <div className="container">
-                <div className="flex">
-                    <img src="/img/logo.png" />
+                <div className="d-flex justify-content-center">
+                    <Image src="/img/logo_navbar.png" width={34} height={44} />
+                    <h4 className="text-danger ms-3 my-auto fw-bold">ARVA SHOP</h4>
                 </div>
                 <h1 className="mt-4">Reset password</h1>
                 <h2 className="mt-3" >Enter your new password</h2>

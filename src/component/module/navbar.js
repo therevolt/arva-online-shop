@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useRouter } from 'next/router'
+
 export default function Navbar({ isLogin }) {
+  const router = useRouter()
+
   useEffect(() => {
     if (isLogin == undefined) {
       isLogin = isLogin;
@@ -16,6 +20,15 @@ export default function Navbar({ isLogin }) {
   const toggleCloseNavbarMobile = () => {
     setState({ ...state, navbarMobileToggle: false });
   };
+
+  const handleLogin = () => {
+    router.push("/auth/login")
+  }
+  const handleRegister = () => {
+    router.push("/auth/register")
+  }
+
+
   return (
     <>
       {/* Navbar Mobile after login */}
@@ -108,11 +121,11 @@ export default function Navbar({ isLogin }) {
               search
             </button>
           </div>
-          <button className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger">
+          <button className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger" onClick={handleLogin}>
             <span className="material-icons">login</span>{" "}
             <p className="m-0 ms-2">Login</p>
           </button>
-          <button className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger">
+          <button className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger" onClick={handleRegister}>
             <span className="material-icons">logout</span>{" "}
             <p className="m-0 ms-2">Signup</p>
           </button>
@@ -157,10 +170,10 @@ export default function Navbar({ isLogin }) {
                 <button class="material-icons bg-transparent border-0 my-auto me-4 color-gray">
                   add_shopping_cart
                 </button>
-                <button className="bg-danger text-white border-0 rounded-pill px-4 py-2 me-3">
+                <button className="bg-danger text-white border-0 rounded-pill px-4 py-2 me-3" onClick={handleLogin}>
                   Login
                 </button>
-                <button className="bg-danger text-white border-0 rounded-pill px-4 py-2">
+                <button className="bg-danger text-white border-0 rounded-pill px-4 py-2" onClick={handleRegister}>
                   Signup
                 </button>
               </div>

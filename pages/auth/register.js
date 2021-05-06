@@ -165,7 +165,7 @@ export default function Register() {
                                 <button type="submit" className="btn-auth">
                                     Register
                                 </button>
-                                <p className="text-center mt-4 text-account">Already have a shop.id account? <Link href="/auth/login"><a>Login</a></Link> </p>
+                                <p className="text-center mt-4 text-account">Already have a arvashop.id account? <Link href="/auth/login"><a>Login</a></Link> </p>
                             </form>
                         </>
                     )}
@@ -247,7 +247,7 @@ export default function Register() {
                                 <button type="submit" className="btn-auth">
                                     Register
                                 </button>
-                                <p className="text-center mt-4 text-account">Already have a shop.id account? <Link href="/auth/login"><a>Login</a></Link> </p>
+                                <p className="text-center mt-4 text-account">Already have a arvashop.id account? <Link href="/auth/login"><a>Login</a></Link> </p>
                             </form>
                         </>
                     )}

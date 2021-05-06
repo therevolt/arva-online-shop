@@ -136,7 +136,7 @@ export default function Login() {
                                 <button type="submit" className="btn-auth">
                                     Login
                                 </button>
-                                <p className="text-center mt-4 text-account">Don’t have a shop.id account? <Link href="/auth/register"><a>Sign Up</a></Link> </p>
+                                <p className="text-center mt-4 text-account">Don’t have a arvashop.id account? <Link href="/auth/register"><a>Sign Up</a></Link> </p>
                             </form>
                         </>
                     )}
@@ -181,7 +181,7 @@ export default function Login() {
                                 <button type="submit" className="btn-auth">
                                     Login
                                 </button>
-                                <p className="text-center mt-4 text-account">Don’t have a ARVA Shop account? <Link href="/auth/register"><a>Sign Up</a></Link> </p>
+                                <p className="text-center mt-4 text-account">Don’t have a arvashop.id account? <Link href="/auth/register"><a>Sign Up</a></Link> </p>
                             </form>
                         </>
                     )}

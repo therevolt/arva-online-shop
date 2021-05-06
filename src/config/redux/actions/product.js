@@ -1,6 +1,20 @@
 import axios from "axios";
 import axiosApiInstance from "../../../helper/axios";
 
+export const getHomeProduct = () => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        const Url = process.env.api;
+        axiosApiInstance
+            .get(`${Url}/v1/product/home`)
+            .then((res) => {
+                dispatch({ type: "HOME_PRODUCT", payload: res.data.data });
+                resolve(res.data.message);
+            })
+            .catch((err) => {
+                reject(new Error(err.response.data.message));
+            });
+    });
+};
 
 
 export const getNewProduct = () => (dispatch) => {
@@ -33,11 +47,11 @@ export const getPopularProduct = () => (dispatch) => {
     });
 };
 
-export const getCategoryProduct = (data) => (dispatch) => {
+export const getCategoryProduct = (category) => (dispatch) => {
     return new Promise((resolve, reject) => {
         const Url = process.env.api;
-        axiosApiInstance
-            .get(`${Url}/v1/product/list?category=${data}`)
+        axios
+            .get(`${Url}/v1/product/list?category=${category}`)
             .then((res) => {
                 dispatch({ type: "CATEGORY_PRODUCT", payload: res.data.data });
                 resolve(res.data.message);

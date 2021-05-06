@@ -12,7 +12,7 @@ export default function CardProduct({
   return (
     <div className="col-6 col-md-4 col-lg-2 my-3" key={Key}>
       <div className="rounded-md shadow overflow-hidden">
-        <Image src={image} layout="responsive" width={236} height={136} />
+        <img className="ms-3 mt-2" src={image} layout="responsive" width={130} height={136} />
         <div className="p-3">
           <Link href={linkDetailProduct}>
             <a className="m-0 fs-6 fw-bold d-inline-block text-truncate">{titleProduct}</a>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
 import Link from 'next/link'
 import { useDispatch, useSelector } from "react-redux";
-import { getNewProduct, getPopularProduct } from "../../src/config/redux/actions/product";
+import { getNewProduct, getPopularProduct, getHomeProduct } from "../../src/config/redux/actions/product";
 // import Carousel from 'react-multi-carousel';
 // import 'react-multi-carousel/lib/styles.css';
 import { NextArrow, PreviousArrow, CardProduct } from '../../src/component/base'
@@ -10,8 +10,7 @@ import { NextArrow, PreviousArrow, CardProduct } from '../../src/component/base'
 
 export default function App() {
     const dispatch = useDispatch();
-    const { product, popular } = useSelector((state) => state.product);
-    console.log(popular);
+    const { product } = useSelector((state) => state.product);
     const [state, setState] = useState({
     })
     const responsive = {
@@ -35,8 +34,9 @@ export default function App() {
     };
 
     useEffect(() => {
-        dispatch(getNewProduct())
-        dispatch(getPopularProduct())
+        dispatch(getHomeProduct())
+        // dispatch(getNewProduct())
+        // dispatch(getPopularProduct())
         // .then((res) => {
         //     setDataReceiver(res)
     }, [dispatch]);
@@ -95,16 +95,16 @@ export default function App() {
                         <p className="color-gray mb-0" style={{ fontSize: "12px" }}>You’ve never seen it before!</p>
                     </div>
 
-                    {product.map((item, index) => {
+                    {product.newProduct.map((item, index) => {
                         return (
                             <>
                                 <CardProduct
-                                    key={index}
-                                    image="/assets/default.png"
+                                    key={item.id}
+                                    image={item.image[0]}
                                     titleProduct={item.name}
                                     price={`Rp.${item.price}`}
-                                    linkDetailProduct=""
-                                    seller="Zalora Cloth"
+                                    linkDetailProduct={`/app/product/${item.id}`}
+                                    seller={item.sellerName}
                                 />
                             </>
                         )
@@ -119,16 +119,16 @@ export default function App() {
                         <p className="color-gray mb-0" style={{ fontSize: "12px" }}>Find clothes that are trending recently</p>
                     </div>
 
-                    {popular.map((item, index) => {
+                    {product.popularProduct.map((item, index) => {
                         return (
                             <>
                                 <CardProduct
-                                    key={index}
-                                    image="/assets/default.png"
+                                    key={item.id}
+                                    image={item.image[0]}
                                     titleProduct={item.name}
                                     price={`Rp.${item.price}`}
-                                    linkDetailProduct=""
-                                    seller="Zalora Cloth"
+                                    linkDetailProduct={`/app/product/${item.id}`}
+                                    seller={item.sellerName}
                                 />
                             </>
                         )

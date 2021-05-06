@@ -1,7 +1,7 @@
-import test from './test'
+import Helper from './helpers'
 import { combineReducers } from 'redux'
 const reducers = {
-    tests : test
+    Helpers : Helper
 }
 
 export default combineReducers(reducers)

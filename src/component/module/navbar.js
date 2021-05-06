@@ -1,20 +1,26 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
-export default function Navbar({isLogin}) {
-    useEffect(()=>{
-        if(isLogin==undefined){
+import {useRouter} from 'next/router'
+import {useDispatch, useSelector} from 'react-redux'
+export default function Navbar({ isLogin }) {
+    const dispatch = useDispatch()
+    const { myAcount, shippingAddress, myOrder } = useSelector(state=>state.Helpers)
+    const router = useRouter()
+    const page =  router.pathname.split('/')[2]
+    useEffect(() => {
+        if (isLogin == undefined) {
             isLogin = isLogin
         }
-    },[isLogin])
+    }, [isLogin])
     const [state, setState] = useState({
-        isLogin : false,
-        navbarMobileToggle:false,
+        isLogin: isLogin,
+        navbarMobileToggle: false,
     })
     const toggleOpenNavbarMobile = () => {
-        setState({...state, navbarMobileToggle:true})
+        setState({ ...state, navbarMobileToggle: true })
     }
     const toggleCloseNavbarMobile = () => {
-        setState({...state, navbarMobileToggle:false})
+        setState({ ...state, navbarMobileToggle: false })
     }
     return (
         <>
@@ -22,11 +28,11 @@ export default function Navbar({isLogin}) {
             <div className={state.isLogin == false ? "hide" : "show"}>
                 <div className={state.navbarMobileToggle == true ? "navbarMobile navbarMobile-show hide-lg" : "navbarMobile navbarMobile-hide hide-lg"}>
                     <div className="d-flex justify-content-end w-100">
-                        <button className="material-icons bg-transparent border-0 text-danger my-5" onClick={toggleCloseNavbarMobile} >close</button>
+                        <button className="material-icons bg-transparent border-0 text-danger my-3" onClick={toggleCloseNavbarMobile} >close</button>
                     </div>
                     <div className="d-flex justify-content-center">
                         <button className="rounded-circle overflow-hidden bg-transparent border-0 mb-3" style={{ width: "100px", height: "100px" }}>
-                            <Image src="/assets/profil.png" width={150} height={150} layout="responsive" />
+                            <Image src="/img/default.png" width={150} height={150} layout="responsive" />
                         </button>
                     </div>
                     <h5 className="text-center mb-5 fw-bold">Aditya Pratama</h5>
@@ -40,6 +46,20 @@ export default function Navbar({isLogin}) {
                     <button className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger">
                         <span className="material-icons">notifications_none</span> <p className="m-0 ms-2">notifications</p>
                     </button>
+                    <div className={page =="profil" ? "show" : "hide"}>
+                        <div className="d-flex my-4">
+                            <span className="material-icons text-white rounded-circle p-2 me-3" style={{ background: "#456BF3" }}>person_outline</span>
+                            <button className="m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0" onClick={() => { dispatch({type:"MYACOUNT"}) }} >my acount</button>
+                        </div>
+                        <div className="d-flex my-4">
+                            <span className="material-icons text-white rounded-circle p-2 me-3" style={{ background: "#F36F45" }}>location_on</span>
+                            <button className="m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0"onClick={() => { dispatch({type:"SHIPPING_ADDRESS"}) }}>Shipping Adrress</button>
+                        </div>
+                        <div className="d-flex my-4">
+                            <span className="material-icons text-white rounded-circle p-2 me-3" style={{ background: "#F3456F" }}>mode_edit</span>
+                            <button className="m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0" onClick={() => { dispatch({type:"MYORDER"}) }}>My order</button>
+                        </div>
+                    </div>
                     <button className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger">
                         <span className="material-icons">add_shopping_cart</span> <p className="m-0 ms-2">My Bag</p>
                     </button>
@@ -70,7 +90,7 @@ export default function Navbar({isLogin}) {
             </div>
             {/*  */}
 
-            <div className="shadow bg-white py-4 position-fixed top-0" style={{ zIndex: "9999", width: "100vw" }}>
+            <div className="shadow bg-white py-4 position-fixed top-0" style={{ zIndex: "2", width: "100vw" }}>
                 <div className="container">
                     <div className="row">
                         <div className="col-10 col-lg-3">
@@ -117,7 +137,7 @@ export default function Navbar({isLogin}) {
 
 
             {/* siluet, layar hitam ketika navbar mobile keluar */}
-            <div className={state.navbarMobileToggle == true ? "position-fixed hide-lg" : "hide"} style={{ width: "100vw", height: "100vh", top: 0, right: 0, zIndex: "999", background: "rgba(0,0,0,.6)"}} onClick={toggleCloseNavbarMobile}></div>
+            <div className={state.navbarMobileToggle == true ? "position-fixed hide-lg" : "hide"} style={{ width: "100vw", height: "100vh", top: 0, right: 0, zIndex: "999", background: "rgba(0,0,0,.6)" }} onClick={toggleCloseNavbarMobile}></div>
             {/*  */}
 
 

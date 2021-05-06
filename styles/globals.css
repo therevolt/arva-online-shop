@@ -67,6 +67,12 @@ a {
 .hover-danger:hover {
   color: #dc3545 !important;
 }
+.hover-bg-gray{
+  transition: all ease-in-out .3s;
+}
+.hover-bg-gray:hover{
+  background: #c4c0c0 !important;
+}
 
 .navbarMobile {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -123,6 +129,9 @@ a {
   .h-100vh-sm {
     height: 100vh;
   }
+  .w-100-sm{
+    width: 100%;
+  }
 }
 
 @media (min-width: 576px) {
@@ -137,6 +146,9 @@ a {
   }
   .h-100vh-sm {
     height: 100vh;
+  }
+  .w-100-sm{
+    width: 100%;
   }
 }
 
@@ -173,6 +185,9 @@ a {
   }
   .rounded-xl-lg {
     border-radius: 2rem;
+  }
+  .w-50-lg{
+    width: 50%;
   }
 }
 

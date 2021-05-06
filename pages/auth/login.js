@@ -33,7 +33,7 @@ export default function Login() {
                     console.log(res);
                     Swal.fire("Success", res.data.message, "success");
                     localStorage.setItem("token", res.data.data.token);
-                    router.push("/");
+                    router.push("/app");
                 })
                 .catch((err) => {
                     console.log(err);
@@ -60,7 +60,7 @@ export default function Login() {
                     console.log(res);
                     Swal.fire("Success", res.data.message, "success");
                     localStorage.setItem("token", res.data.data.token);
-                    router.push("/");
+                    router.push("/app");
                 })
                 .catch((err) => {
                     console.log(err);

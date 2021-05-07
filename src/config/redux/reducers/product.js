@@ -1,6 +1,7 @@
 const initialState = {
     product: [],
     popular: [],
+    recomend: [],
     loading: false,
     error: "",
 };
@@ -27,6 +28,17 @@ const productReducer = (state = initialState, action) => {
                 ...state,
                 product: action.payload,
             };
+        case "DETAIL_PRODUCT":
+            return {
+                ...state,
+                product: action.payload,
+            };
+        case "RECOMENDATION_PRODUCT":
+            return {
+                ...state,
+                recomend: action.payload,
+            };
+
         default:
             return state;
     }

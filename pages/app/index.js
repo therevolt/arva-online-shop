@@ -11,8 +11,7 @@ import { NextArrow, PreviousArrow, CardProduct } from '../../src/component/base'
 export default function App() {
     const dispatch = useDispatch();
     const { product } = useSelector((state) => state.product);
-    const [state, setState] = useState({
-    })
+    const [state, setState] = useState(null)
     const responsive = {
         superLargeDesktop: {
             // the naming can be any, depends on you.
@@ -35,11 +34,15 @@ export default function App() {
 
     useEffect(() => {
         dispatch(getHomeProduct())
-        // dispatch(getNewProduct())
-        // dispatch(getPopularProduct())
-        // .then((res) => {
-        //     setDataReceiver(res)
     }, [dispatch]);
+
+    useEffect(() => {
+        if (product.newProduct) {
+            if (product.newProduct.length > 0) {
+                setState(product)
+            }
+        }
+    }, [product]);
 
     return (
         <div className="">
@@ -95,7 +98,7 @@ export default function App() {
                         <p className="color-gray mb-0" style={{ fontSize: "12px" }}>You’ve never seen it before!</p>
                     </div>
 
-                    {product.newProduct.map((item, index) => {
+                    {state && state.newProduct.map((item) => {
                         return (
                             <>
                                 <CardProduct
@@ -119,7 +122,7 @@ export default function App() {
                         <p className="color-gray mb-0" style={{ fontSize: "12px" }}>Find clothes that are trending recently</p>
                     </div>
 
-                    {product.popularProduct.map((item, index) => {
+                    {state && state.popularProduct.map((item) => {
                         return (
                             <>
                                 <CardProduct

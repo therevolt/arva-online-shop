@@ -10,11 +10,20 @@ function index() {
   const { query } = useRouter();
   const dispatch = useDispatch();
   const { product } = useSelector((state) => state.product);
+  const [state, setState] = useState(null)
   const dataCategory = String(query.name)
 
   useEffect(() => {
     dispatch(getCategoryProduct(dataCategory))
   }, [dispatch, dataCategory]);
+
+  useEffect(() => {
+    if (product) {
+      if (product.length > 0) {
+        setState(product)
+      }
+    }
+  }, [product]);
 
   return (
     <div>
@@ -39,7 +48,7 @@ function index() {
           </nav>
           <h2 className=" mt-3 fw-bold">{query.name}</h2>
 
-          {product.map((item, index) => {
+          {state && state.map((item, index) => {
             return (
               <>
                 <CardProduct

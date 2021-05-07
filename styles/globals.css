@@ -36,7 +36,7 @@ a {
 
 .btn-navigation {
   border-radius: 50%;
-  padding: 1rem;
+  padding: 0.8rem;
   background: white;
   border: none;
   color: var(--color-gray);

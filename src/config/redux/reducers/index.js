@@ -1,7 +1,9 @@
+import reducerMyBag from "./myBag";
 import Helper from './helpers'
-import { combineReducers } from 'redux'
+import { combineReducers } from "redux";
 const reducers = {
-    Helpers : Helper
-}
+  myBag: reducerMyBag,
+  Helpers: Helper
+};
 
-export default combineReducers(reducers)
+export default combineReducers(reducers);

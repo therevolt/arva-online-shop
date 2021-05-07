@@ -27,7 +27,8 @@ export default function SideBar() {
                                 </button>
                             </div>
                         </div>
-                        <div className={page =="profil" ? "show" : "hide"}>
+                        {/* komponen profil */}
+                        <div className={page =="profile" ? "show" : "hide"}>
                             <div className="d-flex mb-4">
                                 <span className="material-icons text-white rounded-circle p-2 me-3" style={{ background: "#456BF3" }}>person_outline</span>
                                 <button className={myAcount == true ? "m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0 text-danger" : "m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0"} onClick={() => {
@@ -47,6 +48,8 @@ export default function SideBar() {
                                 }}>My order</button>
                             </div>
                         </div>
+                        {/*  */}
+                        {/* komponen profil-store */}
                         <div className={page =="profil-store" ? "show" : "hide"}>
                             <div className="d-flex my-4">
                                 <span className="material-icons text-white rounded-circle p-2 me-3" style={{ background: "#456BF3" }}>home</span>
@@ -78,6 +81,7 @@ export default function SideBar() {
                                 <button className="m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0" onClick={() => { dispatch({type:"OPEN_ORDER"}) }}>Order</button>
                             </div>
                         </div>
+                        {/*  */}
                     </div>
                 </div>
             </div>

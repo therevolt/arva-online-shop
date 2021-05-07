@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
     }
   }, [status]);
   if(router.pathname.split('/')[1] === "app"){
-    if(router.pathname.split('/')[2] === "profil" || router.pathname.split('/')[2] === "profil-store"){
+    if(router.pathname.split('/')[2] === "profile" || router.pathname.split('/')[2] === "profil-store"){
       return (
         <Provider store={store}>
           <Head>

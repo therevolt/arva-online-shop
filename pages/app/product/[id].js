@@ -14,7 +14,7 @@ function ProductDetail() {
   const idCategory = String(query.id)
   const [state, setState] = useState(null)
   const [stateRecomend, setStateRecomend] = useState(null)
-
+  console.log(stateRecomend);
   const [size, setSize] = useState(0);
   const [activeSize, setActiveSize] = useState(false);
   const [count, setCount] = useState(0);
@@ -35,7 +35,7 @@ function ProductDetail() {
 
   useEffect(() => {
     dispatch(getRecomendationProduct(product.category))
-  }, [dispatch]);
+  }, [dispatch, product.category]);
 
   useEffect(() => {
     if (product.image) {

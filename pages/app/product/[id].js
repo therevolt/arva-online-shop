@@ -1,8 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/router'
+import { useDispatch, useSelector } from "react-redux";
+import { getDetailProduct, getRecomendationProduct } from '../../../src/config/redux/actions/product'
+import Link from "next/link"
 import { Rating, Navbar } from "../../../src/component/module";
 import { CardProduct } from "../../../src/component/base";
 
 function ProductDetail() {
+  const { query } = useRouter();
+  // console.log(query.id);
+  const dispatch = useDispatch();
+  const { product, recomend } = useSelector((state) => state.product);
+  const idCategory = String(query.id)
+  const [state, setState] = useState(null)
+  const [stateRecomend, setStateRecomend] = useState(null)
+  console.log(stateRecomend);
   const [size, setSize] = useState(0);
   const [activeSize, setActiveSize] = useState(false);
   const [count, setCount] = useState(0);
@@ -17,9 +29,34 @@ function ProductDetail() {
     setActiveCount(false);
   };
 
+  useEffect(() => {
+    dispatch(getDetailProduct(idCategory))
+  }, [dispatch, idCategory]);
+
+  useEffect(() => {
+    dispatch(getRecomendationProduct(product.category))
+  }, [dispatch, product.category]);
+
+  useEffect(() => {
+    if (product.image) {
+      if (product.image.length > 0) {
+        setState(product)
+      }
+    }
+  }, [product]);
+
+  useEffect(() => {
+    if (recomend) {
+      if (recomend.length > 0) {
+        setStateRecomend(recomend)
+      }
+    }
+  }, [recomend]);
+
+
   return (
     <div className="min-vh-100">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="container mt-7">
         {/* <p className="text-muted f-14 mb-5">
           Home {">"} category {">"} Shoes
@@ -27,43 +64,44 @@ function ProductDetail() {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
-              <a href="#">Home</a>
+              <Link href="/app">
+                <a>Home</a>
+              </Link>
             </li>
             <li className="breadcrumb-item">
-              <a href="#">category</a>
+              <Link href="#">
+                <a>Category</a>
+              </Link>
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              Shoes
+              <Link href={`/app/category/${product.category}`}>
+                <a>{product.category}</a>
+              </Link>
+
             </li>
           </ol>
         </nav>
         <div className="row mt-5">
           <div className="col-12 col-md-6 col-lg-6 mb-5">
             <div className="row">
-              <img
-                className="col-6 img img-fluid rounded mb-4"
-                src={require("../../../public/img/Product Detail 1.svg")}
-                alt="imgs"
-              />
-              <img
-                className="col-6 img img-fluid rounded mb-4"
-                src={require("../../../public/img/Product Detail 3.svg")}
-                alt="imgs"
-              />
-              <img
-                className="col-6 img img-fluid rounded mb-4"
-                src={require("../../../public/img/Product Detail 2.svg")}
-                alt="imgs"
-              />
-              <img
-                className="col-6 img img-fluid rounded mb-4"
-                src={require("../../../public/img/Product Detail 4.svg")}
-                alt="imgs"
-              />
+              {state && state.image.map((item, index) => {
+                return (
+                  <>
+                    <img
+                      key={index}
+                      className="col-6 img img-fluid rounded mb-4"
+                      src={item}
+                      alt="imgs"
+                    // layout="responsive" width={130} height={136}
+                    />
+                  </>
+                )
+              })}
+
             </div>
           </div>
           <div className="col-12 col-md-6 col-lg-6 mb-5">
-            <h1 className="fw-600">Nike CruzrOne (Bright Crimson)</h1>
+            <h1 className="fw-600">{product.name}</h1>
             <p className="f-16 text-muted">Nike</p>
             <div className="d-inline-flex d-flex mt-n ms-1">
               <Rating rating={5} />
@@ -71,7 +109,7 @@ function ProductDetail() {
             </div>
             <p className={`text-muted f-16 ms-1 mt-2`}>Price</p>
             <h1 className="mt-n3">
-              <b>$20</b>
+              <b>{`RP.${product.price}`}</b>
             </h1>
             <p className={`f-16 ms-1 mt-3`}>
               <b>Color</b>
@@ -129,15 +167,14 @@ function ProductDetail() {
               {/* disini mulai baru */}
               <div className="col-6 col-md-6  col-lg-4">
                 <p className={`f-16 ms-1 mt-2`}>
-                  <b>Jumlah</b>
+                  <b>Amount</b>
                 </p>
                 <ul className={`HorizontalList d-flex justify-center`}>
                   <li>
                     <button
                       onClick={handleDecreamentCount}
-                      className={`btn ColorSelected rounded-circle ${
-                        activeCount ? "" : "selectedCount"
-                      }`}
+                      className={`btn ColorSelected rounded-circle ${activeCount ? "" : "selectedCount"
+                        }`}
                     >
                       <i className="material-icons">remove</i>
                     </button>
@@ -147,9 +184,8 @@ function ProductDetail() {
                   </li>
                   <li>
                     <button
-                      className={`btn ColorSelected rounded-circle ${
-                        activeCount ? "selectedCount" : ""
-                      }`}
+                      className={`btn ColorSelected rounded-circle ${activeCount ? "selectedCount" : ""
+                        }`}
                       onClick={handleIncreamentCount}
                     >
                       <i className="material-icons">add</i>
@@ -169,30 +205,19 @@ function ProductDetail() {
             <button className={`btn BtnBuy mt-4 btn-lg`}>Buy Now</button>
           </div>
         </div>
-        <h3 className="mt-3 fw-600">Informasi Produk</h3>
+        <h3 className="mt-3 fw-600">Information Product</h3>
         <div>
           <p className="mt-3 f-20">
             <b>Condition</b>
           </p>
           <p className="mt-n3 c-red f-20">
-            <b>New</b>
+            <b>{product.condition}</b>
           </p>
           <p className="mt-3 f-20">
             <b>Description</b>
           </p>
           <p className="f-16 mt-n2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec non
-            magna rutrum, pellentesque augue eu, sagittis velit. Phasellus quis
-            laoreet dolor. Fusce nec pharetra quam. Interdum et malesuada fames
-            ac ante ipsum primis in faucibus. Praesent sed enim vel turpis
-            blandit imperdiet ac ac felis. Etiam tincidunt tristique placerat.
-            Pellentesque a consequat mauris, vel suscipit ipsum. Donec ac mauris
-            vitae diam commodo vehicula. Donec quam elit, sollicitudin eu nisl
-            at, ornare suscipit magna. Donec non magna rutrum, pellentesque
-            augue eu, sagittis velit. Phasellus quis laoreet dolor. Fusce nec
-            pharetra quam. Interdum et malesuada fames ac ante ipsum primis in
-            faucibus. Praesent sed enim vel turpis blandit imperdiet ac ac
-            felis. In ultricies rutrum tempus. Mauris vel molestie orci.
+            {product.description}
           </p>
         </div>
         <h3 className="fw-600 mt-5">Product Review</h3>
@@ -340,20 +365,18 @@ function ProductDetail() {
         <h1 className="fw-600 mt-4">You can also like this</h1>
         <p className="text-muted">You’ve never seen it before!</p>
         <div className="row mb-5">
-          {Array(12)
-            .fill()
-            .map((item, index) => {
-              return (
-                <CardProduct
-                  Key={index}
-                  image="/img/jas.png"
-                  titleProduct="Men's formal suit - Black & White"
-                  price="$ 40.0"
-                  linkDetailProduct=""
-                  seller="Zalora Cloth"
-                />
-              );
-            })}
+          {stateRecomend && stateRecomend.map((item, index) => {
+            return (
+              <CardProduct
+                key={item.id}
+                image={item.image[0]}
+                titleProduct={item.name}
+                price={`Rp.${item.price}`}
+                linkDetailProduct={`/app/product/${item.id}`}
+                seller={item.sellerName}
+              />
+            );
+          })}
         </div>
       </div>
       <style jsx>

@@ -1,17 +1,11 @@
 import React, {useState} from 'react'
 import Image from 'next/image'
 import Modal from 'react-modal'
-import {useDispatch, useSelector} from 'react-redux'
+import {useSelector} from 'react-redux'
 export default function Profil() {
-    const dispatch = useDispatch()
     const { myAcount, shippingAddress, myOrder } = useSelector(state=>state.Helpers)
     const [state, setState] = useState({
         toggleModal: false,
-        linkSideBar : {
-            myAcount : true,
-            shippingAddress : false,
-            myOrder : false
-        },
         myOrder:{
             allItem:true,
             noPaid:false,
@@ -23,42 +17,6 @@ export default function Profil() {
     })
     return (
         <div style={{ paddingTop: "10rem", background: "#F5F5F5", minHeight:"100vh" }}>
-            <div className="hide-sm show-lg">
-                <div className="d-flex justify-content-end px-4 bg-white" style={{ position: "fixed", top: 0, left: 0, width: "450px", height: "100vh", paddingTop: "10rem" }}>
-                    <div className="me-5">
-                        <div className="d-flex mb-5">
-                            <div className="rounded-circle me-3 overflow-hidden" style={{ width: "60px", height: "60px" }}>
-                                <Image src="/img/default.png" width={80} height={80} layout="responsive" />
-                            </div>
-                            <div className="align-self-center">
-                                <p className="fw-bold m-0 mb-1">Aditya Pratama</p>
-                                <button className="d-flex bg-transparent border-0">
-                                    <span class="material-icons color-gray me-2" style={{ fontSize: "20px" }}>mode_edit</span>
-                                    <p className="color-gray m-0 my-auto">Ubah Profil</p>
-                                </button>
-                            </div>
-                        </div>
-                        <div className="d-flex mb-4">
-                            <span className="material-icons text-white rounded-circle p-2 me-3" style={{ background: "#456BF3" }}>person_outline</span>
-                            <button className={myAcount == true ? "m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0 text-danger" : "m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0"} onClick={()=>{
-                                setState({...state, linkSideBar : {...state.linkSideBar, myAcount:true, shippingAddress:false, myOrder:false}}) 
-                                dispatch({type:"MYACOUNT"}) }} >my acount</button>
-                        </div>
-                        <div className="d-flex mb-4">
-                            <span className="material-icons text-white rounded-circle p-2 me-3" style={{ background: "#F36F45" }}>location_on</span>
-                            <button className={shippingAddress == true ? "m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0 text-danger" : "m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0"} onClick={()=>{
-                                setState({...state, linkSideBar : {...state.linkSideBar, shippingAddress:true, myAcount:false, myOrder:false}}) 
-                                dispatch({type:"SHIPPING_ADDRESS"}) }}>Shipping Adrress</button>
-                        </div>
-                        <div className="d-flex mb-4">
-                            <span className="material-icons text-white rounded-circle p-2 me-3" style={{ background: "#F3456F" }}>mode_edit</span>
-                            <button className={myOrder == true ? "m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0 text-danger" : "m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0"} onClick={()=>{
-                                setState({...state, linkSideBar : {...state.linkSideBar, myOrder:true, shippingAddress:false, myAcount:false}}) 
-                                dispatch({type:"MYORDER"}) }}>My order</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div className="container">
                 <div className="row">
                     {/* component user profil */}

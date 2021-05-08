@@ -1,6 +1,10 @@
-import React from "react";
-
+import React, { useState } from "react";
+import Modal from 'react-modal'
 function Checkout() {
+  const [state, setState] = useState({
+    toggleModal: false,
+    addAdsress: false
+  })
   return (
     <div className="container">
       <div className="row row mt-7 mb-5">
@@ -18,7 +22,7 @@ function Checkout() {
                 Kabupaten Banyumas, Jawa Tengah, 53181 [Tokopedia Note: blok c
                 16] Sokaraja, Kab. Banyumas, 53181
               </p>
-              <button className="btn custom-btn color-gray shadow-none">
+              <button className="btn custom-btn color-gray shadow-none" onClick={() => { setState({ ...state, toggleModal: true }) }} >
                 Choose another address
               </button>
             </div>
@@ -209,6 +213,73 @@ function Checkout() {
         </div>
         {/* end right columns */}
       </div>
+      {/* modal */}
+      <Modal
+        isOpen={state.toggleModal}
+        className="modalPositionAndSizeConfig"
+        overlayClassName="modalOverLayConfig"
+        closeTimeoutMS={400}
+        ariaHideApp={false}
+      >
+        <div className="w-100 d-flex mb-4"><span className="material-icons ms-auto hover-danger c-pointer" onClick={() => { setState({ ...state, toggleModal: false }) }} >close</span></div>
+        {/* komponen choose address */}
+        <div className={state.addAdsress !== true ? "show" : "hide"} style={{ minHeight: "550px" }} >
+          <h4 className="fw-bold text-center">Choose another address</h4>
+          <div className="px-4 py3">
+            <button className="color-gray w-100 py-4 bg-transparent rounded my-4" style={{ border: "3px dashed #9B9B9B" }} onClick={() => { setState({ ...state, addAdsress: true }) }} >Add new address</button>
+            <div className="p-3 border border-danger rounded">
+              <p className="fw-bold">Andreas Jane</p>
+              <p>Perumahan Sapphire Mediterania, Wiradadi, Kec. Sokaraja, Kabupaten Banyumas, Jawa Tengah, 53181 [Tokopedia Note: blok c 16] Sokaraja, Kab. Banyumas, 53181</p>
+              <a className="fw-bold text-danger">Change address</a>
+            </div>
+          </div>
+        </div>
+        {/*  */}
+        {/* komponen add address */}
+        <div className={state.addAdsress == true ? "show" : "hide"}>
+          <h3 className="fw-bold text-center mb-4">Add new address</h3>
+          <div className="my-2">
+            <label className="color-gray">Save address as (ex : home address, office address)</label>
+            <input type="text" className="w-100 border p-2" style={{ outline: "nonde" }} />
+          </div>
+          <div className="row">
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">Recipient’s name</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">Recipient's telephone number</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">Address</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">Postal code</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">City or Subdistrict</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 my-2">
+              <input type="checkbox" className="me-2" />
+              <label htmlFor="name" className="color-gray">Make it the primary address</label>
+            </div>
+            <div className="col-12 my-2">
+              <div className="d-flex justify-content-end">
+                <div>
+                  <button className="bg-danger text-white border-0 rounded-pill px-5 py-2 me-3">Save</button>
+                  <button className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden" onClick={() => { setState({ ...state, addAdsress: false }) }} >Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/*  */}
+      </Modal>
+      {/* end modal */}
       <style jsx>
         {`
           .f-22 {

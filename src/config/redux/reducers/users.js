@@ -1,5 +1,6 @@
 const initialState = {
   user: {},
+  listAddressUser: [],
   loading: false,
   error: "",
   role: null,
@@ -82,7 +83,20 @@ const userReducer = (state = initialState, action) => {
           ...action.payload,
         },
       };
+
     case "UPDATE_PROFILE_FAILURE":
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case "GET_LIST_ADDRESS_USER_SUCCESS":
+      return {
+        ...state,
+        listAddressUser: action.payload,
+      };
+
+    case "GET_LIST_ADDRESS_USER_FAILURE":
       return {
         ...state,
         error: action.payload,

@@ -33,6 +33,14 @@ const updateProfileFailure = (error) => {
   return { type: "UPDATE_PROFILE_FAILURE", payload: error };
 };
 
+const getListAddressUserSuccess = (data) => {
+  return { type: "GET_LIST_ADDRESS_USER_SUCCESS", payload: data };
+};
+
+const getListAddressUserFailure = (error) => {
+  return { type: "GET_LIST_ADDRESS_USER_FAILURE", payload: error };
+};
+
 // const resetRequest = () => {
 //     return { type: "RESET_REQUEST" };
 // };
@@ -121,6 +129,67 @@ export const updateProfile = (data) => (dispatch) => {
       })
       .catch((err) => {
         dispatch(updateProfileFailure(err.response.data.message));
+        reject(err);
+      });
+  });
+};
+
+export const getListAddressUser = () => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.api;
+    axiosApiInstance
+      .get(`${Url}/v1/address/list`)
+      .then((res) => {
+        dispatch(getListAddressUserSuccess(res.data.data));
+        resolve(res);
+      })
+      .catch((err) => {
+        dispatch(getListAddressUserFailure(err.response.data.message));
+        reject(err);
+      });
+  });
+};
+
+export const deleteAddressUser = (id) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.api;
+    axiosApiInstance
+      .delete(`${Url}/v1/address?id=${id}`)
+      .then((res) => {
+        resolve(res);
+        dispatch(getListAddressUser());
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+export const insertAddressUser = (data) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.api;
+    axiosApiInstance
+      .post(`${Url}/v1/address`, data)
+      .then((res) => {
+        resolve(res);
+        dispatch(getListAddressUser());
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+export const updateAddressUser = (id, data) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.api;
+    axiosApiInstance
+      .put(`${Url}/v1/address/edit?id=${id}`, data)
+      .then((res) => {
+        resolve(res);
+        dispatch(getListAddressUser());
+      })
+      .catch((err) => {
         reject(err);
       });
   });

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import Modal from "react-modal";
-import axiosApiInstance from "../../src/helper/axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getProfile,
   updateProfile,
+  getListAddressUser,
+  insertAddressUser,
 } from "../../src/config/redux/actions/users";
+import { ListUserAddress } from "../../src/component/module";
 
 export default function Profil() {
   const dispatch = useDispatch();
@@ -16,7 +20,7 @@ export default function Profil() {
   const { myAcount, shippingAddress, myOrder } = useSelector(
     (state) => state.Helpers
   );
-  const { user, loading } = useSelector((state) => state.user);
+  const { user, loading, listAddressUser } = useSelector((state) => state.user);
 
   const [state, setState] = useState({
     toggleModal: false,
@@ -35,6 +39,7 @@ export default function Profil() {
     },
   });
 
+  //=============ini awal bagian edit profile user===============
   // state unable and disable edit profile
   const [profileIsDisable, setProfileIsDisabled] = useState(true);
 
@@ -108,15 +113,6 @@ export default function Profil() {
       });
   };
 
-  if (isLoadingProcess === true) {
-    Swal.fire({
-      icon: "info",
-      title: "Loading!",
-      text: "Please wait",
-      showConfirmButton: false,
-    });
-  }
-
   //fetch data user dari api
   useEffect(() => {
     dispatch(getProfile())
@@ -128,7 +124,7 @@ export default function Profil() {
         // console.log(err);
         Swal.fire("Something Error!", err, "error");
       });
-  }, []);
+  }, [dispatch]);
 
   //set data user dari state global ke state lokal profileUser
   useEffect(() => {
@@ -143,6 +139,82 @@ export default function Profil() {
       setImgUrl(profileUser.avatar);
     }
   }, [profileUser]);
+  //===========ini akhir bagian edit profile user========
+
+  //======== ini awal bagian shipping address============
+  //ini state menampung list address
+  const [localListAddress, setLocalListAddress] = useState([]);
+
+  //fetch data address user dari api
+  useEffect(() => {
+    dispatch(getListAddressUser());
+  }, [dispatch]);
+
+  //useEffect menampung list address ke state lokal
+  useEffect(() => {
+    if (listAddressUser) {
+      setLocalListAddress(listAddressUser);
+      console.log("ini data list address", listAddressUser);
+    }
+  }, [listAddressUser]);
+
+  //insert address pake form validasi
+  const formik = useFormik({
+    initialValues: {
+      saveAs: "",
+      recipientName: "",
+      recipientPhone: "",
+      postalCode: "",
+      city: "",
+      address: "",
+      isPrimary: false,
+    },
+    validationSchema: Yup.object({
+      saveAs: Yup.string()
+        .min(2, "Mininum 2 characters")
+        .max(25, "Maximum 15 characters")
+        .required("Required!"),
+      recipientName: Yup.string()
+        .min(2, "Mininum 2 characters")
+        .max(15, "Maximum 15 characters")
+        .required("Required!"),
+      recipientPhone: Yup.string().required("Required!"),
+      postalCode: Yup.string()
+        .min(2, "Mininum 2 characters")
+        .max(15, "Maximum 15 characters")
+        .required("Required!"),
+      city: Yup.string()
+        .min(2, "Mininum 2 characters")
+
+        .required("Required!"),
+      address: Yup.string().required("Required!"),
+    }),
+    onSubmit: (values) => {
+      setState({ ...state, toggleModal: false });
+      setIsLoadingProcess(true);
+
+      dispatch(insertAddressUser(values))
+        .then((res) => {
+          setIsLoadingProcess(false);
+          Swal.fire("Success", res.data.message, "success");
+        })
+        .catch((err) => {
+          setIsLoadingProcess(false);
+          // console.log(err);
+          Swal.fire("Something Error!", err.response.data.message, "error");
+        });
+    },
+  });
+
+  //kalau loading
+  if (isLoadingProcess === true) {
+    Swal.fire({
+      icon: "info",
+      title: "Loading!",
+      text: "Please wait",
+      showConfirmButton: false,
+    });
+  }
 
   return (
     <div
@@ -328,7 +400,80 @@ export default function Profil() {
                 </p>
 
                 <div className="row mt-3">
-                  <div className="col-12 col-md-7">
+                  <div className="d-md-block d-lg-none col-12 col-md-12 my-auto">
+                    <div
+                      className="rounded-circle overflow-hidden mx-auto"
+                      style={{ width: "100px", height: "100px" }}
+                    >
+                      {imgUrl ? (
+                        <img
+                          src={imgUrl}
+                          width={100}
+                          height={100}
+                          style={{ objectFit: "cover" }}
+                          layout="responsive"
+                        />
+                      ) : (
+                        <img
+                          src={
+                            "https://www.jewishinteractive.org/wp-content/uploads/2016/03/person.png"
+                          }
+                          width={100}
+                          height={100}
+                          style={{ objectFit: "cover" }}
+                          layout="responsive"
+                        />
+                      )}
+                    </div>
+                    <div className="d-flex justify-content-center mt-3 mb-2">
+                      <button
+                        className={`d-flex bg-transparent border-0 `}
+                        onClick={(e) => setProfileIsDisabled(!profileIsDisable)}
+                      >
+                        <span
+                          className={`material-icons  me-2 ${
+                            profileIsDisable ? "color-gray" : "text-danger"
+                          }`}
+                          style={{ fontSize: "20px" }}
+                        >
+                          mode_edit
+                        </span>
+                        <p
+                          className={`m-0 my-auto ${
+                            profileIsDisable ? "color-gray" : "text-danger"
+                          }`}
+                        >
+                          Ubah Profil
+                        </p>
+                      </button>
+                    </div>
+                    <div className="d-flex justify-content-center ">
+                      <button
+                        className={` rounded-pill py-2 px-5  overflow-hidden position-relative my-4 ${
+                          profileIsDisable
+                            ? " bg-secondary text-white  "
+                            : "bg-transparent border-danger text-danger"
+                        }`}
+                        disabled={profileIsDisable}
+                      >
+                        Select Image
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="position-absolute"
+                          style={{
+                            left: "-100px",
+                            top: 5,
+                            opacity: 0,
+                            cursor: "pointer",
+                          }}
+                          disabled={profileIsDisable}
+                          onChange={handleChangeImage}
+                        />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-12 col-lg-7">
                     <div className="w-100 d-flex justify-content-end mb-3">
                       <label htmlFor="input" className="me-4 my-auto">
                         Name
@@ -492,13 +637,10 @@ export default function Profil() {
                       )}
                     </div>
 
-                    <div className="w-100 d-flex justify-content-end mb-3">
-                      <div
-                        className="d-flex justify-content-start"
-                        style={{ width: "70%" }}
-                      >
+                    <div className="w-100 d-flex justify-content-center mb-3">
+                      <div className="d-flex  justify-content-center">
                         <button
-                          className={` text-white border-0 rounded-pill px-5 py-2 me-3 ${
+                          className={` text-white border-0 rounded-pill px-5 py-2 mx-3 ${
                             profileIsDisable ? "btn-secondary" : "btn-danger"
                           }`}
                           disabled={profileIsDisable}
@@ -509,7 +651,7 @@ export default function Profil() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-12 col-md-5 my-auto">
+                  <div className="col-12 col-lg-5 d-none d-lg-block my-auto">
                     <div
                       className="rounded-circle overflow-hidden mx-auto"
                       style={{ width: "100px", height: "100px" }}
@@ -586,20 +728,18 @@ export default function Profil() {
                     setState({ ...state, toggleModal: true });
                   }}
                 >
-                  Add new address
+                  {localListAddress.length === 0
+                    ? "Add your address before shopping"
+                    : "Add new address"}
                 </button>
-                <div className="p-3 border border-danger rounded">
-                  <p className="fw-bold">Andreas Jane</p>
-                  <p>
-                    Perumahan Sapphire Mediterania, Wiradadi, Kec. Sokaraja,
-                    Kabupaten Banyumas, Jawa Tengah, 53181 [Tokopedia Note: blok
-                    c 16] Sokaraja, Kab. Banyumas, 53181
-                  </p>
-                  <a className="fw-bold text-danger">Change address</a>
-                </div>
+
+                {localListAddress.map((data, idx) => {
+                  return <ListUserAddress item={data} />;
+                })}
               </div>
             </div>
           </div>
+
           <div className={myOrder == true ? "col-12 col-lg-8 ms-auto" : "hide"}>
             <div
               className="bg-white p-4 border rounded"
@@ -607,29 +747,6 @@ export default function Profil() {
             >
               <h4 className="fw-bold">My order</h4>
               <div className="d-flex my-4">
-                <button
-                  className={
-                    state.myOrder.allItem == true
-                      ? "bg-transparent me-4 hover-danger border-0 fw-bold text-danger"
-                      : "bg-transparent me-4 hover-danger border-0 fw-bold"
-                  }
-                  onClick={() => {
-                    setState({
-                      ...state,
-                      myOrder: {
-                        ...state.myOrder,
-                        allItem: true,
-                        noPaid: false,
-                        package: false,
-                        send: false,
-                        completed: false,
-                        orderCancel: false,
-                      },
-                    });
-                  }}
-                >
-                  All items
-                </button>
                 <button
                   className={
                     state.myOrder.noPaid == true
@@ -763,12 +880,13 @@ export default function Profil() {
       </div>
       <Modal
         isOpen={state.toggleModal}
-        className="modalPositionAndSizeConfig"
+        className="modalPositionAndSizeConfig2"
         overlayClassName="modalOverLayConfig"
         closeTimeoutMS={400}
         ariaHideApp={false}
+        style={{ maxHeight: "60px" }}
       >
-        <div className="w-100 d-flex mb-4">
+        <div className="w-100 d-flex mb-4 ">
           <span
             className="material-icons ms-auto hover-danger c-pointer"
             onClick={() => {
@@ -788,10 +906,16 @@ export default function Profil() {
               type="text"
               className="w-100 border p-2"
               style={{ outline: "nonde" }}
+              name="saveAs"
+              value={formik.values.saveAs}
+              onChange={formik.handleChange}
             />
+            {formik.errors.saveAs && formik.touched.saveAs && (
+              <p className="text-danger">{formik.errors.saveAs}</p>
+            )}
           </div>
           <div className="row">
-            <div className="col-12 col-md-6 my-2">
+            <div className="col-12 col-md-12 col-lg-6  my-2">
               <label htmlFor="name" className="color-gray mb-2">
                 Recipient’s name
               </label>
@@ -799,9 +923,15 @@ export default function Profil() {
                 type="text"
                 className="p-2 border rounded w-100"
                 style={{ outline: "nonde" }}
+                name="recipientName"
+                value={formik.values.recipientName}
+                onChange={formik.handleChange}
               />
+              {formik.errors.recipientName && formik.touched.recipientName && (
+                <p className="text-danger">{formik.errors.recipientName}</p>
+              )}
             </div>
-            <div className="col-12 col-md-6 my-2">
+            <div className="col-12 col-md-12 col-lg-6  my-2">
               <label htmlFor="name" className="color-gray mb-2">
                 Recipient's telephone number
               </label>
@@ -809,19 +939,32 @@ export default function Profil() {
                 type="text"
                 className="p-2 border rounded w-100"
                 style={{ outline: "nonde" }}
+                name="recipientPhone"
+                value={formik.values.recipientPhone}
+                onChange={formik.handleChange}
               />
+              {formik.errors.recipientPhone &&
+                formik.touched.recipientPhone && (
+                  <p className="text-danger">{formik.errors.recipientPhone}</p>
+                )}
             </div>
-            <div className="col-12 col-md-6 my-2">
+            <div className="col-12 col-md-12 col-lg-6  my-2">
               <label htmlFor="name" className="color-gray mb-2">
                 Address
               </label>
               <input
                 type="text"
-                className="p-2 border rounded w-100"
+                className="p-2 border col-lg-6 rounded w-100"
                 style={{ outline: "nonde" }}
+                name="address"
+                value={formik.values.address}
+                onChange={formik.handleChange}
               />
+              {formik.errors.address && formik.touched.address && (
+                <p className="text-danger">{formik.errors.address}</p>
+              )}
             </div>
-            <div className="col-12 col-md-6 my-2">
+            <div className="col-12 col-md-12 col-lg-6 my-2">
               <label htmlFor="name" className="color-gray mb-2">
                 Postal code
               </label>
@@ -829,9 +972,15 @@ export default function Profil() {
                 type="text"
                 className="p-2 border rounded w-100"
                 style={{ outline: "nonde" }}
+                name="postalCode"
+                value={formik.values.postalCode}
+                onChange={formik.handleChange}
               />
+              {formik.errors.postalCode && formik.touched.postalCode && (
+                <p className="text-danger">{formik.errors.postalCode}</p>
+              )}
             </div>
-            <div className="col-12 col-md-6 my-2">
+            <div className="col-12 col-md-12 my-2">
               <label htmlFor="name" className="color-gray mb-2">
                 City or Subdistrict
               </label>
@@ -839,10 +988,22 @@ export default function Profil() {
                 type="text"
                 className="p-2 border rounded w-100"
                 style={{ outline: "nonde" }}
+                name="city"
+                value={formik.values.city}
+                onChange={formik.handleChange}
               />
+              {formik.errors.city && formik.touched.city && (
+                <p className="text-danger">{formik.errors.city}</p>
+              )}
             </div>
             <div className="col-12 my-2">
-              <input type="checkbox" className="me-2" />
+              <input
+                type="checkbox"
+                className="me-2"
+                name="isPrimary"
+                value={formik.values.isPrimary}
+                onChange={formik.handleChange}
+              />
               <label htmlFor="name" className="color-gray">
                 Make it the primary address
               </label>
@@ -850,10 +1011,19 @@ export default function Profil() {
             <div className="col-12 my-2">
               <div className="d-flex justify-content-end">
                 <div>
-                  <button className="bg-danger text-white border-0 rounded-pill px-5 py-2 me-3">
+                  <button
+                    className="btn-danger text-white border-0 rounded-pill px-5 py-2 me-3"
+                    type="submit"
+                    onClick={formik.handleSubmit}
+                  >
                     Save
                   </button>
-                  <button className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden">
+                  <button
+                    className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden"
+                    onClick={() => {
+                      setState({ ...state, toggleModal: false });
+                    }}
+                  >
                     Cancel
                   </button>
                 </div>
@@ -865,6 +1035,14 @@ export default function Profil() {
       <style jsx>
         {`
           .link-Side-bar:ho {
+          }
+          .btn-save {
+            width: 70%;
+          }
+          @media (max-width: 768px) {
+            .btn-save {
+              width: 100%;
+            }
           }
         `}
       </style>

@@ -12,7 +12,7 @@ export default function CardProduct({
   return (
     <div className="col-6 col-md-4 col-lg-2 my-3" key={Key}>
       <div className="rounded-md shadow overflow-hidden">
-        <img className="ms-3 mt-2 " src={image} layout="responsive" style={{ objectFit: "contain" }} />
+        <img className="ms-3 mt-2 " src={image} layout="responsive" />
         <div className="p-3">
           <Link href={linkDetailProduct}>
             <a className="m-0 fs-6 fw-bold d-inline-block text-truncate">{titleProduct}</a>
@@ -38,12 +38,14 @@ export default function CardProduct({
                 a{
                     max-width:140px;
                 }
+                img {
+                  height:150px;
+                  object-fit: contain;
+                  }
                 .star{
                   color: #FFBA49;
                 }
-                .image-product {
-                  object-fit: contain;
-                }
+                
             `}
       </style>
     </div>

@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 export default function Navbar({ isLogin }) {
   const dispatch = useDispatch()
-  const { myAcount, shippingAddress, myOrder } = useSelector(state => state.Helpers)
   const router = useRouter()
   const page = router.pathname.split('/')[2]
-  useEffect(() => {
-    if (isLogin == undefined) {
-      isLogin = isLogin
-    }
-  }, [isLogin])
+
   const [state, setState] = useState({
-    isLogin: isLogin,
     navbarMobileToggle: false,
     dropdownToggle: false
   })
@@ -29,10 +23,12 @@ export default function Navbar({ isLogin }) {
   const handleRegister = () => {
     router.push("/auth/register")
   }
+
+
   return (
     <>
       {/* Navbar Mobile after login */}
-      <div className={state.isLogin == false ? "hide" : "show"}>
+      <div className={isLogin === false ? "hide" : "show"}>
         <div className={state.navbarMobileToggle == true ? "navbarMobile navbarMobile-show hide-lg overflow-auto" : "navbarMobile navbarMobile-hide hide-lg"}>
           <div className="d-flex justify-content-end w-100">
             <button className="material-icons bg-transparent border-0 text-danger my-3" onClick={toggleCloseNavbarMobile} >close</button>
@@ -109,7 +105,7 @@ export default function Navbar({ isLogin }) {
       </div>
       {/*  */}
       {/* Navbar Mobile after Logout */}
-      <div className={state.isLogin == true ? "hide" : "show"}>
+      <div className={isLogin === true ? "hide" : "show"}>
         <div className={state.navbarMobileToggle == true ? "navbarMobile navbarMobile-show hide-lg" : "navbarMobile navbarMobile-hide hide-lg"}>
           <div className="d-flex justify-content-end w-100">
             <button className="material-icons bg-transparent border-0 text-danger my-5" onClick={toggleCloseNavbarMobile} >close</button>
@@ -144,7 +140,7 @@ export default function Navbar({ isLogin }) {
               </div>
             </div>
             {/* ini komponen belum login */}
-            <div className={state.isLogin == false ? "col-3 col-lg-4 ms-auto hide-sm show-lg" : "hide"} >
+            <div className={isLogin === false ? "col-3 col-lg-4 ms-auto hide-sm show-lg" : "hide"} >
               <div className="d-flex justify-content-end">
                 <button className="material-icons bg-transparent border-0 my-auto me-4 color-gray">add_shopping_cart</button>
                 <button className="bg-danger text-white border-0 rounded-pill px-4 py-2 me-3" onClick={handleLogin}>Login</button>
@@ -153,7 +149,7 @@ export default function Navbar({ isLogin }) {
             </div>
             {/* -------- */}
             {/* ini komponen sudah login */}
-            <div className={state.isLogin == true ? "col-3 col-lg-4 ms-auto hide-sm show-lg" : "hide"}>
+            <div className={isLogin === true ? "col-3 col-lg-4 ms-auto hide-sm show-lg" : "hide"}>
               <div className="d-flex justify-content-end">
                 <button className="material-icons bg-transparent border-0 mt-2 me-4 hover-danger">add_shopping_cart</button>
                 <button className="material-icons bg-transparent border-0 mt-2 me-4 hover-danger">notifications_none</button>

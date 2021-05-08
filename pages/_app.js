@@ -5,21 +5,28 @@ import { useStore } from "../src/config/redux";
 import { Provider } from "react-redux";
 import { useRouter } from 'next/router'
 import { Navbar, SideBar } from '../src/component/module'
-
+// import { useSelector } from 'react-redux'
 function MyApp({ Component, pageProps }) {
+  // const { user } = useSelector((state) => state.user);
   const [status, setStatus] = useState(false);
   const store = useStore(pageProps.initialReduxState);
   const router = useRouter()
   const page = router.pathname.split('/')[2]
-  let isAuthenticated;
-  if (typeof window !== "undefined") {
-    isAuthenticated = localStorage.getItem("token");
-  }
-  useEffect(() => {
-    if (isAuthenticated !== "undefined") {
-      setStatus(true);
-    }
-  }, [status]);
+  // let isAuthenticated;
+  // if (typeof window !== "undefined") {
+  //   isAuthenticated = localStorage.getItem("token");
+  // }
+
+  // useEffect(() => {
+  //   if (user) {
+  //     if (localStorage.getItem("token")) {
+  //       setStatus(true);
+  //       console.log(status);
+  //     }
+
+  //   }
+  // }, [user]);
+
   if (router.pathname.split('/')[1] === "app") {
     if (router.pathname.split('/')[2] === "profile" || router.pathname.split('/')[2] === "profile-store") {
       return (

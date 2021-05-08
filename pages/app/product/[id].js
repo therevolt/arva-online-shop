@@ -2,24 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from "react-redux";
 import { getDetailProduct, getRecomendationProduct } from '../../../src/config/redux/actions/product'
+import { addCart } from '../../../src/config/redux/actions/carts'
+
 import Link from "next/link"
 import { Rating, Navbar } from "../../../src/component/module";
 import { CardProduct } from "../../../src/component/base";
 import Rupiah from '../../../src/helper/rupiah'
+import Swal from 'sweetalert2'
 
 function ProductDetail() {
   const { query } = useRouter();
-  // console.log(query.id);
+  const router = useRouter();
   const dispatch = useDispatch();
   const { product, recomend } = useSelector((state) => state.product);
-  const idCategory = String(query.id)
+  const [idProduct, setIdProduct] = useState(null)
+  // const idPr = String(query.id)
   const [state, setState] = useState(null)
   const [stateRecomend, setStateRecomend] = useState(null)
-  console.log(stateRecomend);
+
   const [size, setSize] = useState(0);
   const [activeSize, setActiveSize] = useState(false);
   const [count, setCount] = useState(0);
   const [activeCount, setActiveCount] = useState(false);
+  const [cart] = useState([]);
 
   const handleIncreamentCount = () => {
     setCount(count + 1);
@@ -30,9 +35,42 @@ function ProductDetail() {
     setActiveCount(false);
   };
 
+  const handleAddToBag = () => {
+    const data = {
+      productId: idCategory,
+      quantity: count
+    };
+    dispatch(addCart(data)).then((res) => {
+      Swal.fire({
+        title: "Success!",
+        text: res,
+        icon: "success",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#ffba33",
+      })
+    })
+  }
+
+  const handleBuyNow = () => {
+    if (!localStorage.getItem("token")) {
+      router.push("/auth/login");
+    } else {
+      const data = {
+        productId: idCategory,
+        quantity: count
+      };
+      console.log(data);
+      // router.push("/app/checkout")
+    }
+  }
+
+
   useEffect(() => {
-    dispatch(getDetailProduct(idCategory))
-  }, [dispatch, idCategory]);
+    if (idProduct) {
+      dispatch(getDetailProduct(idProduct))
+    }
+    setIdProduct(window.location.pathname.split("/")[3])
+  }, [dispatch, idProduct, query.id]);
 
   useEffect(() => {
     dispatch(getRecomendationProduct(product.category))
@@ -70,7 +108,7 @@ function ProductDetail() {
               </Link>
             </li>
             <li className="breadcrumb-item">
-              <Link href="#">
+              <Link href="/app">
                 <a>Category</a>
               </Link>
             </li>
@@ -199,11 +237,11 @@ function ProductDetail() {
               <button className={`btn BtnChart mt-2 me-2 me-2 btn-lg`}>
                 Chat
               </button>
-              <button className={`btn BtnChart mt-2 me-2 btn-lg`}>
+              <button className={`btn BtnChart mt-2 me-2 btn-lg`} onClick={handleAddToBag}>
                 Add to bag
               </button>
             </div>
-            <button className={`btn BtnBuy mt-4 btn-lg`}>Buy Now</button>
+            <button className={`btn BtnBuy mt-4 btn-lg`} onClick={handleBuyNow}>Buy Now</button>
           </div>
         </div>
         <h3 className="mt-3 fw-600">Information Product</h3>
@@ -372,7 +410,7 @@ function ProductDetail() {
                 key={item.id}
                 image={item.image[0]}
                 titleProduct={item.name}
-                price={`Rp.${item.price}`}
+                price={Rupiah(`Rp.${item.price}`)}
                 linkDetailProduct={`/app/product/${item.id}`}
                 seller={item.sellerName}
               />

@@ -64,7 +64,7 @@ export const login = (data) => (dispatch) => {
             .post(`${Url}/v1/users/login`, data)
             .then((res) => {
                 dispatch({ type: "LOGIN", payload: res.data.data });
-                localStorage.setItem("id", res.data.data.id)
+                // localStorage.setItem("id", res.data.data.id)
                 localStorage.setItem("token", res.data.data.token);
                 resolve(res.data.message);
             })

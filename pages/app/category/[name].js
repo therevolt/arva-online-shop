@@ -38,7 +38,7 @@ function index() {
                 </Link>
               </li>
               <li className="breadcrumb-item">
-                <Link href="#">
+                <Link href="/app">
                   <a>Category</a>
                 </Link>
               </li>

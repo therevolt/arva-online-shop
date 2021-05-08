@@ -6,9 +6,12 @@ import Link from "next/link"
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Image from "next/image";
+import { useDispatch } from 'react-redux'
+import { login } from '../../src/config/redux/actions/users'
 
 export default function Login() {
     const router = useRouter()
+    const dispatch = useDispatch()
     const [togglestate, setToggleState] = useState(1);
     const [isPasswordShow, setIsPasswordShow] = useState(false);
     const tooglePasswordVisibility = () => {
@@ -28,17 +31,24 @@ export default function Login() {
                 .required("Required!")
         }),
         onSubmit: values => {
-            axios.post(`https://be.arva-shop.xyz/v1/users/login`, values)
-                .then((res) => {
-                    console.log(res);
-                    Swal.fire("Success", res.data.message, "success");
-                    localStorage.setItem("token", res.data.data.token);
-                    router.push("/app");
-                })
-                .catch((err) => {
-                    console.log(err);
-                    Swal.fire("Something Error!", err.response.data.message, "error");
-                });
+            dispatch(login(values)).then((res) => {
+                Swal.fire("Success", res, "success");
+                router.push("/app");
+            }).catch((err) => {
+                console.log(err);
+                Swal.fire("Something Error!", err, "error");
+            });
+            // axios.post(`https://be.arva-shop.xyz/v1/users/login`, values)
+            //         .then((res) => {
+            //             console.log(res);
+            //             Swal.fire("Success", res.data.message, "success");
+            //             localStorage.setItem("token", res.data.data.token);
+            //             router.push("/app");
+            //         })
+            //         .catch((err) => {
+            //             console.log(err);
+            //             Swal.fire("Something Error!", err.response.data.message, "error");
+            //         });
         }
     });
     const formik2 = useFormik({
@@ -55,17 +65,13 @@ export default function Login() {
                 .required("Required!")
         }),
         onSubmit: values => {
-            axios.post(`https://be.arva-shop.xyz/v1/users/login`, values)
-                .then((res) => {
-                    console.log(res);
-                    Swal.fire("Success", res.data.message, "success");
-                    localStorage.setItem("token", res.data.data.token);
-                    router.push("/app");
-                })
-                .catch((err) => {
-                    console.log(err);
-                    Swal.fire("Something Error!", err.response.data.message, "error");
-                });
+            dispatch(login(values)).then((res) => {
+                Swal.fire("Success", res, "success");
+                router.push("/app");
+            }).catch((err) => {
+                console.log(err);
+                Swal.fire("Something Error!", err, "error");
+            });
         }
     });
 

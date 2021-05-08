@@ -1,6 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Modal from 'react-modal'
+import { useDispatch, useSelector } from "react-redux";
+import { getCart } from '../../../src/config/redux/actions/carts'
+import Rupiah from '../../../src/helper/rupiah'
 
 function Checkout() {
+  const dispatch = useDispatch();
+  const { carts } = useSelector((state) => state.carts);
+  const [dataCart, setDataCart] = useState(null);
+  // console.log(carts.dataCart[0].quantity);
+  const [state, setState] = useState({
+    toggleModal: false,
+    addAdsress: false
+  })
+
+  // const handleBuy = () => {
+  //   const data = {
+  //     productId: JSON.stringify([{
+  //       id: carts.dataCart[0].id,
+  //       quantity: carts.dataCart[0].quantity,
+  //     }]),
+  //     deliveryCost: 15000,
+  //     methodPayment: "bank_transfer",
+  //     email: "abudzaralghifari8@gmail.com",
+  //   }
+  // }
+
+  useEffect(() => {
+    dispatch(getCart())
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (carts.dataCart) {
+      if (carts.dataCart.length > 0) {
+        setDataCart(carts)
+      }
+    }
+  }, [carts]);
+
   return (
     <div className="container">
       <div className="row row mt-7 mb-5">
@@ -18,7 +55,7 @@ function Checkout() {
                 Kabupaten Banyumas, Jawa Tengah, 53181 [Tokopedia Note: blok c
                 16] Sokaraja, Kab. Banyumas, 53181
               </p>
-              <button className="btn custom-btn color-gray shadow-none">
+              <button className="btn custom-btn color-gray shadow-none" onClick={() => { setState({ ...state, toggleModal: true }) }} >
                 Choose another address
               </button>
             </div>
@@ -26,28 +63,36 @@ function Checkout() {
           {/* akhir shipping addres */}
 
           {/* awal item */}
-          <div className="card custom-card mb-3">
-            <div className="card-body">
-              <div className="d-sm-block d-md-flex align-items-center">
-                <div className="text-center border-md">
-                  <img
-                    src={require("../../../public/img/jas.png")}
-                    alt="product"
-                    className="border-image"
-                  />
-                </div>
-                <div className="d-md-inline mt-3 mt-md-0  ms-0 ms-md-3 d-md-flex flex-column  align-items-center">
-                  <div className=" me-auto f-16 fw-bold">
-                    Men's formal suit - Black
+          {dataCart && dataCart.dataCart.map((item, index) => {
+            return (
+              <>
+                <div className="card custom-card mb-3" key={index}>
+                  <div className="card-body">
+                    <div className="d-sm-block d-md-flex align-items-center">
+                      <div className="text-center border-md">
+                        <img
+                          src={item.imageProduct[0]}
+                          alt="product"
+                          className="border-image"
+                        />
+                      </div>
+                      <div className="d-md-inline mt-3 mt-md-0  ms-0 ms-md-3 d-md-flex flex-column  align-items-center">
+                        <div className=" me-auto f-16 fw-bold d-inline-block text-truncate" style={{ maxWidth: "350px" }}>
+                          {`(${item.quantity})`} {item.nameProduct}
+                        </div>
+                        <div className=" me-auto color-gray f-12 fw-500">
+                          {item.nameSeller}
+                        </div>
+                      </div>
+                      <div className="d-md-inline ms-md-auto f-18 fw-bold">{Rupiah(`Rp ${item.totalPrice}`)}</div>
+                    </div>
                   </div>
-                  <div className=" me-auto color-gray f-12 fw-500">
-                    Zalora Cloth
-                  </div>
                 </div>
-                <div className="d-md-inline ms-md-auto f-18 fw-bold">$ 20</div>
-              </div>
-            </div>
-          </div>
+              </>
+            )
+          })}
+
+
           {/* akhir item */}
         </div>
         {/* end left columns */}
@@ -60,16 +105,16 @@ function Checkout() {
               <h4 className="f-16 fw-bold mb-3">Shopping summary</h4>
               <div className="d-flex justify-content-between">
                 <div className="color-gray fw-500 f-16">Order</div>
-                <div className="f-18 fw-bold">$ 40</div>
+                <div className="f-18 fw-bold">{Rupiah(`Rp ${carts.totalPayment}`)}</div>
               </div>
               <div className="d-flex justify-content-between">
                 <div className="color-gray fw-500 f-16">Delivery</div>
-                <div className="f-18 fw-bold">$ 5</div>
+                <div className="f-18 fw-bold">{Rupiah("Rp 15000")}</div>
               </div>
               <hr />
               <div className="d-flex justify-content-between">
                 <div className="f-16 fw-bold mb-3">Shopping summary</div>
-                <div className="color-red fw-bold f-18">$ 5</div>
+                <div className="color-red fw-bold f-18">{Rupiah(`Rp ${carts.totalPayment + 15000}`)}</div>
               </div>
               <div className="d-grid gap-2 col-12 mx-auto">
                 <button
@@ -178,18 +223,18 @@ function Checkout() {
                   <h4 className="f-16 fw-bold mb-3">Shopping summary</h4>
                   <div className="d-flex justify-content-between">
                     <div className="color-gray fw-500 f-16">Order</div>
-                    <div className="f-18 fw-bold">$ 40</div>
+                    <div className="f-18 fw-bold">{Rupiah(`Rp ${carts.totalPayment}`)}</div>
                   </div>
                   <div className="d-flex justify-content-between">
                     <div className="color-gray fw-500 f-16">Delivery</div>
-                    <div className="f-18 fw-bold">$ 5</div>
+                    <div className="f-18 fw-bold">{Rupiah("Rp 15000")}</div>
                   </div>
 
                   <hr />
                   <div className="d-flex justify-content-between mt-3">
                     <div className="d-flex flex-column align-self-start">
                       <div className="f-16 fw-bold">Shopping summary</div>
-                      <div className="color-red fw-bold f-18">$ 45</div>
+                      <div className="color-red fw-bold f-18">{Rupiah(`Rp ${carts.totalPayment + 15000}`)}</div>
                     </div>
                     <div className="align-self-end">
                       <button
@@ -209,6 +254,73 @@ function Checkout() {
         </div>
         {/* end right columns */}
       </div>
+      {/* modal */}
+      <Modal
+        isOpen={state.toggleModal}
+        className="modalPositionAndSizeConfig"
+        overlayClassName="modalOverLayConfig"
+        closeTimeoutMS={400}
+        ariaHideApp={false}
+      >
+        <div className="w-100 d-flex mb-4"><span className="material-icons ms-auto hover-danger c-pointer" onClick={() => { setState({ ...state, toggleModal: false }) }} >close</span></div>
+        {/* komponen choose address */}
+        <div className={state.addAdsress !== true ? "show" : "hide"} style={{ minHeight: "550px" }} >
+          <h4 className="fw-bold text-center">Choose another address</h4>
+          <div className="px-4 py3">
+            <button className="color-gray w-100 py-4 bg-transparent rounded my-4" style={{ border: "3px dashed #9B9B9B" }} onClick={() => { setState({ ...state, addAdsress: true }) }} >Add new address</button>
+            <div className="p-3 border border-danger rounded">
+              <p className="fw-bold">Andreas Jane</p>
+              <p>Perumahan Sapphire Mediterania, Wiradadi, Kec. Sokaraja, Kabupaten Banyumas, Jawa Tengah, 53181 [Tokopedia Note: blok c 16] Sokaraja, Kab. Banyumas, 53181</p>
+              <a className="fw-bold text-danger">Change address</a>
+            </div>
+          </div>
+        </div>
+        {/*  */}
+        {/* komponen add address */}
+        <div className={state.addAdsress == true ? "show" : "hide"}>
+          <h3 className="fw-bold text-center mb-4">Add new address</h3>
+          <div className="my-2">
+            <label className="color-gray">Save address as (ex : home address, office address)</label>
+            <input type="text" className="w-100 border p-2" style={{ outline: "nonde" }} />
+          </div>
+          <div className="row">
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">Recipient’s name</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">Recipient's telephone number</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">Address</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">Postal code</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 col-md-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">City or Subdistrict</label>
+              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            </div>
+            <div className="col-12 my-2">
+              <input type="checkbox" className="me-2" />
+              <label htmlFor="name" className="color-gray">Make it the primary address</label>
+            </div>
+            <div className="col-12 my-2">
+              <div className="d-flex justify-content-end">
+                <div>
+                  <button className="bg-danger text-white border-0 rounded-pill px-5 py-2 me-3">Save</button>
+                  <button className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden" onClick={() => { setState({ ...state, addAdsress: false }) }} >Cancel</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/*  */}
+      </Modal>
+      {/* end modal */}
       <style jsx>
         {`
           .f-22 {
@@ -286,7 +398,7 @@ function Checkout() {
             border-radius: 8px !important;
             width: 69px;
             height: 69px;
-            object-fit: cover;
+            object-fit: contain;
           }
 
           .custom-modal-footer {

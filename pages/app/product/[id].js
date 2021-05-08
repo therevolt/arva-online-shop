@@ -2,36 +2,97 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from "react-redux";
 import { getDetailProduct, getRecomendationProduct } from '../../../src/config/redux/actions/product'
+import { addCart } from '../../../src/config/redux/actions/carts'
+
 import Link from "next/link"
 import { Rating, Navbar } from "../../../src/component/module";
 import { CardProduct } from "../../../src/component/base";
+import Rupiah from '../../../src/helper/rupiah'
+import Swal from 'sweetalert2'
 
 function ProductDetail() {
   const { query } = useRouter();
-  // console.log(query.id);
+  const router = useRouter();
   const dispatch = useDispatch();
   const { product, recomend } = useSelector((state) => state.product);
-  const idCategory = String(query.id)
+  const [idProduct, setIdProduct] = useState(null)
   const [state, setState] = useState(null)
   const [stateRecomend, setStateRecomend] = useState(null)
-  console.log(stateRecomend);
-  const [size, setSize] = useState(0);
-  const [activeSize, setActiveSize] = useState(false);
+  // const [size, setSize] = useState(0);
+  // const [activeSize, setActiveSize] = useState(false);
   const [count, setCount] = useState(0);
   const [activeCount, setActiveCount] = useState(false);
 
   const handleIncreamentCount = () => {
-    setCount(count + 1);
-    setActiveCount(true);
+    if (count < product.stock) {
+      setCount(count + 1);
+      setActiveCount(true);
+    } else {
+      setActiveCount(false)
+    }
   };
   const handleDecreamentCount = () => {
     count < 1 ? setCount(0) : setCount(count - 1);
     setActiveCount(false);
   };
 
+  const handleAddToBag = () => {
+    if (count === 0) {
+      Swal.fire({
+        title: "Warning!",
+        text: "Amount Not Valid",
+        icon: "info",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#ffba33",
+      })
+    } else {
+      if (count < product.stock) {
+        const data = {
+          productId: idProduct,
+          quantity: count
+        };
+        dispatch(addCart(data)).then((res) => {
+          Swal.fire({
+            title: "Success!",
+            text: res,
+            icon: "success",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#ffba33",
+          })
+        })
+      } else {
+        setCount(product.stock)
+        Swal.fire({
+          title: "Warning!",
+          text: `Stock Not ready, please order < ${product.stock} pcs`,
+          icon: "info",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#ffba33",
+        })
+      }
+    }
+  }
+
+  const handleBuyNow = () => {
+    if (!localStorage.getItem("token")) {
+      router.push("/auth/login");
+    } else {
+      const data = {
+        productId: idProduct,
+        quantity: count
+      };
+      console.log(data);
+      // router.push("/app/checkout")
+    }
+  }
+
+
   useEffect(() => {
-    dispatch(getDetailProduct(idCategory))
-  }, [dispatch, idCategory]);
+    if (idProduct) {
+      dispatch(getDetailProduct(idProduct))
+    }
+    setIdProduct(window.location.pathname.split("/")[3])
+  }, [dispatch, idProduct, query.id]);
 
   useEffect(() => {
     dispatch(getRecomendationProduct(product.category))
@@ -69,7 +130,7 @@ function ProductDetail() {
               </Link>
             </li>
             <li className="breadcrumb-item">
-              <Link href="#">
+              <Link href="/app">
                 <a>Category</a>
               </Link>
             </li>
@@ -102,14 +163,14 @@ function ProductDetail() {
           </div>
           <div className="col-12 col-md-6 col-lg-6 mb-5">
             <h1 className="fw-600">{product.name}</h1>
-            <p className="f-16 text-muted">Nike</p>
+            <p className="f-16 text-muted">{product.sellerName}</p>
             <div className="d-inline-flex d-flex mt-n ms-1">
               <Rating rating={5} />
               <p className="align-self-center f-12 text-muted"> &nbsp;(10)</p>
             </div>
             <p className={`text-muted f-16 ms-1 mt-2`}>Price</p>
             <h1 className="mt-n3">
-              <b>{`RP.${product.price}`}</b>
+              <b>{Rupiah(`RP.${product.price}`)}</b>
             </h1>
             <p className={`f-16 ms-1 mt-3`}>
               <b>Color</b>
@@ -198,11 +259,11 @@ function ProductDetail() {
               <button className={`btn BtnChart mt-2 me-2 me-2 btn-lg`}>
                 Chat
               </button>
-              <button className={`btn BtnChart mt-2 me-2 btn-lg`}>
+              <button className={`btn BtnChart mt-2 me-2 btn-lg`} onClick={handleAddToBag}>
                 Add to bag
               </button>
             </div>
-            <button className={`btn BtnBuy mt-4 btn-lg`}>Buy Now</button>
+            <button className={`btn BtnBuy mt-4 btn-lg`} onClick={handleBuyNow}>Buy Now</button>
           </div>
         </div>
         <h3 className="mt-3 fw-600">Information Product</h3>
@@ -371,7 +432,7 @@ function ProductDetail() {
                 key={item.id}
                 image={item.image[0]}
                 titleProduct={item.name}
-                price={`Rp.${item.price}`}
+                price={Rupiah(`Rp.${item.price}`)}
                 linkDetailProduct={`/app/product/${item.id}`}
                 seller={item.sellerName}
               />

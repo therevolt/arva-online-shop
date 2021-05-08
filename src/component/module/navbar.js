@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 export default function Navbar({ isLogin }) {
   const dispatch = useDispatch();
-  const { myAcount, shippingAddress, myOrder } = useSelector(
-    (state) => state.Helpers
-  );
   const router = useRouter();
   const page = router.pathname.split("/")[2];
 
-  useEffect(() => {
-    if (isLogin == undefined) {
-      isLogin = isLogin;
-    }
-  }, [isLogin]);
   const [state, setState] = useState({
-    isLogin: isLogin,
     navbarMobileToggle: false,
+    dropdownToggle: false,
   });
   const toggleOpenNavbarMobile = () => {
     setState({ ...state, navbarMobileToggle: true });
@@ -25,7 +17,6 @@ export default function Navbar({ isLogin }) {
   const toggleCloseNavbarMobile = () => {
     setState({ ...state, navbarMobileToggle: false });
   };
-
   const handleLogin = () => {
     router.push("/auth/login");
   };
@@ -40,11 +31,11 @@ export default function Navbar({ isLogin }) {
   return (
     <>
       {/* Navbar Mobile after login */}
-      <div className={state.isLogin == false ? "hide" : "show"}>
+      <div className={isLogin === false ? "hide" : "show"}>
         <div
           className={
             state.navbarMobileToggle == true
-              ? "navbarMobile navbarMobile-show hide-lg"
+              ? "navbarMobile navbarMobile-show hide-lg overflow-auto"
               : "navbarMobile navbarMobile-hide hide-lg"
           }
         >
@@ -90,8 +81,7 @@ export default function Navbar({ isLogin }) {
             <span className="material-icons">notifications_none</span>{" "}
             <p className="m-0 ms-2">notifications</p>
           </button>
-          {/* untuk halaman profile */}
-          <div className={page == "profile" ? "show" : "hide"}>
+          <div className={page == "profil" ? "show" : "hide"}>
             <div className="d-flex my-4">
               <span
                 className="material-icons text-white rounded-circle p-2 me-3"
@@ -141,6 +131,90 @@ export default function Navbar({ isLogin }) {
               </button>
             </div>
           </div>
+          <div className={page == "profil-store" ? "show" : "hide"}>
+            <div className="d-flex my-4">
+              <span
+                className="material-icons text-white rounded-circle p-2 me-3"
+                style={{ background: "#456BF3" }}
+              >
+                home
+              </span>
+              <button
+                className="m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0"
+                onClick={() => {
+                  dispatch({ type: "OPEN_STORE" });
+                }}
+              >
+                Store
+              </button>
+            </div>
+            <div className="my-4">
+              <div
+                className="d-flex c-pointer hover-danger"
+                onClick={() => {
+                  if (state.dropdownToggle) {
+                    setState({ ...state, dropdownToggle: false });
+                  } else {
+                    setState({ ...state, dropdownToggle: true });
+                  }
+                }}
+              >
+                <span
+                  className="material-icons text-white rounded-circle p-2 me-3"
+                  style={{ background: "#F36F45" }}
+                >
+                  shopping_cart
+                </span>
+                <p className="m-0 my-auto fs-6 fw-bold bg-transparent border-0">
+                  Product
+                </p>
+                <span className="material-icons my-auto ms-auto">
+                  expand_more
+                </span>
+              </div>
+              <div
+                className={state.dropdownToggle == true ? "show" : "hide"}
+                style={{ marginLeft: "3.5rem" }}
+              >
+                <div className="my-3">
+                  <button
+                    className="m-0 my-auto fs-6 hover-danger bg-transparent border-0"
+                    onClick={() => {
+                      dispatch({ type: "OPEN_PRODUCT" });
+                    }}
+                  >
+                    My products
+                  </button>
+                </div>
+                <div className="my-3">
+                  <button
+                    className="m-0 my-auto fs-6 hover-danger bg-transparent border-0"
+                    onClick={() => {
+                      dispatch({ type: "OPEN_SELLING_PRODUCT" });
+                    }}
+                  >
+                    Selling products
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="d-flex my-4">
+              <span
+                className="material-icons text-white rounded-circle p-2 me-3"
+                style={{ background: "#F3456F" }}
+              >
+                list_alt
+              </span>
+              <button
+                className="m-0 my-auto fs-6 fw-bold hover-danger bg-transparent border-0"
+                onClick={() => {
+                  dispatch({ type: "OPEN_ORDER" });
+                }}
+              >
+                Order
+              </button>
+            </div>
+          </div>
 
           <button className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger">
             <span className="material-icons">add_shopping_cart</span>{" "}
@@ -153,9 +227,8 @@ export default function Navbar({ isLogin }) {
         </div>
       </div>
       {/*  */}
-
       {/* Navbar Mobile after Logout */}
-      <div className={state.isLogin == true ? "hide" : "show"}>
+      <div className={isLogin === true ? "hide" : "show"}>
         <div
           className={
             state.navbarMobileToggle == true
@@ -199,7 +272,7 @@ export default function Navbar({ isLogin }) {
         </div>
       </div>
       {/*  */}
-
+      {/* nvbar dekstop */}
       <div
         className="shadow bg-white py-4 position-fixed top-0"
         style={{ zIndex: "2", width: "100vw" }}
@@ -228,7 +301,7 @@ export default function Navbar({ isLogin }) {
             {/* ini komponen belum login */}
             <div
               className={
-                state.isLogin == false
+                isLogin === false
                   ? "col-3 col-lg-4 ms-auto hide-sm show-lg"
                   : "hide"
               }
@@ -255,7 +328,7 @@ export default function Navbar({ isLogin }) {
             {/* ini komponen sudah login */}
             <div
               className={
-                state.isLogin == true
+                isLogin === true
                   ? "col-3 col-lg-4 ms-auto hide-sm show-lg"
                   : "hide"
               }
@@ -298,7 +371,7 @@ export default function Navbar({ isLogin }) {
           </div>
         </div>
       </div>
-
+      {/*  */}
       {/* siluet, layar hitam ketika navbar mobile keluar */}
       <div
         className={

@@ -251,7 +251,7 @@ function ProductDetail() {
                       style={{
                         height: "10px",
                         width: "80%",
-                        background: "#DB3022;",
+                        background: "#DB3022",
                       }}
                       aria-valuenow="20"
                       aria-valuemin="0"

@@ -1,53 +1,78 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { addCart, getCart } from '../../../src/config/redux/actions/carts'
+import { addCart, deleteCart, getCart } from '../../../src/config/redux/actions/carts'
 import Rupiah from '../../../src/helper/rupiah'
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/router'
 
 function index() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const { carts } = useSelector((state) => state.carts);
-  // console.log(carts);
   const [state, setState] = useState(null);
   const [activeBtn, setActiveBtn] = useState(false);
-  // let [quantity, setQuantity] = useState(1);
+  const [isSelected, setisSelected] = useState([]);
+
+  // const handleSelected = (item) => {
+  //   let data = [];
+  //   data.push( item)
+  //   setisSelected(data)
+  //   console.log(data);
+  // };
+
+  const handleDelete = () => {
+    // console.log(isSelected);
+    alert(isSelected)
+    // dispatch(deleteCart(5)).then((res) => {
+    //   Swal.fire("Success", res, "success");
+    // }).catch((err) => {
+    //   Swal.fire("Something Error!", err, "error");
+    // });
+  }
+
 
   const handleAdd = (item) => {
-    // const count = item.quantity + 1;
-    const data = {
-      productId: item.productId,
-      quantity: 1
-    };
-    dispatch(addCart(data)).then((res) => {
-      console.log(res);
-    })
-    // setQuantity(quantity + 1);
-    setActiveBtn(true);
-  };
-  const handleRemove = (item) => {
-    console.log(item.quantity);
-    if (item.quantity >= 1) {
+    if (item.quantity < item.stockProduct) {
       const data = {
         productId: item.productId,
-        quantity: -1
+        quantity: 1
       };
-
-      dispatch(addCart(data)).then((res) => {
-        console.log(res);
-      })
+      dispatch(addCart(data))
+      setActiveBtn(true);
+    } else {
+      setActiveBtn(false)
     }
-    // quantity > 0 ? setQuantity(quantity - 1) : setQuantity(0);
-    setActiveBtn(false);
   };
 
+  const handleRemove = (item) => {
+    if (item.quantity === 0) {
+      item.quantity(0)
+      setActiveBtn(false)
+    } else {
+      if (item.quantity >= 1) {
+        const data = {
+          productId: item.productId,
+          quantity: -1
+        };
+        dispatch(addCart(data))
+        setActiveBtn(true);
+      } else {
+        setActiveBtn(false);
+      }
+    }
+  };
 
+  const handleBuy = () => {
+    router.push("/app/checkout")
+  }
 
   useEffect(() => {
     dispatch(getCart())
   }, [dispatch, carts]);
 
   useEffect(() => {
-    if (carts) {
-      if (carts.length > 0) {
+    if (carts.dataCart) {
+      if (carts.dataCart.length > 0) {
         setState(carts)
       }
     }
@@ -76,7 +101,7 @@ function index() {
                   <span className="text-muted ms-1 me-auto d-none d-md-block">
                     (2 items selected)
                   </span>
-                  <button className="btn text-danger fw-bold shadow-none">
+                  <button className="btn text-danger fw-bold shadow-none" onClick={handleDelete}>
                     Delete
                   </button>
                 </div>
@@ -84,7 +109,7 @@ function index() {
             </div>
             {/* end selecet items */}
 
-            {state && state.map((item, index) => {
+            {state && state.dataCart.map((item, index) => {
 
               return (
                 <>
@@ -94,8 +119,9 @@ function index() {
                         <input
                           className="d-sm-inline-block form-check-input bg-danger border-0 rounded-0 shadow-none"
                           type="checkbox"
-                          value=""
+                          // value={item.id}
                           id="flexCheckDefault"
+                          onClick={() => handleSelected(item.id)}
                         />
                         <div className="d-none d-md-flex border-image ms-3">
                           <img
@@ -160,11 +186,11 @@ function index() {
                 <p className="fw-bold">Shopping summary</p>
                 <div className="d-flex justify-content-between">
                   <span className="text-muted">Total price</span>
-                  <span className="fw-bold f-18">Rp 20000</span>
+                  <span className="fw-bold f-18">{Rupiah(`Rp ${carts.totalPayment}`)}</span>
                 </div>
                 <div className="row justify-content-center">
                   <div className="col-sm-12 col-md-8 col-lg-12">
-                    <button className="mt-3 btn w-100 bg-danger round text-white shadow-none btn-hover">
+                    <button className="mt-3 btn w-100 bg-danger round text-white shadow-none btn-hover" onClick={handleBuy}>
                       Buy
                     </button>
                   </div>

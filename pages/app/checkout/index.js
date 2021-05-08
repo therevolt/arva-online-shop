@@ -1,10 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from 'react-modal'
+import { useDispatch, useSelector } from "react-redux";
+import { getCart } from '../../../src/config/redux/actions/carts'
+import Rupiah from '../../../src/helper/rupiah'
+
 function Checkout() {
+  const dispatch = useDispatch();
+  const { carts } = useSelector((state) => state.carts);
+  const [dataCart, setDataCart] = useState(null);
+  // console.log(carts.dataCart[0].quantity);
   const [state, setState] = useState({
     toggleModal: false,
     addAdsress: false
   })
+
+  // const handleBuy = () => {
+  //   const data = {
+  //     productId: JSON.stringify([{
+  //       id: carts.dataCart[0].id,
+  //       quantity: carts.dataCart[0].quantity,
+  //     }]),
+  //     deliveryCost: 15000,
+  //     methodPayment: "bank_transfer",
+  //     email: "abudzaralghifari8@gmail.com",
+  //   }
+  // }
+
+  useEffect(() => {
+    dispatch(getCart())
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (carts.dataCart) {
+      if (carts.dataCart.length > 0) {
+        setDataCart(carts)
+      }
+    }
+  }, [carts]);
+
   return (
     <div className="container">
       <div className="row row mt-7 mb-5">
@@ -30,28 +63,36 @@ function Checkout() {
           {/* akhir shipping addres */}
 
           {/* awal item */}
-          <div className="card custom-card mb-3">
-            <div className="card-body">
-              <div className="d-sm-block d-md-flex align-items-center">
-                <div className="text-center border-md">
-                  <img
-                    src={require("../../../public/img/jas.png")}
-                    alt="product"
-                    className="border-image"
-                  />
-                </div>
-                <div className="d-md-inline mt-3 mt-md-0  ms-0 ms-md-3 d-md-flex flex-column  align-items-center">
-                  <div className=" me-auto f-16 fw-bold">
-                    Men's formal suit - Black
+          {dataCart && dataCart.dataCart.map((item, index) => {
+            return (
+              <>
+                <div className="card custom-card mb-3" key={index}>
+                  <div className="card-body">
+                    <div className="d-sm-block d-md-flex align-items-center">
+                      <div className="text-center border-md">
+                        <img
+                          src={item.imageProduct[0]}
+                          alt="product"
+                          className="border-image"
+                        />
+                      </div>
+                      <div className="d-md-inline mt-3 mt-md-0  ms-0 ms-md-3 d-md-flex flex-column  align-items-center">
+                        <div className=" me-auto f-16 fw-bold d-inline-block text-truncate" style={{ maxWidth: "350px" }}>
+                          {`(${item.quantity})`} {item.nameProduct}
+                        </div>
+                        <div className=" me-auto color-gray f-12 fw-500">
+                          {item.nameSeller}
+                        </div>
+                      </div>
+                      <div className="d-md-inline ms-md-auto f-18 fw-bold">{Rupiah(`Rp ${item.totalPrice}`)}</div>
+                    </div>
                   </div>
-                  <div className=" me-auto color-gray f-12 fw-500">
-                    Zalora Cloth
-                  </div>
                 </div>
-                <div className="d-md-inline ms-md-auto f-18 fw-bold">$ 20</div>
-              </div>
-            </div>
-          </div>
+              </>
+            )
+          })}
+
+
           {/* akhir item */}
         </div>
         {/* end left columns */}
@@ -64,16 +105,16 @@ function Checkout() {
               <h4 className="f-16 fw-bold mb-3">Shopping summary</h4>
               <div className="d-flex justify-content-between">
                 <div className="color-gray fw-500 f-16">Order</div>
-                <div className="f-18 fw-bold">$ 40</div>
+                <div className="f-18 fw-bold">{Rupiah(`Rp ${carts.totalPayment}`)}</div>
               </div>
               <div className="d-flex justify-content-between">
                 <div className="color-gray fw-500 f-16">Delivery</div>
-                <div className="f-18 fw-bold">$ 5</div>
+                <div className="f-18 fw-bold">{Rupiah("Rp 15000")}</div>
               </div>
               <hr />
               <div className="d-flex justify-content-between">
                 <div className="f-16 fw-bold mb-3">Shopping summary</div>
-                <div className="color-red fw-bold f-18">$ 5</div>
+                <div className="color-red fw-bold f-18">{Rupiah(`Rp ${carts.totalPayment + 15000}`)}</div>
               </div>
               <div className="d-grid gap-2 col-12 mx-auto">
                 <button
@@ -182,18 +223,18 @@ function Checkout() {
                   <h4 className="f-16 fw-bold mb-3">Shopping summary</h4>
                   <div className="d-flex justify-content-between">
                     <div className="color-gray fw-500 f-16">Order</div>
-                    <div className="f-18 fw-bold">$ 40</div>
+                    <div className="f-18 fw-bold">{Rupiah(`Rp ${carts.totalPayment}`)}</div>
                   </div>
                   <div className="d-flex justify-content-between">
                     <div className="color-gray fw-500 f-16">Delivery</div>
-                    <div className="f-18 fw-bold">$ 5</div>
+                    <div className="f-18 fw-bold">{Rupiah("Rp 15000")}</div>
                   </div>
 
                   <hr />
                   <div className="d-flex justify-content-between mt-3">
                     <div className="d-flex flex-column align-self-start">
                       <div className="f-16 fw-bold">Shopping summary</div>
-                      <div className="color-red fw-bold f-18">$ 45</div>
+                      <div className="color-red fw-bold f-18">{Rupiah(`Rp ${carts.totalPayment + 15000}`)}</div>
                     </div>
                     <div className="align-self-end">
                       <button
@@ -357,7 +398,7 @@ function Checkout() {
             border-radius: 8px !important;
             width: 69px;
             height: 69px;
-            object-fit: cover;
+            object-fit: contain;
           }
 
           .custom-modal-footer {

@@ -33,4 +33,18 @@ export const getCart = () => (dispatch) => {
             });
     });
 };
+export const deleteCart = (data) => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        const Url = process.env.api;
+        axiosApiInstance
+            .delete(`${Url}/v1/cart`, data)
+            .then((res) => {
+                dispatch({ type: "DELETE_CART", payload: res.data.data });
+                resolve(res.data.message);
+            })
+            .catch((err) => {
+                reject(new Error(err.response.data.message));
+            });
+    });
+};
 

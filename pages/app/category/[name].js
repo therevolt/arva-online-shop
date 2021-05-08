@@ -12,15 +12,23 @@ function index() {
   const dispatch = useDispatch();
   const { product } = useSelector((state) => state.product);
   const [state, setState] = useState(null)
-  const dataCategory = String(query.name)
+  // const dataCategory = String(query.name)
+  const [dataCategory, setDataCategory] = useState(null)
 
   useEffect(() => {
-    dispatch(getCategoryProduct(dataCategory))
-  }, [dispatch, dataCategory]);
+    if (dataCategory) {
+      dispatch(getCategoryProduct(dataCategory))
+    }
+    setDataCategory(window.location.pathname.split("/")[3])
+  }, [dispatch, dataCategory, query.name]);
+
+  // useEffect(() => {
+  //   dispatch(getCategoryProduct(dataCategory))
+  // }, [dispatch, dataCategory]);
 
   useEffect(() => {
-    if (product) {
-      if (product.length > 0) {
+    if (product.product) {
+      if (product.product.length > 0) {
         setState(product)
       }
     }
@@ -49,7 +57,7 @@ function index() {
           </nav>
           <h2 className=" mt-3 fw-bold">{query.name}</h2>
 
-          {state && state.map((item, index) => {
+          {state && state.product.map((item, index) => {
             return (
               <>
                 <CardProduct

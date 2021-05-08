@@ -16,19 +16,20 @@ function ProductDetail() {
   const dispatch = useDispatch();
   const { product, recomend } = useSelector((state) => state.product);
   const [idProduct, setIdProduct] = useState(null)
-  // const idPr = String(query.id)
   const [state, setState] = useState(null)
   const [stateRecomend, setStateRecomend] = useState(null)
-
-  const [size, setSize] = useState(0);
-  const [activeSize, setActiveSize] = useState(false);
+  // const [size, setSize] = useState(0);
+  // const [activeSize, setActiveSize] = useState(false);
   const [count, setCount] = useState(0);
   const [activeCount, setActiveCount] = useState(false);
-  const [cart] = useState([]);
 
   const handleIncreamentCount = () => {
-    setCount(count + 1);
-    setActiveCount(true);
+    if (count < product.stock) {
+      setCount(count + 1);
+      setActiveCount(true);
+    } else {
+      setActiveCount(false)
+    }
   };
   const handleDecreamentCount = () => {
     count < 1 ? setCount(0) : setCount(count - 1);
@@ -36,19 +37,40 @@ function ProductDetail() {
   };
 
   const handleAddToBag = () => {
-    const data = {
-      productId: idProduct,
-      quantity: count
-    };
-    dispatch(addCart(data)).then((res) => {
+    if (count === 0) {
       Swal.fire({
-        title: "Success!",
-        text: res,
-        icon: "success",
+        title: "Warning!",
+        text: "Amount Not Valid",
+        icon: "info",
         confirmButtonText: "Ok",
         confirmButtonColor: "#ffba33",
       })
-    })
+    } else {
+      if (count < product.stock) {
+        const data = {
+          productId: idProduct,
+          quantity: count
+        };
+        dispatch(addCart(data)).then((res) => {
+          Swal.fire({
+            title: "Success!",
+            text: res,
+            icon: "success",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#ffba33",
+          })
+        })
+      } else {
+        setCount(product.stock)
+        Swal.fire({
+          title: "Warning!",
+          text: `Stock Not ready, please order < ${product.stock} pcs`,
+          icon: "info",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#ffba33",
+        })
+      }
+    }
   }
 
   const handleBuyNow = () => {
@@ -141,7 +163,7 @@ function ProductDetail() {
           </div>
           <div className="col-12 col-md-6 col-lg-6 mb-5">
             <h1 className="fw-600">{product.name}</h1>
-            <p className="f-16 text-muted">Nike</p>
+            <p className="f-16 text-muted">{product.sellerName}</p>
             <div className="d-inline-flex d-flex mt-n ms-1">
               <Rating rating={5} />
               <p className="align-self-center f-12 text-muted"> &nbsp;(10)</p>

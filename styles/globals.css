@@ -36,7 +36,7 @@ a {
 
 .btn-navigation {
   border-radius: 50%;
-  padding: 1rem;
+  padding: 0.8rem;
   background: white;
   border: none;
   color: var(--color-gray);
@@ -88,7 +88,7 @@ a {
   right: -100%;
 }
 
-.modalOverLayConfig{
+.modalOverLayConfig {
   position: fixed;
   top: 0;
   left: 0;
@@ -97,7 +97,8 @@ a {
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 9999;
 }
-.modalPositionAndSizeConfig{
+
+.modalPositionAndSizeConfig {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -107,19 +108,24 @@ a {
   border-radius: 1rem;
   background: white;
 }
-.c-pointer:hover{
+
+.c-pointer:hover {
   cursor: pointer;
 }
+
 @media (max-width: 576px) {
   .show-sm {
     display: block !important;
   }
+
   .hide-sm {
     display: none;
   }
+
   .authLayout {
     /* min-height: 100vh; */
   }
+
   .h-100vh-sm {
     height: 100vh;
   }
@@ -129,12 +135,15 @@ a {
   .show-sm {
     display: block !important;
   }
+
   .hide-sm {
     display: none;
   }
+
   .authLayout {
     /* min-height: 100vh; */
   }
+
   .h-100vh-sm {
     height: 100vh;
   }
@@ -144,9 +153,11 @@ a {
   .show-md {
     display: block !important;
   }
+
   .hide-md {
     display: none;
   }
+
   .authLayout {
     /* style={{position:"absolute", top: "50%", left:"50%", transform:"translate(-50%, -50%)", minWidth:"500px"}} */
     position: absolute;
@@ -156,9 +167,11 @@ a {
     min-width: 500px;
     min-height: none;
   }
+
   .rounded-xl-md {
     border-radius: 2rem;
   }
+
   .h-100vh-sm {
     height: auto;
   }
@@ -168,9 +181,11 @@ a {
   .show-lg {
     display: block !important;
   }
+
   .hide-lg {
     display: none;
   }
+
   .rounded-xl-lg {
     border-radius: 2rem;
   }
@@ -180,6 +195,7 @@ a {
   .show-xl {
     display: block !important;
   }
+
   .hide-xl {
     display: none;
   }

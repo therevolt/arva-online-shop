@@ -5,6 +5,7 @@ import { getDetailProduct, getRecomendationProduct } from '../../../src/config/r
 import Link from "next/link"
 import { Rating, Navbar } from "../../../src/component/module";
 import { CardProduct } from "../../../src/component/base";
+import Rupiah from '../../../src/helper/rupiah'
 
 function ProductDetail() {
   const { query } = useRouter();
@@ -109,7 +110,7 @@ function ProductDetail() {
             </div>
             <p className={`text-muted f-16 ms-1 mt-2`}>Price</p>
             <h1 className="mt-n3">
-              <b>{`RP.${product.price}`}</b>
+              <b>{Rupiah(`RP.${product.price}`)}</b>
             </h1>
             <p className={`f-16 ms-1 mt-3`}>
               <b>Color</b>

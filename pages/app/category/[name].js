@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoryProduct } from "../../../src/config/redux/actions/product";
 import { CardProduct } from "../../../src/component/base";
+import Rupiah from '../../../src/helper/rupiah'
 
 function index() {
   const { query } = useRouter();
@@ -55,7 +56,7 @@ function index() {
                   key={item.id}
                   image={item.image[0]}
                   titleProduct={item.name}
-                  price={`Rp.${item.price}`}
+                  price={Rupiah(`Rp.${item.price}`)}
                   linkDetailProduct={`/app/product/${item.id}`}
                   seller={item.sellerName}
                 />

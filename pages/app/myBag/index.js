@@ -1,20 +1,58 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
+import { addCart, getCart } from '../../../src/config/redux/actions/carts'
+import Rupiah from '../../../src/helper/rupiah'
+
 function index() {
-  const [dataMyBag, setDataMyBag] = useState([
-    {
-      id: 1,
-      name: `Men's formal suit - Black`,
-      brand: `Zalora Cloth`,
-      price: `20000`,
-    },
-    {
-      id: 2,
-      name: `Men's formal suit - Black`,
-      brand: `Zalora Cloth`,
-      price: `30000`,
-    },
-  ]);
+  const dispatch = useDispatch();
+  const { carts } = useSelector((state) => state.carts);
+  // console.log(carts);
+  const [state, setState] = useState(null);
+  const [activeBtn, setActiveBtn] = useState(false);
+  // let [quantity, setQuantity] = useState(1);
+
+  const handleAdd = (item) => {
+    // const count = item.quantity + 1;
+    const data = {
+      productId: item.productId,
+      quantity: 1
+    };
+    dispatch(addCart(data)).then((res) => {
+      console.log(res);
+    })
+    // setQuantity(quantity + 1);
+    setActiveBtn(true);
+  };
+  const handleRemove = (item) => {
+    console.log(item.quantity);
+    if (item.quantity >= 1) {
+      const data = {
+        productId: item.productId,
+        quantity: -1
+      };
+
+      dispatch(addCart(data)).then((res) => {
+        console.log(res);
+      })
+    }
+    // quantity > 0 ? setQuantity(quantity - 1) : setQuantity(0);
+    setActiveBtn(false);
+  };
+
+
+
+  useEffect(() => {
+    dispatch(getCart())
+  }, [dispatch, carts]);
+
+  useEffect(() => {
+    if (carts) {
+      if (carts.length > 0) {
+        setState(carts)
+      }
+    }
+  }, [carts]);
+
 
   return (
     <div>
@@ -46,88 +84,73 @@ function index() {
             </div>
             {/* end selecet items */}
 
-            {dataMyBag.map((itm, idx) => {
-              const [activeBtn, setActiveBtn] = useState(false);
+            {state && state.map((item, index) => {
 
-              let [quantity, setQuantity] = useState(1);
-
-              const handleAdd = (itm) => {
-                setQuantity(quantity + 1);
-                setActiveBtn(true);
-              };
-              const handleRemove = (itm) => {
-                quantity > 0 ? setQuantity(quantity - 1) : setQuantity(0);
-                setActiveBtn(false);
-                console.log(itm);
-              };
               return (
-                <div className="card card-shadow border-0 mb-3" key={idx}>
-                  <div className="card-body">
-                    <div className="d-sm-block d-md-flex justify-content-between align-items-center">
-                      <input
-                        className="d-sm-inline-block form-check-input bg-danger border-0 rounded-0 shadow-none"
-                        type="checkbox"
-                        value=""
-                        id="flexCheckDefault"
-                      />
-                      <div className="d-none d-md-flex border-image ms-3">
-                        <img
-                          alt="item"
-                          src={require("../../../public/img/jas.png")}
-                          className="border-image"
+                <>
+                  <div className="card card-shadow border-0 mb-3" key={index}>
+                    <div className="card-body">
+                      <div className="d-sm-block d-md-flex justify-content-between align-items-center">
+                        <input
+                          className="d-sm-inline-block form-check-input bg-danger border-0 rounded-0 shadow-none"
+                          type="checkbox"
+                          value=""
+                          id="flexCheckDefault"
                         />
-                      </div>
-                      <div className="d-inline-block d-md-flex ms-3  me-auto">
-                        <div className=" d-flex flex-column ">
-                          <span className="fw-bold">{itm.name}</span>
-                          <span className="text-muted">{itm.brand}</span>
+                        <div className="d-none d-md-flex border-image ms-3">
+                          <img
+                            alt="item"
+                            src={item.imageProduct[0]}
+                            className="border-image"
+                          />
                         </div>
-                      </div>
-                      <div className="d-block d-md-none bg-danger py-2 rounded   text-center mt-2">
-                        <img
-                          alt="item"
-                          src={require("../../../public/img/jas.png")}
-                          className="border-image"
-                        />
-                      </div>
-                      <div
-                        className="d-inline-block mt-3  mt-sm-3 mt-md-0 ms-0 ms-sm-5 ms-md-0 float-start text-center"
-                        style={{ width: "180px" }}
-                      >
-                        <button
-                          className={`btn btn-grup radius-50 shadow-none  ${activeBtn ? "" : "btn-active"
-                            }`}
-                          onClick={(e) => handleRemove(itm)}
+                        <div className="d-inline-block d-md-flex ms-3  me-auto">
+                          <div className=" d-flex flex-column ">
+                            <span className="fw-bold d-inline-block text-truncate" style={{ maxWidth: "180px" }}>{item.nameProduct}</span>
+                            <span className="text-muted">{item.nameSeller}</span>
+                          </div>
+                        </div>
+                        <div
+                          className="d-inline-block mt-3  mt-sm-3 mt-md-0 ms-0 ms-sm-5 ms-md-0 float-start text-center"
+                          style={{ width: "180px" }}
                         >
-                          <span className="material-icons f-14 ">remove</span>
-                        </button>
-                        <p
-                          className="d-inline-block mx-3 fw-bold"
-                          style={{ width: "40px" }}
-                        >
-                          {quantity}
-                        </p>
-                        <button
-                          className={`btn btn-grup radius-50 text-center shadow-none  ${activeBtn ? "btn-active" : ""
-                            }`}
-                          onClick={(e) => handleAdd(itm)}
-                        >
-                          <span className="material-icons f-14 fw-bold">
-                            add
+                          <button
+                            className={`btn btn-grup radius-50 shadow-none  ${activeBtn ? "" : "btn-active"
+                              }`}
+                            onClick={(e) => handleRemove(item)}
+                          >
+                            <span className="material-icons f-14 ">remove</span>
+                          </button>
+                          <p
+                            className="d-inline-block mx-3 fw-bold"
+                            style={{ width: "40px" }}
+                          >
+                            {item.quantity}
+                          </p>
+                          <button
+                            className={`btn btn-grup radius-50 text-center shadow-none  ${activeBtn ? "btn-active" : ""
+                              }`}
+                            onClick={(e) => handleAdd(item)}
+                          >
+                            <span className="material-icons f-14 fw-bold">
+                              add
                           </span>
-                        </button>
-                      </div>
-                      <div
-                        className="d-inline-block mt-3  mt-sm-3 mt-md-0 me-0 me-sm-5 me-md-0  ms-md-5 fw-bold f-18 float-end"
-                        style={{ width: "120px" }}
-                      >
-                        Rp {itm.price * quantity}
+                          </button>
+                        </div>
+                        <div
+                          className="d-inline-block mt-3  mt-sm-3 mt-md-0 me-0 me-sm-5 me-md-0  ms-md-5 fw-bold f-18 float-end"
+                          style={{ width: "120px" }}
+                        >
+                          {Rupiah(`Rp ${item.totalPrice}`)}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
+                </>
+              )
             })}
+
+
           </div>
 
           <div className="col-12 col-md-12 col-lg-4 ">
@@ -173,7 +196,7 @@ function index() {
           border-radius: 8px !important;
           width: 69px;
           height: 69px;
-          object-fit: cover;
+          object-fit: contain;
         }
         .radius-50 {
           border-radius: 50%;

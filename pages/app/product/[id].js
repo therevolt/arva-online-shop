@@ -37,7 +37,7 @@ function ProductDetail() {
 
   const handleAddToBag = () => {
     const data = {
-      productId: idCategory,
+      productId: idProduct,
       quantity: count
     };
     dispatch(addCart(data)).then((res) => {
@@ -56,7 +56,7 @@ function ProductDetail() {
       router.push("/auth/login");
     } else {
       const data = {
-        productId: idCategory,
+        productId: idProduct,
         quantity: count
       };
       console.log(data);

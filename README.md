@@ -44,6 +44,37 @@ npm run dev
 npm run build
 ```
 
+<h3 align="center">Fitur Tuku App</h3>
+---
+## Register Page
+
+![register](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png)
+
+### Login Page
+
+![login](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png)
+
+### Reset Password
+
+![forgot-password](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png?raw=true)
+
+### Home Page
+
+![home](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-2021-05-10-02_08_00.png)
+
+### Category Page - Jacket
+
+![category](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png)
+
+### Product Details
+
+![product-details](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-product-7-2021-05-10-02_25_06.png)
+
+### Search product
+
+![mybag](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png)
+
+
 ## Backend
 * [`Backend ARVA ONLINE SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
 

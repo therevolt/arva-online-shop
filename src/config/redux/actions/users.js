@@ -63,7 +63,7 @@ export const login = (data) => (dispatch) => {
         axios
             .post(`${Url}/v1/users/login`, data)
             .then((res) => {
-                dispatch({ type: "LOGIN", payload: res.data.data });
+                dispatch({ type: "LOGIN", payload: res.data.data, role: res.data.data.role, status: res.data.status });
                 // localStorage.setItem("id", res.data.data.id)
                 localStorage.setItem("token", res.data.data.token);
                 resolve(res.data.message);

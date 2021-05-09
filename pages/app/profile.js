@@ -1,9 +1,16 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Image from 'next/image'
 import Modal from 'react-modal'
 import {useSelector} from 'react-redux'
+import router from 'next/router'
 export default function Profil() {
     const { myAcount, shippingAddress, myOrder } = useSelector(state=>state.Helpers)
+    const { user } = useSelector(state=>state.user)
+    useEffect(()=>{
+        if(user.role === "seller"){
+            router.push("/app/profile-store")
+        }
+    },[user])
     const [state, setState] = useState({
         toggleModal: false,
         myOrder:{

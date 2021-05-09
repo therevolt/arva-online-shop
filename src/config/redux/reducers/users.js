@@ -31,9 +31,10 @@ const userReducer = (state = initialState, action) => {
         case "LOGIN":
             return {
                 ...state,
+                status: action.status,
                 user: {
                     ...state.user,
-                    ...action.payload,
+                    ...action.payload
                 },
                 role: action.role,
             };
@@ -53,7 +54,8 @@ const userReducer = (state = initialState, action) => {
                 loading: false,
                 error: action.payload,
             };
-
+        case "REQUEST_LOGOUT":
+            return state;
         default:
             return state;
     }

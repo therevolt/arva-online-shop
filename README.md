@@ -44,7 +44,7 @@ npm run dev
 npm run build
 ```
 
-##ARVA ONLINE SHOP
+## ARVA ONLINE SHOP
 
 ### Register Page
 

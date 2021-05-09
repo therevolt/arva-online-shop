@@ -37,6 +37,7 @@ const userReducer = (state = initialState, action) => {
           ...state.user,
           ...action.payload,
         },
+        status: action.status,
         role: action.role,
       };
     case "RESET_REQUEST":

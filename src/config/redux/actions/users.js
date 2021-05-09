@@ -117,7 +117,7 @@ export const login = (data) => (dispatch) => {
           type: "LOGIN",
           payload: res.data.data,
           role: res.data.data.role,
-          status: res.data.status,
+          status: true,
         });
         // localStorage.setItem("id", res.data.data.id)
         localStorage.setItem("token", res.data.data.token);

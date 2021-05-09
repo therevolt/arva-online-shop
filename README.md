@@ -8,7 +8,7 @@
 </p>
 
 
-## Dependencies
+## Dependensi
 - [NextJS](https://nextjs.org/)
 - [Axios](https://www.npmjs.com/package/axios)
 - [bootstrap](https://www.npmjs.com/package/bootstrap)
@@ -19,10 +19,8 @@
 - [redux-logger](https://www.npmjs.com/package/redux-logger)
 - [redux-thunk](https://www.npmjs.com/search?q=redux-thunk)
 
----
 
-
-## Project setup
+## Setting Project
 
 - Silahkan buka terminal pada VScode dengan cara tekan tombol
 ```
@@ -41,13 +39,13 @@ npm install atau npm i
 npm run dev
 ```
 
-### Compiles and minifies for production
+### Kompilasi dan Produksi
 ```
 npm run build
 ```
 
 ## Backend
-* [`ARVA ONLINE SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
+* [`Backend ARVA ONLINE SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
 
 ## Deploy
 * [`COMING SOON`]

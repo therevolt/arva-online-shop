@@ -11,13 +11,13 @@
 ## Dependensi
 - [NextJS](https://nextjs.org/)
 - [Axios](https://www.npmjs.com/package/axios)
-- [bootstrap](https://www.npmjs.com/package/bootstrap)
-- [sweetalert2](https://www.npmjs.com/package/sweetalert2)
+- [Bootstrap](https://www.npmjs.com/package/bootstrap)
+- [Sweetalert2](https://www.npmjs.com/package/sweetalert2)
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
-- [redux](https://www.npmjs.com/package/redux)
-- [react-redux](https://www.npmjs.com/package/react-redux)
-- [redux-logger](https://www.npmjs.com/package/redux-logger)
-- [redux-thunk](https://www.npmjs.com/search?q=redux-thunk)
+- [Redux](https://www.npmjs.com/package/redux)
+- [React-redux](https://www.npmjs.com/package/react-redux)
+- [Redux-logger](https://www.npmjs.com/package/redux-logger)
+- [Redux-thunk](https://www.npmjs.com/search?q=redux-thunk)
 
 
 ## Setting Project

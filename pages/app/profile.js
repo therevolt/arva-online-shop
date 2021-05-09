@@ -4,6 +4,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import Swal from "sweetalert2";
 import Modal from "react-modal";
+import toRupiah from "../../src/helper/rupiah";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getProfile,
@@ -945,17 +946,17 @@ export default function Profil() {
                   </div>
                 ) : (
                   <div
-                    className="d-flex flex-column align-items-center justify-content-center bg-white  border-0 rounded"
+                    className=" bg-white  border-0 rounded"
                     style={{
-                      height: "550px",
-                      paddingTop: "560px",
+                      height: "510px",
+
                       overflowY: "auto",
                     }}
                   >
                     {localHistoryOrder.map((data, idx) => {
                       return (
                         <div
-                          className="p-3 border border-danger rounded my-1 w-100"
+                          className="p-3 border border-danger my-2 rounded w-100"
                           key={idx}
                         >
                           <h5 className="fw-bold">
@@ -965,9 +966,12 @@ export default function Profil() {
                             <span>Product Name : {data.nameProduct}</span>
                             <br /> <span>Quantity : {data.quantity}</span>
                             <br />
-                            <span>Total Payment : Rp{data.totalPayment}</span>
+                            <span>
+                              Total Payment : {toRupiah(data.totalPayment)}
+                            </span>
+                            <br />{" "}
+                            <span>Virtual Account : {data.vaNumber}</span>
                             <br /> <span>Status : {data.status}</span>
-                            <br />
                           </p>
                         </div>
                       );

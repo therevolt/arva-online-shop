@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { refresPage } from "../../config/redux/actions/users";
+
 export default function Navbar() {
   const { status, user } = useSelector((state) => state.user);
   console.log(status);
@@ -50,6 +51,7 @@ export default function Navbar() {
     localStorage.removeItem("token");
     router.push("/auth/login");
   };
+
   return (
     <>
       {/* Navbar Mobile after login */}
@@ -86,7 +88,7 @@ export default function Navbar() {
               placeholder="search"
               onKeyUp={(event) => handleSearch(event)}
             />
-            <button className="material-icons border-0 bg-transparent color-gray">
+            <button className="material-icons border-0 bg-transparent color-gray ">
               search
             </button>
           </div>
@@ -325,6 +327,22 @@ export default function Navbar() {
                 </button>
               </div>
             </div>
+            <div className="col">
+              <div className="d-flex justify-content-center align-items-center ">
+                <button
+                  className="material-icons border-0 bg-transparent mt-2 color-gray filter"
+                  style={{
+                    width: "auto",
+                    height: "30px",
+                    fontSize: "28px",
+                    cursor: "pointer",
+                  }}
+                >
+                  filter_alt
+                </button>
+              </div>
+            </div>
+
             {/* ini komponen belum login */}
             <div
               className={
@@ -416,6 +434,13 @@ export default function Navbar() {
         onClick={toggleCloseNavbarMobile}
       ></div>
       {/*  */}
+      <style jsx>
+        {`
+          .filter:hover {
+            color: #f3456f !important;
+          }
+        `}
+      </style>
     </>
   );
 }

@@ -4,6 +4,7 @@ import { addCart, deleteCart, getCart } from '../../../src/config/redux/actions/
 import Rupiah from '../../../src/helper/rupiah'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/router'
+import axiosApiInstance from '../../../src/helper/axios';
 
 function index() {
   const router = useRouter();
@@ -16,22 +17,26 @@ function index() {
   const [dataSelected, setDataSelected] = useState([])
 
   const handleSelected = (item) => {
-    // let data = [];
     setDataSelected([...dataSelected, item])
-    console.log(item);
-    console.log("clicked");
-    // data.push( item)
-
-    // setisSelected(item)
-    // console.log(isSelected.includes({ totalPrice: item.totalPrice }));
+    const newId = isSelected.push(String(item.id))
+    // const uniqueId = [...new Set(isSelected)];
+    // console.log(uniqueId);
   };
 
   const handleDelete = () => {
-    // console.log(isSelected);
-    alert(isSelected)
-    // dispatch(deleteCart(5)).then((res) => {
+    const uniqueId = [...new Set(isSelected)];
+    console.log(uniqueId);
+    const data = {
+      cartId: JSON.stringify(uniqueId)
+    }
+    console.log(data);
+    axiosApiInstance.post(`${process.env.api}/v1/cart/delete`, data)
+    // dispatch(deleteCart(data)).then((res) => {
     //   Swal.fire("Success", res, "success");
     // }).catch((err) => {
+    //   console.log(err);
+    // })
+    // .catch((err) => {
     //   Swal.fire("Something Error!", err, "error");
     // });
   }
@@ -51,9 +56,9 @@ function index() {
     }
   };
 
+
   const handleRemove = (item) => {
     if (item.quantity === 0) {
-      item.quantity(0)
       setActiveBtn(false)
     } else {
       if (item.quantity >= 1) {

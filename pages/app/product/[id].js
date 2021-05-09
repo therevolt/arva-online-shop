@@ -104,13 +104,6 @@ function ProductDetail() {
             totalPrice: count * product.price
           };
           dispatch({ type: "ADD_CART", payload: [data] })
-          // Swal.fire({
-          //   title: "Success!",
-          //   text: res,
-          //   icon: "success",
-          //   confirmButtonText: "Ok",
-          //   confirmButtonColor: "#ffba33",
-          // })
           router.push("/app/checkout")
         } else {
           setCount(product.stock)

@@ -1,5 +1,5 @@
 const initialState = {
-    order: [],
+    order: {},
     loading: false,
     error: "",
 };
@@ -9,7 +9,7 @@ const orderReducer = (state = initialState, action) => {
         case "MAKE_ORDER":
             return {
                 ...state,
-                carts: action.payload,
+                order: action.payload,
             };
 
         default:

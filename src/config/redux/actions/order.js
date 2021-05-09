@@ -13,7 +13,8 @@ export const makeOrder = (data) => (dispatch) => {
                 resolve(res.data.message);
             })
             .catch((err) => {
-                reject(new Error(err.response.data.message));
+                console.log(err);
+                // reject(new Error(err.response));
             });
         // }
     });

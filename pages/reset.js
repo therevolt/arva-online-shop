@@ -18,11 +18,13 @@ export default function Reset() {
     const token = query.token
 
     useEffect(() => {
-        if (localStorage.getItem("token")) {
-            router.push("/");
-        } else {
-            if (!token) {
-                router.push("/auth/login");
+        if (token) {
+            if (localStorage.getItem("token")) {
+                router.push("/app");
+            } else {
+                if (!token) {
+                    router.push("/auth/login");
+                }
             }
         }
     }, []);

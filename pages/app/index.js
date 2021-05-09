@@ -109,7 +109,7 @@ export default function App() {
                         <div className="d-flex text-white w-100 mx-3 rounded-md" style={{ background: "URL(/img/carouselUp.png)", backgroundRepeat: "no-repeat", backgroundSize: "cover", height: "270px" }}><p className="mx-auto fs-2 my-auto">Trends in 2021</p></div>
                         <div className="d-flex text-white w-100 mx-3 rounded-md" style={{ background: "URL(/img/blackEdition.png)", backgroundSize: "cover", height: "270px" }}><p className="mx-auto fs-2 my-auto">Black Edition</p></div>
 
-                        <div className="d-flex text-white w-100 mx-3 rounded-md" style={{ background: "red", height: "270px" }}><p className="mx-auto fs-2 my-auto">2</p></div>
+                        <div className="d-flex text-white w-100 mx-3 rounded-md" style={{ background: "red", height: "270px" }}><p className="mx-auto fs-2 my-auto">Limited Edition</p></div>
                     </Carousel>
                 </div>
             </div>

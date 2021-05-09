@@ -35,13 +35,6 @@ export default function profil_store() {
             orderCancel: false
         },
         youWantToEdit: false,
-        dataProfil: {
-            storeName: "loading...",
-            email: "loading...",
-            phoneNumber: "0",
-            storeDesc: "loading...",
-            avatar: ""
-        },
         dataImg: "",
         dataProduct: {
             allItem: [],
@@ -49,26 +42,56 @@ export default function profil_store() {
             soldOut: [],
             archived: []
         },
-        isSortedByProductName:true,
-        isSortedByPrice:false,
-        isSortedByStock:false
+        isSortedByProductName: true,
+        isSortedByPrice: false,
+        isSortedByStock: false,
+        createProduct: {
+            name: "",
+            price: "",
+            stock: "",
+            desc: "",
+            img: "",
+            thumbnail: "",
+            condition: {
+                baru: true,
+                bekas: false
+            }
+        },
+    })
+    const [dataOrder, setDataOrder] = useState({
+        dataHistoryOrder: []
+    })
+    const [dataProfil, setDataProfil] = useState({
+        storeName: "loading...",
+        email: "loading...",
+        phoneNumber: "0",
+        storeDesc: "loading...",
+        avatar: ""
     })
     useEffect(() => {
-        setState({
-            ...state,
-            dataProfil: {
-                storeName: user.nameStore,
-                email: user.email,
-                phoneNumber: user.phone,
-                storeDesc: user.descriptionStore,
-                avatar: user.avatar
-            }
+        setDataProfil({
+            storeName: user.nameStore,
+            email: user.email,
+            phoneNumber: user.phone,
+            storeDesc: user.descriptionStore,
+            avatar: user.avatar
         })
     }, [user])
     useEffect(() => {
         axiosApiInstance.get(`${Url}/v1/product/product`)
             .then(res => {
                 setState({ ...state, dataProduct: { ...state.dataProduct, allItem: res.data.data, allItemBackup: res.data.data } })
+            })
+            .catch(err => {
+                console.log(err.response);
+            })
+    }, [])
+    useEffect(() => {
+        axiosApiInstance.get(`${Url}/v1/order/get`)
+            .then(res => {
+                setDataOrder({
+                    dataHistoryOrder: res.data.data
+                })
             })
             .catch(err => {
                 console.log(err.response);
@@ -100,25 +123,35 @@ export default function profil_store() {
         if (event.target.files && event.target.files[0]) {
             let reader = new FileReader();
             reader.onload = (e) => {
-                setState({ ...state, dataProfil: { ...state.dataProfil, avatar: e.target.result }, dataImg: event.target.files[0] });
+                setState({ ...state, dataImg: event.target.files[0] });
+                setDataProfil({ ...state, avatar: e.target.result })
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+    const addProductImage = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            let reader = new FileReader();
+            reader.onload = (e) => {
+                setState({ ...state, createProduct: { ...state.createProduct, thumbnail: e.target.result, img: event.target.files[0] } });
             };
             reader.readAsDataURL(event.target.files[0]);
         }
     }
     const upadateProfil = () => {
         const data = {
-            nameStore: state.dataProfil.storeName,
-            email: state.dataProfil.email,
-            phone: state.dataProfil.phoneNumber,
-            descriptionStore: state.dataProfil.storeDesc
+            nameStore: dataProfil.storeName,
+            email: dataProfil.email,
+            phone: dataProfil.phoneNumber,
+            descriptionStore: dataProfil.storeDesc
         }
         const form = new FormData()
-        form.append("nameStore", state.dataProfil.storeName)
-        form.append("email", state.dataProfil.email)
-        form.append("phone", state.dataProfil.phoneNumber)
-        form.append("descriptionStore", state.dataProfil.storeDesc)
+        form.append("nameStore", dataProfil.storeName)
+        form.append("email", dataProfil.email)
+        form.append("phone", dataProfil.phoneNumber)
+        form.append("descriptionStore", dataProfil.storeDesc)
         form.append("avatar", state.dataImg)
-        if (state.dataProfil.avatar === user.avatar) {
+        if (dataProfil.avatar === user.avatar) {
             dispatch(requestUpdateProfile(data))
                 .then(res => {
                     swal("success", res, "success")
@@ -146,7 +179,7 @@ export default function profil_store() {
         setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result } })
     }
     const sortByNameProduct = () => {
-        if(state.isSortedByProductName){
+        if (state.isSortedByProductName) {
             const result = state.dataProduct.allItem.sort((a, b) => {
                 const nameA = a.name.toUpperCase();
                 const nameB = b.name.toUpperCase();
@@ -158,8 +191,8 @@ export default function profil_store() {
                 }
                 return comparison;
             })
-            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByProductName:false })
-        }else{
+            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByProductName: false })
+        } else {
             const result = state.dataProduct.allItem.sort((a, b) => {
                 const nameA = a.name.toUpperCase();
                 const nameB = b.name.toUpperCase();
@@ -171,11 +204,11 @@ export default function profil_store() {
                 }
                 return comparison;
             })
-            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByProductName:true })
+            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByProductName: true })
         }
     }
     const sortByPrice = () => {
-        if(state.isSortedByPrice){
+        if (state.isSortedByPrice) {
             const result = state.dataProduct.allItem.sort((a, b) => {
                 const priceA = a.price;
                 const priceB = b.price;
@@ -187,8 +220,8 @@ export default function profil_store() {
                 }
                 return comparison;
             })
-            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByPrice:false })
-        }else{
+            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByPrice: false })
+        } else {
             const result = state.dataProduct.allItem.sort((a, b) => {
                 const priceA = a.price;
                 const priceB = b.price;
@@ -200,11 +233,11 @@ export default function profil_store() {
                 }
                 return comparison;
             })
-            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByPrice:true })
+            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByPrice: true })
         }
     }
     const sortByStock = () => {
-        if(state.isSortedByStock){
+        if (state.isSortedByStock) {
             const result = state.dataProduct.allItem.sort((a, b) => {
                 const stockA = a.stock;
                 const stockB = b.stock;
@@ -216,8 +249,8 @@ export default function profil_store() {
                 }
                 return comparison;
             })
-            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByStock:false })
-        }else{
+            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByStock: false })
+        } else {
             const result = state.dataProduct.allItem.sort((a, b) => {
                 const stockA = a.stock;
                 const stockB = b.stock;
@@ -229,8 +262,22 @@ export default function profil_store() {
                 }
                 return comparison;
             })
-            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByStock:true })
+            setState({ ...state, dataProduct: { ...state.dataProduct, allItem: result }, isSortedByStock: true })
         }
+    }
+    const addProduct = () => {
+        const form = new FormData()
+        form.append("name", state.createProduct.name)
+        form.append("price", state.createProduct.price)
+        form.append("stock", state.createProduct.stock)
+        form.append("image", state.createProduct.img)
+        axiosApiInstance.post(`${Url}/v1/product`, form)
+            .then(res => {
+                swal("success", res.data.message, "success")
+            })
+            .catch(err => {
+                console.log(err.response);
+            })
     }
     return (
         <div style={{ background: "#F5F5F5", minHeight: "100vh", paddingTop: "10rem" }}>
@@ -290,6 +337,9 @@ export default function profil_store() {
                                             <p className="m-0 me-3">Stock</p>
                                             <span className="material-icons">sort</span>
                                         </div>
+                                        <div className="px-4 py-3" >
+                                            <span>action</span>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -305,18 +355,45 @@ export default function profil_store() {
                                             rupiah += separator + ribuan.join('.');
                                         }
                                         return <div className="d-flex  hover-bg-gray border-top  justify-content-between w-100" style={{ background: "#F6F6F6" }} >
-                                            <div className="py-2 ps-4" style={{ width: "60%" }}>
-                                                <span className="d-inline-block text-truncate" style={{ maxWidth: "200px" }} >{item.name}</span>
+                                            <div className="py-2 ps-4 my-auto" style={{ width: "50%" }}>
+                                                <span className="d-inline-block text-truncate" style={{ maxWidth: "250px" }} >{item.name}</span>
                                             </div>
-                                            <div className="d-flex pe-4" style={{ width: "40%" }}>
-                                                <p className="py-2 m-0 ms-auto">Rp. {rupiah}</p>
-                                                <p className="py-2 m-0 ms-auto">{item.stock}</p>
+                                            <div className="d-flex pe-4" style={{ width: "50%" }}>
+                                                <p className="py-2 m-0 ms-auto my-auto px-4">Rp. {rupiah}</p>
+                                                <p className="py-2 m-0 ms-auto my-auto px-4">{item.stock}</p>
+                                                <div className="my-auto">
+                                                    <button className="border-danger text-danger rounded-pill px-2 bg-transparent" onClick={() => {
+                                                        swal({
+                                                            title: "anda yakin?",
+                                                            text: "data akan dihapus!!!",
+                                                            icon: "warning",
+                                                            dangerMode: true,
+                                                        })
+                                                            .then(willDelete => {
+                                                                if (willDelete) {
+                                                                    axiosApiInstance.delete(`${Url}/v1/product?id=${item.id}`)
+                                                                        .then(err => {
+                                                                            axiosApiInstance.get(`${Url}/v1/product/product`)
+                                                                                .then(res => {
+                                                                                    setState({ ...state, dataProduct: { ...state.dataProduct, allItem: res.data.data, allItemBackup: res.data.data } })
+                                                                                })
+                                                                                .catch(err => {
+                                                                                    console.log(err.response);
+                                                                                })
+                                                                        })
+                                                                    swal("Deleted!", "delete berhasil", "success");
+                                                                }
+                                                            });
+                                                    }} >delete</button>
+                                                </div>
                                             </div>
                                         </div>
                                     })}
-                                    <div className="d-flex justify-content-center" style={{ height: "300px" }}>
-                                        <div className={state.dataProduct.allItem.length === 0 ? "my-auto" : "hide"} style={{ width: "224px", height: "177px" }}>
-                                            <Image src="/img/data_null.png" width={224} height={177} layout="responsive" />
+                                    <div className={state.dataProduct.allItem.length === 0 ? "show" : "hide"}>
+                                        <div className="d-flex justify-content-center" style={{ height: "300px" }}>
+                                            <div className="my-auto" style={{ width: "224px", height: "177px" }}>
+                                                <Image src="/img/data_null.png" width={224} height={177} layout="responsive" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -395,19 +472,19 @@ export default function profil_store() {
                                     </div>
                                     <div className="w-100 d-flex justify-content-end mb-3">
                                         <label htmlFor="input" className="my-auto">Store Name</label>
-                                        <input disabled={state.youWantToEdit === true ? false : true} type="text" placeholder="write your name..." className="ms-3 p-2 border rounded" style={{ outline: "none", width: "70%" }} value={state.dataProfil.storeName} onChange={(e) => { setState({ ...state, dataProfil: { ...state.dataProfil, storeName: e.target.value } }) }} />
+                                        <input disabled={state.youWantToEdit === true ? false : true} type="text" placeholder="write your name..." className="ms-3 p-2 border rounded" style={{ outline: "none", width: "70%" }} value={dataProfil.storeName} onChange={(e) => { setDataProfil({ ...dataProfil, storeName: e.target.value }) }} />
                                     </div>
                                     <div className="w-100 d-flex justify-content-end mb-3">
                                         <label htmlFor="input" className="my-auto">Email</label>
-                                        <input disabled={state.youWantToEdit === true ? false : true} type="text" placeholder="write your Email..." className="ms-3 p-2 border rounded" style={{ outline: "none", width: "70%" }} value={state.dataProfil.email} onChange={(e) => { setState({ ...state, dataProfil: { ...state.dataProfil, email: e.target.value } }) }} />
+                                        <input disabled={state.youWantToEdit === true ? false : true} type="text" placeholder="write your Email..." className="ms-3 p-2 border rounded" style={{ outline: "none", width: "70%" }} value={dataProfil.email} onChange={(e) => { setDataProfil({ ...dataProfil, email: e.target.value }) }} />
                                     </div>
                                     <div className="w-100 d-flex justify-content-end mb-3">
                                         <label htmlFor="input" className="my-auto">Phone Number</label>
-                                        <input disabled={state.youWantToEdit === true ? false : true} type="number" placeholder="write your password..." className="ms-3 p-2 border rounded" style={{ outline: "none", width: "70%" }} value={state.dataProfil.phoneNumber} onChange={(e) => { setState({ ...state, dataProfil: { ...state.dataProfil, phoneNumber: e.target.value } }) }} />
+                                        <input disabled={state.youWantToEdit === true ? false : true} type="number" placeholder="write your password..." className="ms-3 p-2 border rounded" style={{ outline: "none", width: "70%" }} value={dataProfil.phoneNumber} onChange={(e) => { setDataProfil({ ...dataProfil, phoneNumber: e.target.value }) }} />
                                     </div>
                                     <div className="w-100 d-flex justify-content-end mb-3">
                                         <label htmlFor="input" className="me-4">Store Description</label>
-                                        <textarea disabled={state.youWantToEdit === true ? false : true} rows={5} className="ms-3 border" style={{ outline: "none", width: "70%" }} value={user.descriptionStore === null ? "-" : state.dataProfil.storeDesc} onChange={(e) => { setState({ ...state, dataProfil: { ...state.dataProfil, storeDesc: e.target.value } }) }} />
+                                        <textarea disabled={state.youWantToEdit === true ? false : true} rows={5} className="ms-3 border" style={{ outline: "none", width: "70%" }} value={dataProfil.storeDesc} onChange={(e) => { setDataProfil({ ...dataProfil, storeDesc: e.target.value }) }} />
                                     </div>
                                     <div className={state.youWantToEdit === true ? "w-100 d-flex justify-content-end mb-3" : "hide"}>
                                         <div className="d-flex justify-content-start" style={{ width: "70%" }}>
@@ -417,7 +494,7 @@ export default function profil_store() {
                                 </div>
                                 <div className="col-12 col-md-5 my-auto">
                                     <div className="rounded-circle overflow-hidden mx-auto d-flex justify-content-center" style={{ width: "100px", height: "100px" }}>
-                                        <img src={state.dataProfil.avatar} className="w-100 align-self-center" />
+                                        <img src={dataProfil.avatar} className="w-100 align-self-center" />
                                     </div>
                                     <div className={state.youWantToEdit === true ? "d-flex justify-content-center" : "hide"}>
                                         <button className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden position-relative my-4">
@@ -438,7 +515,7 @@ export default function profil_store() {
                             <div className="bg-white border p-4 rounded-bottom">
                                 <label htmlFor="input" className="mb-3">Name of goods</label>
                                 <div>
-                                    <input type="text" className="p-2 border rounded w-100-sm w-50-lg" style={{ outline: "none" }} />
+                                    <input type="text" className="p-2 border rounded w-100-sm w-50-lg" style={{ outline: "none" }} onChange={(e) => { setState({ ...state, createProduct: { ...state.createProduct, name: e.target.value } }) }} />
                                 </div>
                             </div>
                         </div>
@@ -450,30 +527,52 @@ export default function profil_store() {
                                 <div className="mb-3">
                                     <label htmlFor="input" className="mb-3">Unit price</label>
                                     <div>
-                                        <input type="text" className="p-2 border rounded w-100-sm w-50-lg" style={{ outline: "none" }} />
+                                        <input type="text" className="p-2 border rounded w-100-sm w-50-lg" style={{ outline: "none" }} onChange={(e) => { setState({ ...state, createProduct: { ...state.createProduct, price: e.target.value } }) }} />
                                     </div>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="input" className="mb-3">stock</label>
                                     <div className="d-flex">
                                         <div className="d-flex border rounded w-100-sm w-50-lg me-4">
-                                            <input type="text" className="w-100 border-0 p-2" style={{ outline: "none" }} />
+                                            <input type="text" className="w-100 border-0 p-2" style={{ outline: "none" }} onChange={(e) => { setState({ ...state, createProduct: { ...state.createProduct, stock: e.target.value } }) }} />
                                             <p className="m-0 p-2">buah</p>
                                         </div>
                                         <div className="d-flex me-4">
-                                            <input type="radio" className="me-2 my-auto" />
+                                            <input type="radio" className="me-2 my-auto" checked={state.createProduct.condition.baru} onChange={() => {
+                                                setState({
+                                                    ...state,
+                                                    createProduct: {
+                                                        ...state.createProduct,
+                                                        condition: {
+                                                            baru: true,
+                                                            bekas: false
+                                                        }
+                                                    }
+                                                })
+                                            }} />
                                             <label className="my-auto">Baru</label>
                                         </div>
                                         <div className="d-flex">
-                                            <input type="radio" className="me-2 my-auto" />
-                                            <label className="my-auto" >bekas</label>
+                                            <input type="radio" className="me-2 my-auto" checked={state.createProduct.condition.bekas} onChange={() => {
+                                                setState({
+                                                    ...state,
+                                                    createProduct: {
+                                                        ...state.createProduct,
+                                                        condition: {
+                                                            baru: false,
+                                                            bekas: true
+                                                        }
+                                                    }
+                                                })
+                                            }} />
+                                            <label className="my-auto"  >bekas</label>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="input" className="mb-3">Description</label>
                                     <div className="d-flex border rounded w-100-sm w-50-lg">
-                                        <textarea rows={5} className="border w-100" style={{ outline: "none" }} />
+                                        <textarea rows={5} className="border w-100" style={{ outline: "none" }} onChange={(e) => { setState({ ...state, createProduct: { ...state.createProduct, desc: e.target.value } }) }} />
                                     </div>
                                 </div>
                             </div>
@@ -485,25 +584,13 @@ export default function profil_store() {
                                     <div className="px-4" style={{ border: "3px dashed #D4D4D4" }}>
                                         <div className="d-flex justify-content-between py-4 border-bottom">
                                             <div className="rounded overflow-hidden" style={{ width: "120px", height: "120px", background: "#c4c0c0" }}>
-                                                <Image src="/img/default-thumbnail.jpg" width={640} height={480} layout="responsive" />
-                                            </div>
-                                            <div className="rounded overflow-hidden" style={{ width: "120px", height: "120px", background: "#c4c0c0" }}>
-                                                <Image src="/img/default-thumbnail.jpg" width={640} height={480} layout="responsive" />
-                                            </div>
-                                            <div className="rounded overflow-hidden" style={{ width: "120px", height: "120px", background: "#c4c0c0" }}>
-                                                <Image src="/img/default-thumbnail.jpg" width={640} height={480} layout="responsive" />
-                                            </div>
-                                            <div className="rounded overflow-hidden" style={{ width: "120px", height: "120px", background: "#c4c0c0" }}>
-                                                <Image src="/img/default-thumbnail.jpg" width={640} height={480} layout="responsive" />
-                                            </div>
-                                            <div className="rounded overflow-hidden" style={{ width: "120px", height: "120px", background: "#c4c0c0" }}>
-                                                <Image src="/img/default-thumbnail.jpg" width={640} height={480} layout="responsive" />
+                                                <img src={state.createProduct.thumbnail} width={640} height={480} layout="responsive" />
                                             </div>
                                         </div>
                                         <div className="d-flex justify-content-center my-4">
-                                            <button className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden position-relative">
+                                            <button className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden position-relative" onChange={addProductImage} >
                                                 Select Image
-                                            <input type="file" className="position-absolute m-0" style={{ left: "-100px", top: 5, opacity: 0, cursor: "pointer" }} />
+                                                <input type="file" className="position-absolute m-0" style={{ left: "-100px", top: 5, opacity: 0, cursor: "pointer" }} />
                                             </button>
                                         </div>
                                     </div>
@@ -511,7 +598,7 @@ export default function profil_store() {
                             </div>
                         </div>
                         <div className="w-100 d-flex justify-content-end my-5">
-                            <button className="bg-danger text-white border-0 rounded-pill px-5 py-2 me-3">Save</button>
+                            <button className="bg-danger text-white border-0 rounded-pill px-5 py-2 me-3" onClick={addProduct}>Save</button>
                         </div>
                     </div>
                     {/* my order */}
@@ -525,19 +612,6 @@ export default function profil_store() {
                                             ...state.myOrder,
                                             allItem: true,
                                             noPaid: false,
-                                            package: false,
-                                            send: false,
-                                            completed: false,
-                                            orderCancel: false
-                                        }
-                                    })
-                                }} >All items</button>
-                                <button className={state.myOrder.noPaid == true ? "bg-transparent me-4 hover-danger border-0 fw-bold text-danger" : "bg-transparent me-4 hover-danger border-0 fw-bold"} onClick={() => {
-                                    setState({
-                                        ...state, myOrder: {
-                                            ...state.myOrder,
-                                            allItem: false,
-                                            noPaid: true,
                                             package: false,
                                             send: false,
                                             completed: false,
@@ -601,12 +675,91 @@ export default function profil_store() {
                             <div className="w-100 h-100">
                                 <div className="d-flex rounded-pill border p-2 mb-4" style={{ width: "300px" }}>
                                     <span className="material-icons color-gray me-2">search</span>
-                                    <input type="text" className="border-0 w-100 my-auto" style={{ outline: "none" }} placeholder="search..." />
+                                    <input type="text" className="border-0 w-100 my-auto" style={{ outline: "none" }} placeholder="search..." disabled />
                                 </div>
-                                <div className="d-flex justify-content-center">
-                                    <div style={{ width: "200px", height: "200px" }} className="my-5">
-                                        <Image src="/img/order_null.png" width={184} height={190} layout="responsive" />
+                                <div className="w-100 d-flex justify-content-between" style={{ background: "#F6F6F6" }}>
+                                    <div className="c-pointer px-4 py-3 d-flex h-100 hover-bg-gray" onClick={sortByNameProduct} >
+                                        <p className="m-0 me-3">Product name</p>
+                                        <span className="material-icons">sort</span>
                                     </div>
+                                    <div className="d-flex">
+                                        <div className="c-pointer px-4 py-3 d-flex h-100 hover-bg-gray" onClick={sortByPrice}>
+                                            <p className="m-0 me-3">status</p>
+                                            <span className="material-icons">sort</span>
+                                        </div>
+                                        <div className="c-pointer px-4 py-3 d-flex h-100 hover-bg-gray" onClick={sortByStock} >
+                                            <p className="m-0 me-3">Stock</p>
+                                            <span className="material-icons">sort</span>
+                                        </div>
+                                        <div className="px-4 py-3" >
+                                            <span>action</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={state.myOrder.allItem === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
+                                    {dataOrder.dataHistoryOrder.map(item => {
+                                        return <div className="d-flex  hover-bg-gray border-top  justify-content-between w-100" style={{ background: "#F6F6F6" }} >
+                                            <div className="py-2 ps-4 my-auto" style={{ width: "60%" }}>
+                                                <span className="d-inline-block text-truncate" style={{ maxWidth: "250px" }} >{item.nameProduct}</span>
+                                            </div>
+                                            <div className="d-flex pe-4" style={{ width: "40%" }}>
+                                                <p className="py-2 m-0 ms-auto my-auto px-4">{item.status}</p>
+                                                <p className="py-2 m-0 ms-auto my-auto px-4">{item.quantity}</p>
+                                            </div>
+                                            <div className="my-auto pe-4">
+                                                <button className="border-primary bg-transparent rounded-pill text-primary px-3 py-1" disabled={item.status == "completed" ? true : false} onClick={(e) => {
+                                                    swal({
+                                                        title: "anda yakin?",
+                                                        text: "status akan diubah",
+                                                        icon: "warning",
+                                                        dangerMode: true,
+                                                    })
+                                                        .then(willDelete => {
+                                                            if (willDelete) {
+                                                                axiosApiInstance.put(`${Url}/v1/order`, { status: "completed", orderId: item.orderId })
+                                                                    .then(res => {
+                                                                        swal("updated!", "data updated", "success");
+                                                                        axiosApiInstance.get(`${Url}/v1/order/get`)
+                                                                            .then(res => {
+                                                                                setDataOrder({
+                                                                                    dataHistoryOrder: res.data.data
+                                                                                })
+                                                                            })
+                                                                            .catch(err => {
+                                                                                console.log(err.response);
+                                                                            })
+                                                                    })
+                                                                    .catch(err => {
+                                                                        swal("err", err.response, "error")
+                                                                    })
+                                                            }
+                                                        });
+                                                }}>done</button>
+                                            </div>
+                                        </div>
+                                    })}
+                                    <div className={dataOrder.dataHistoryOrder.length === 0 ? "show" : "hide"}>
+                                        <div className="d-flex justify-content-center" style={{ height: "300px" }}>
+                                            <div className="my-auto" style={{ width: "224px", height: "177px" }}>
+                                                <Image src="/img/data_null.png" width={224} height={177} layout="responsive" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={state.myOrder.completed === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
+                                    {dataOrder.dataHistoryOrder.map(item=>{
+                                        if(item.status === "completed"){
+                                            return <div className="d-flex  hover-bg-gray border-top  justify-content-between w-100" style={{ background: "#F6F6F6" }} >
+                                            <div className="py-2 ps-4 my-auto" style={{ width: "60%" }}>
+                                                <span className="d-inline-block text-truncate" style={{ maxWidth: "250px" }} >{item.nameProduct}</span>
+                                            </div>
+                                            <div className="d-flex pe-4" style={{ width: "40%" }}>
+                                                <p className="py-2 m-0 ms-auto my-auto px-4">{item.status}</p>
+                                                <p className="py-2 m-0 ms-auto my-auto px-4">{item.quantity}</p>
+                                            </div>
+                                        </div>
+                                        }
+                                    })}
                                 </div>
                             </div>
                         </div>

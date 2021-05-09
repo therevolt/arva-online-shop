@@ -291,17 +291,15 @@ export default function Profil() {
                   onClick={(e) => setProfileIsDisabled(!profileIsDisable)}
                 >
                   <span
-                    className={`material-icons  me-2 ${
-                      profileIsDisable ? "color-gray" : "text-danger"
-                    }`}
+                    className={`material-icons  me-2 ${profileIsDisable ? "color-gray" : "text-danger"
+                      }`}
                     style={{ fontSize: "20px" }}
                   >
                     mode_edit
                   </span>
                   <p
-                    className={`m-0 my-auto ${
-                      profileIsDisable ? "color-gray" : "text-danger"
-                    }`}
+                    className={`m-0 my-auto ${profileIsDisable ? "color-gray" : "text-danger"
+                      }`}
                   >
                     Ubah Profil
                   </p>
@@ -456,17 +454,15 @@ export default function Profil() {
                         onClick={(e) => setProfileIsDisabled(!profileIsDisable)}
                       >
                         <span
-                          className={`material-icons  me-2 ${
-                            profileIsDisable ? "color-gray" : "text-danger"
-                          }`}
+                          className={`material-icons  me-2 ${profileIsDisable ? "color-gray" : "text-danger"
+                            }`}
                           style={{ fontSize: "20px" }}
                         >
                           mode_edit
                         </span>
                         <p
-                          className={`m-0 my-auto ${
-                            profileIsDisable ? "color-gray" : "text-danger"
-                          }`}
+                          className={`m-0 my-auto ${profileIsDisable ? "color-gray" : "text-danger"
+                            }`}
                         >
                           Ubah Profil
                         </p>
@@ -474,11 +470,10 @@ export default function Profil() {
                     </div>
                     <div className="d-flex justify-content-center ">
                       <button
-                        className={` rounded-pill py-2 px-5  overflow-hidden position-relative my-4 ${
-                          profileIsDisable
-                            ? " bg-secondary text-white  "
-                            : "bg-transparent border-danger text-danger"
-                        }`}
+                        className={` rounded-pill py-2 px-5  overflow-hidden position-relative my-4 ${profileIsDisable
+                          ? " bg-secondary text-white  "
+                          : "bg-transparent border-danger text-danger"
+                          }`}
                         disabled={profileIsDisable}
                       >
                         Select Image
@@ -557,27 +552,16 @@ export default function Profil() {
                       <label htmlFor="input" className="me-4 my-auto">
                         Phone Number
                       </label>
-                      {profileUser.phone ? (
-                        <input
-                          type="text"
-                          name="phone"
-                          value={profileUser.phone || ""}
-                          placeholder="write your phone number..."
-                          className="p-2 border rounded"
-                          style={{ outline: "none", width: "70%" }}
-                          onChange={handleChangeDataProfile}
-                          disabled={profileIsDisable}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          name="phone"
-                          placeholder="write your phoneNumber..."
-                          className="p-2 border rounded"
-                          style={{ outline: "none", width: "70%" }}
-                          disabled={profileIsDisable}
-                        />
-                      )}
+                      <input
+                        type="text"
+                        name="phone"
+                        value={profileUser.phone || ""}
+                        placeholder="write your phone number..."
+                        className="p-2 border rounded"
+                        style={{ outline: "none", width: "70%" }}
+                        onChange={handleChangeDataProfile}
+                        disabled={profileIsDisable}
+                      />
                     </div>
 
                     {profileUser.gender && (
@@ -602,9 +586,8 @@ export default function Profil() {
                             />
                             <label
                               htmlFor="male"
-                              className={`my-auto ${
-                                profileIsDisable && "text-muted"
-                              }`}
+                              className={`my-auto ${profileIsDisable && "text-muted"
+                                }`}
                             >
                               Laki Laki
                             </label>
@@ -624,9 +607,8 @@ export default function Profil() {
                             />
                             <label
                               htmlFor="female"
-                              className={`my-auto ${
-                                profileIsDisable && "text-muted"
-                              }`}
+                              className={`my-auto ${profileIsDisable && "text-muted"
+                                }`}
                             >
                               Perempuan
                             </label>
@@ -665,9 +647,8 @@ export default function Profil() {
                     <div className="w-100 d-flex justify-content-center mb-3">
                       <div className="d-flex  justify-content-center">
                         <button
-                          className={` text-white border-0 rounded-pill px-5 py-2 mx-3 ${
-                            profileIsDisable ? "btn-secondary" : "btn-danger"
-                          }`}
+                          className={` text-white border-0 rounded-pill px-5 py-2 mx-3 ${profileIsDisable ? "btn-secondary" : "btn-danger"
+                            }`}
                           disabled={profileIsDisable}
                           onClick={handleSubmitChangeProfile}
                         >
@@ -703,11 +684,10 @@ export default function Profil() {
                     </div>
                     <div className="d-flex justify-content-center">
                       <button
-                        className={` rounded-pill py-2 px-5  overflow-hidden position-relative my-4 ${
-                          profileIsDisable
-                            ? " bg-secondary text-white  "
-                            : "bg-transparent border-danger text-danger"
-                        }`}
+                        className={` rounded-pill py-2 px-5  overflow-hidden position-relative my-4 ${profileIsDisable
+                          ? " bg-secondary text-white  "
+                          : "bg-transparent border-danger text-danger"
+                          }`}
                         disabled={profileIsDisable}
                       >
                         Select Image

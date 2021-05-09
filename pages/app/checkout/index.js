@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from "react";
 import Modal from 'react-modal'
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { makeOrder } from "../../../src/config/redux/actions/order";
+import {
+  getListAddressUser,
+  insertAddressUser,
+} from "../../../src/config/redux/actions/users";
 import Rupiah from '../../../src/helper/rupiah'
+import { ListUserAddress } from "../../../src/component/module";
+import Swal from 'sweetalert2'
 
 function Checkout() {
   const dispatch = useDispatch();
+  const { user, loading, listAddressUser } = useSelector((state) => state.user);
   const { carts } = useSelector((state) => state.carts);
   const [state, setState] = useState({
     toggleModal: false,
-    addAdsress: false
+    // addAdsress: false
   })
   const [modalCheckout, setModalCheckout] = useState(false);
   const [resultCheckout, setResultCheckout] = useState(null)
-  console.log(resultCheckout);
   const handleBuy = () => {
     const newData = carts.map((item) => {
       return {
@@ -30,19 +38,81 @@ function Checkout() {
 
     dispatch(makeOrder(data)).then((res) => {
       setResultCheckout(res.data)
-      // tampilin loading
       setModalCheckout(true)
-      // Swal.fire({
-      //   title: "Success!",
-      //   text: res,
-      //   icon: "success",
-      //   confirmButtonText: "Ok",
-      //   confirmButtonColor: "#ffba33",
-      // }).catch((err) => {
-      //   Swal.fire("Something Error!", err, "error");
-      // });
     })
   }
+
+  const [isLoadingProcess, setIsLoadingProcess] = useState(false);
+  const [localListAddress, setLocalListAddress] = useState([]);
+  console.log(localListAddress);
+  useEffect(() => {
+    dispatch(getListAddressUser());
+  }, [dispatch]);
+
+  //useEffect menampung list address ke state lokal
+  useEffect(() => {
+    if (listAddressUser) {
+      setLocalListAddress(listAddressUser);
+      console.log("ini data list address", listAddressUser);
+    }
+  }, [listAddressUser]);
+
+  const formik = useFormik({
+    initialValues: {
+      saveAs: "",
+      recipientName: "",
+      recipientPhone: "",
+      postalCode: "",
+      city: "",
+      address: "",
+      isPrimary: false,
+    },
+    validationSchema: Yup.object({
+      saveAs: Yup.string()
+        .min(2, "Mininum 2 characters")
+        .max(25, "Maximum 15 characters")
+        .required("Required!"),
+      recipientName: Yup.string()
+        .min(2, "Mininum 2 characters")
+        .max(15, "Maximum 15 characters")
+        .required("Required!"),
+      recipientPhone: Yup.string().required("Required!"),
+      postalCode: Yup.string()
+        .min(2, "Mininum 2 characters")
+        .max(15, "Maximum 15 characters")
+        .required("Required!"),
+      city: Yup.string()
+        .min(2, "Mininum 2 characters")
+
+        .required("Required!"),
+      address: Yup.string().required("Required!"),
+    }),
+    onSubmit: (values) => {
+      setState({ ...state, toggleModal: false });
+      setIsLoadingProcess(true);
+
+      dispatch(insertAddressUser(values))
+        .then((res) => {
+          setIsLoadingProcess(false);
+          Swal.fire("Success", res.data.message, "success");
+        })
+        .catch((err) => {
+          setIsLoadingProcess(false);
+          Swal.fire("Something Error!", err.response.data.message, "error");
+        });
+    },
+  });
+
+  if (isLoadingProcess === true) {
+    Swal.fire({
+      icon: "info",
+      title: "Loading!",
+      text: "Please wait",
+      showConfirmButton: false,
+    });
+  }
+
+
   return (
     <div className="container">
       <div className="row row mt-7 mb-5">
@@ -53,17 +123,33 @@ function Checkout() {
           <h4 className="f-16 fw-bold mb-3">Shipping Adress</h4>
           {/* awal shipping addres */}
           <div className="card custom-card mb-3">
-            <div className="card-body ">
-              <h5 className="fw-bold f-16">Andreas Jane</h5>
-              <p className="color-p f-14 fw-400">
-                Perumahan Sapphire Mediterania, Wiradadi, Kec. Sokaraja,
-                Kabupaten Banyumas, Jawa Tengah, 53181 [Tokopedia Note: blok c
-                16] Sokaraja, Kab. Banyumas, 53181
-              </p>
-              <button className="btn custom-btn color-gray shadow-none" onClick={() => { setState({ ...state, toggleModal: true }) }} >
-                Choose another address
-              </button>
-            </div>
+            {/* <div className="card-body "> */}
+            {localListAddress.length === 0 ?
+              <button
+                className="color-gray w-100 py-4 bg-transparent rounded my-4"
+                style={{ border: "3px dashed #9B9B9B" }}
+                onClick={() => {
+                  setState({ ...state, toggleModal: true });
+                }}
+              >
+                Add your address before shopping
+            </button>
+              : ""}
+
+            {localListAddress.map((data, idx) => {
+              return (
+                <ListUserAddress
+                  item={data}
+                  fireEvents={setLocalListAddress}
+                />
+              );
+            })
+            }
+
+            {/* <button className="btn custom-btn color-gray shadow-none" onClick={() => { setState({ ...state, toggleModal: true }) }} >
+              Choose another address
+              </button> */}
+            {/* </div> */}
           </div>
           {/* akhir shipping addres */}
 
@@ -282,7 +368,7 @@ function Checkout() {
               <div className="p-3 border border-black rounded">
                 <div >
                   <p className="fw-bold mb-0">Name: </p>
-                  <p>Andreas Jane</p>
+                  <p>{user.name}</p>
                 </div>
                 <div>
                   <p className="fw-bold mb-0">Order Id: </p>
@@ -318,74 +404,164 @@ function Checkout() {
         </Modal>
       }
 
-
-
-      {/* modal adress */}
-      <Modal
+      {/* <Modal
         isOpen={state.toggleModal}
-        className="modalPositionAndSizeConfig"
+        className="modalPositionAndSizeConfig2"
         overlayClassName="modalOverLayConfig"
         closeTimeoutMS={400}
         ariaHideApp={false}
+        style={{ maxHeight: "60px" }}
       >
-        <div className="w-100 d-flex mb-4"><span className="material-icons ms-auto hover-danger c-pointer" onClick={() => { setState({ ...state, toggleModal: false }) }} >close</span></div>
-        {/* komponen choose address */}
-        <div className={state.addAdsress !== true ? "show" : "hide"} style={{ minHeight: "550px" }} >
-          <h4 className="fw-bold text-center">Choose another address</h4>
-          <div className="px-4 py3">
-            <button className="color-gray w-100 py-4 bg-transparent rounded my-4" style={{ border: "3px dashed #9B9B9B" }} onClick={() => { setState({ ...state, addAdsress: true }) }} >Add new address</button>
-            <div className="p-3 border border-danger rounded">
-              <p className="fw-bold">Andreas Jane</p>
-              <p>Perumahan Sapphire Mediterania, Wiradadi, Kec. Sokaraja, Kabupaten Banyumas, Jawa Tengah, 53181 [Tokopedia Note: blok c 16] Sokaraja, Kab. Banyumas, 53181</p>
-              <a className="fw-bold text-danger">Change address</a>
-            </div>
-          </div>
+        <div className="w-100 d-flex mb-4 ">
+          <span
+            className="material-icons ms-auto hover-danger c-pointer"
+            onClick={() => {
+              setState({ ...state, toggleModal: false });
+            }}
+          >
+            close
+          </span>
         </div>
-        {/*  */}
-        {/* komponen add address */}
+
         <div className={state.addAdsress == true ? "show" : "hide"}>
           <h3 className="fw-bold text-center mb-4">Add new address</h3>
           <div className="my-2">
-            <label className="color-gray">Save address as (ex : home address, office address)</label>
-            <input type="text" className="w-100 border p-2" style={{ outline: "nonde" }} />
+            <label className="color-gray">
+              Save address as (ex : home address, office address)
+            </label>
+            <input
+              type="text"
+              className="w-100 border p-2"
+              style={{ outline: "nonde" }}
+              name="saveAs"
+              value={formik.values.saveAs}
+              onChange={formik.handleChange}
+            />
+            {formik.errors.saveAs && formik.touched.saveAs && (
+              <p className="text-danger">{formik.errors.saveAs}</p>
+            )}
           </div>
           <div className="row">
-            <div className="col-12 col-md-6 my-2">
-              <label htmlFor="name" className="color-gray mb-2">Recipient’s name</label>
-              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            <div className="col-12 col-md-12 col-lg-6  my-2">
+              <label htmlFor="name" className="color-gray mb-2">
+                Recipient’s name
+              </label>
+              <input
+                type="text"
+                className="p-2 border rounded w-100"
+                style={{ outline: "nonde" }}
+                name="recipientName"
+                value={formik.values.recipientName}
+                onChange={formik.handleChange}
+              />
+              {formik.errors.recipientName && formik.touched.recipientName && (
+                <p className="text-danger">{formik.errors.recipientName}</p>
+              )}
             </div>
-            <div className="col-12 col-md-6 my-2">
-              <label htmlFor="name" className="color-gray mb-2">Recipient's telephone number</label>
-              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            <div className="col-12 col-md-12 col-lg-6  my-2">
+              <label htmlFor="name" className="color-gray mb-2">
+                Recipient's telephone number
+              </label>
+              <input
+                type="text"
+                className="p-2 border rounded w-100"
+                style={{ outline: "nonde" }}
+                name="recipientPhone"
+                value={formik.values.recipientPhone}
+                onChange={formik.handleChange}
+              />
+              {formik.errors.recipientPhone &&
+                formik.touched.recipientPhone && (
+                  <p className="text-danger">{formik.errors.recipientPhone}</p>
+                )}
             </div>
-            <div className="col-12 col-md-6 my-2">
-              <label htmlFor="name" className="color-gray mb-2">Address</label>
-              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            <div className="col-12 col-md-12 col-lg-6  my-2">
+              <label htmlFor="name" className="color-gray mb-2">
+                Address
+              </label>
+              <input
+                type="text"
+                className="p-2 border col-lg-6 rounded w-100"
+                style={{ outline: "nonde" }}
+                name="address"
+                value={formik.values.address}
+                onChange={formik.handleChange}
+              />
+              {formik.errors.address && formik.touched.address && (
+                <p className="text-danger">{formik.errors.address}</p>
+              )}
             </div>
-            <div className="col-12 col-md-6 my-2">
-              <label htmlFor="name" className="color-gray mb-2">Postal code</label>
-              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            <div className="col-12 col-md-12 col-lg-6 my-2">
+              <label htmlFor="name" className="color-gray mb-2">
+                Postal code
+              </label>
+              <input
+                type="text"
+                className="p-2 border rounded w-100"
+                style={{ outline: "nonde" }}
+                name="postalCode"
+                value={formik.values.postalCode}
+                onChange={formik.handleChange}
+              />
+              {formik.errors.postalCode && formik.touched.postalCode && (
+                <p className="text-danger">{formik.errors.postalCode}</p>
+              )}
             </div>
-            <div className="col-12 col-md-6 my-2">
-              <label htmlFor="name" className="color-gray mb-2">City or Subdistrict</label>
-              <input type="text" className="p-2 border rounded w-100" style={{ outline: "nonde" }} />
+            <div className="col-12 col-md-12 my-2">
+              <label htmlFor="name" className="color-gray mb-2">
+                City or Subdistrict
+              </label>
+              <input
+                type="text"
+                className="p-2 border rounded w-100"
+                style={{ outline: "nonde" }}
+                name="city"
+                value={formik.values.city}
+                onChange={formik.handleChange}
+              />
+              {formik.errors.city && formik.touched.city && (
+                <p className="text-danger">{formik.errors.city}</p>
+              )}
             </div>
             <div className="col-12 my-2">
-              <input type="checkbox" className="me-2" />
-              <label htmlFor="name" className="color-gray">Make it the primary address</label>
+              <input
+                type="checkbox"
+                className="me-2"
+                name="isPrimary"
+                value={formik.values.isPrimary}
+                onChange={formik.handleChange}
+              />
+              <label htmlFor="name" className="color-gray">
+                Make it the primary address
+              </label>
             </div>
             <div className="col-12 my-2">
               <div className="d-flex justify-content-end">
                 <div>
-                  <button className="bg-danger text-white border-0 rounded-pill px-5 py-2 me-3">Save</button>
-                  <button className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden" onClick={() => { setState({ ...state, addAdsress: false }) }} >Cancel</button>
+                  <button
+                    className="btn-danger text-white border-0 rounded-pill px-5 py-2 me-3"
+                    type="submit"
+                    onClick={formik.handleSubmit}
+                  >
+                    Save
+                  </button>
+                  <button
+                    className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden"
+                    onClick={() => {
+                      setState({ ...state, toggleModal: false });
+                    }}
+                  >
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        {/*  */}
-      </Modal>
+      </Modal> */}
+
+
+
       {/* end modal */}
       <style jsx>
         {`

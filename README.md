@@ -62,7 +62,7 @@ npm run build
 
 ![home](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-2021-05-10-02_08_00.png)
 
-### Category Page - Jacket
+### Category Page
 
 ![category](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png)
 
@@ -70,7 +70,7 @@ npm run build
 
 ![product-details](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-product-7-2021-05-10-02_25_06.png)
 
-### Search product
+### Search Product
 
 ![mybag](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png)
 

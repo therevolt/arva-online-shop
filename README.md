@@ -1,7 +1,7 @@
 <h1 align="center">ARVA ONLINE SHOP</h1>
 
 <p align="center">
-  <img height="90" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fmedium.com%2Fwesionary-team%2Fgetting-started-with-next-js-and-create-your-first-application-using-next-js-1409709479a5&psig=AOvVaw13j_7HPf2Plk21FJ8fOmlS&ust=1620670302850000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCMCyiJOavfACFQAAAAAdAAAAABAE"/>&nbsp;
+  <img height="90" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Nextjs-logo.svg/1200px-Nextjs-logo.svg.png"/>&nbsp;
 </p>
 <p align="center">
   Built with Next Js.
@@ -9,7 +9,7 @@
 
 
 ## Related Project (Backend)
-* [`Backend Tokosidia`](https://github.com/azmprllynsa/tokosidia-API)
+* [`ARVA ONLINE SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
 
 ## Contributors
 

@@ -33,7 +33,7 @@ export default function Register() {
                 .required("Required!")
         }),
         onSubmit: values => {
-            axios.post(`https://be.arva-shop.xyz/v1/users/`, values)
+            axios.post(`${process.env.api}/v1/users/`, values)
                 .then((res) => {
                     console.log(res);
                     Swal.fire("Success", res.data.message, "success");
@@ -76,7 +76,7 @@ export default function Register() {
                 .required("Required!")
         }),
         onSubmit: values => {
-            axios.post(`https://be.arva-shop.xyz/v1/users/`, values)
+            axios.post(`${process.env.api}/v1/users/`, values)
                 .then((res) => {
                     Swal.fire("Success", res.data.message, "success");
                     router.push("/auth/login");

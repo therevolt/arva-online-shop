@@ -38,17 +38,6 @@ export default function Login() {
                 console.log(err);
                 Swal.fire("Something Error!", err, "error");
             });
-            // axios.post(`https://be.arva-shop.xyz/v1/users/login`, values)
-            //         .then((res) => {
-            //             console.log(res);
-            //             Swal.fire("Success", res.data.message, "success");
-            //             localStorage.setItem("token", res.data.data.token);
-            //             router.push("/app");
-            //         })
-            //         .catch((err) => {
-            //             console.log(err);
-            //             Swal.fire("Something Error!", err.response.data.message, "error");
-            //         });
         }
     });
     const formik2 = useFormik({

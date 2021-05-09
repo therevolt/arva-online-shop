@@ -74,3 +74,16 @@ export const login = (data) => (dispatch) => {
     });
 };
 
+export const refresPage = () => (dispatch) => {
+    return new Promise((resolve, reject) => {
+        const Url = process.env.api;
+        axiosApiInstance
+            .get(`${Url}/v1/users/profile`)
+            .then((res) => {
+                dispatch({ type: "LOGIN", payload: res.data.data, role: res.data.data.role, status: res.data.status });
+            })
+            .catch((err) => {
+                reject(err.response.data.message);
+            });
+    });
+};

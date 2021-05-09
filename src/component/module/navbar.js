@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
-import {refresPage} from '../../config/redux/actions/users'
+import { refresPage } from '../../config/redux/actions/users'
 export default function Navbar() {
-  const { status, user } = useSelector(state=>state.user)
+  const { status, user } = useSelector(state => state.user)
+  console.log(status);
   const dispatch = useDispatch()
   const router = useRouter()
   const page = router.pathname.split('/')[2]
@@ -12,9 +13,9 @@ export default function Navbar() {
     navbarMobileToggle: false,
     dropdownToggle: false
   })
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(refresPage())
-  },[])
+  }, [])
   const toggleOpenNavbarMobile = () => {
     setState({ ...state, navbarMobileToggle: true })
   }
@@ -29,7 +30,7 @@ export default function Navbar() {
   }
 
   const handleLogout = () => {
-    dispatch({type:"REQUEST_LOGOUT"})
+    dispatch({ type: "REQUEST_LOGOUT" })
     localStorage.removeItem("token")
     router.push("/auth/login")
   }
@@ -136,7 +137,7 @@ export default function Navbar() {
         <div className="container">
           <div className="row">
             <div className="col-10 col-lg-3">
-              <div className="d-flex c-pointer" onClick={()=>{router.push("/app")}}>
+              <div className="d-flex c-pointer" onClick={() => { router.push("/app") }}>
                 <Image src="/img/logo_navbar.png" width={34} height={44} />
                 <h4 className="text-danger ms-3 my-auto fw-bold">ARVA SHOP</h4>
               </div>
@@ -162,10 +163,10 @@ export default function Navbar() {
                 <button className="material-icons bg-transparent border-0 mt-2 me-4 hover-danger">add_shopping_cart</button>
                 <button className="material-icons bg-transparent border-0 mt-2 me-4 hover-danger">notifications_none</button>
                 <button className="material-icons bg-transparent border-0 mt-2 me-4 hover-danger" >mail</button>
-                <button className="rounded-circle overflow-hidden bg-transparent border-0 d-flex justify-content-center" style={{ width: "50px", height: "50px" }} onClick={()=>{
-                  if(user.role == "seller"){
+                <button className="rounded-circle overflow-hidden bg-transparent border-0 d-flex justify-content-center" style={{ width: "50px", height: "50px" }} onClick={() => {
+                  if (user.role == "seller") {
                     router.push("/app/profile-store")
-                  }else{
+                  } else {
                     router.push("/app/profile")
                   }
                 }} >

@@ -10,7 +10,7 @@ export const makeOrder = (data) => (dispatch) => {
             .post(`${Url}/v1/order`, data)
             .then((res) => {
                 dispatch({ type: "MAKE_ORDER", payload: res.data.data });
-                resolve(res.data.message);
+                resolve(res);
             })
             .catch((err) => {
                 console.log(err);

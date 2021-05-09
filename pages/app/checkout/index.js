@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from "react";
 import Modal from 'react-modal'
 import { useDispatch, useSelector } from "react-redux";
-import { getCart } from '../../../src/config/redux/actions/carts'
 import { makeOrder } from "../../../src/config/redux/actions/order";
 import Rupiah from '../../../src/helper/rupiah'
 import Swal from 'sweetalert2'
-import axios from 'axios'
-import axiosApiInstance from "../../../src/helper/axios";
 
 function Checkout() {
   const dispatch = useDispatch();
   const { carts } = useSelector((state) => state.carts);
-  // const [dataCart, setDataCart] = useState(null);
   const [state, setState] = useState({
     toggleModal: false,
     addAdsress: false
   })
-
+  const [modalCheckout, setModalCheckout] = useState(false);
+  const [resultCheckout, setResultCheckout] = useState(null)
+  console.log(resultCheckout);
   const handleBuy = () => {
     const newData = carts.map((item) => {
       return {
@@ -32,30 +30,20 @@ function Checkout() {
     }
 
     dispatch(makeOrder(data)).then((res) => {
-      Swal.fire({
-        title: "Success!",
-        text: res,
-        icon: "success",
-        confirmButtonText: "Ok",
-        confirmButtonColor: "#ffba33",
-      }).catch((err) => {
-        Swal.fire("Something Error!", err, "error");
-      });
+      setResultCheckout(res.data)
+      // tampilin loading
+      setModalCheckout(true)
+      // Swal.fire({
+      //   title: "Success!",
+      //   text: res,
+      //   icon: "success",
+      //   confirmButtonText: "Ok",
+      //   confirmButtonColor: "#ffba33",
+      // }).catch((err) => {
+      //   Swal.fire("Something Error!", err, "error");
+      // });
     })
   }
-
-  // useEffect(() => {
-  //   dispatch(getCart())
-  // }, [dispatch]);
-
-  // useEffect(() => {
-  //   if (carts.dataCart) {
-  //     if (carts.dataCart.length > 0) {
-  //       setDataCart(carts)
-  //     }
-  //   }
-  // }, [carts]);
-
   return (
     <div className="container">
       <div className="row row mt-7 mb-5">
@@ -273,7 +261,64 @@ function Checkout() {
         </div>
         {/* end right columns */}
       </div>
-      {/* modal */}
+
+      {/* modal dari buy product detail */}
+      <Modal
+        isOpen={modalCheckout}
+        className="modalPositionAndSizeConfig"
+        overlayClassName="modalOverLayConfig"
+        closeTimeoutMS={400}
+        ariaHideApp={false}
+      >
+        <div className="w-100 d-flex mb-4"><span className="material-icons ms-auto hover-danger c-pointer" onClick={() => { setModalCheckout(false) }} >close</span></div>
+        <div className="" style={{ minHeight: "450px" }} >
+          <div style={{ display: "flex", justifyContent: "center" }} >
+            <img alt="logo success" src="/img/success.png" />
+          </div>
+          <h4 className="fw-bold text-center mt-1">{resultCheckout.message}</h4>
+
+          <div className="px-4 py3">
+            <div className="p-3 border border-black rounded">
+              <div >
+                <p className="fw-bold mb-0">Name: </p>
+                <p>Andreas Jane</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Order Id: </p>
+                <p>{resultCheckout.data.order_id}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Transaction Id: </p>
+                <p>{resultCheckout.data.transaction_id}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Status: </p>
+                <p>{resultCheckout.data.transaction_status}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Payment method: </p>
+                <p>{resultCheckout.data.payment_type === "bank_transfer" ? "Bank Transfer" : ""}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Bank: </p>
+                <p>{resultCheckout.data.va_numbers[0].bank}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Virtual Account Number: </p>
+                <p>{resultCheckout.data.va_numbers[0].va_number}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Total Payment: </p>
+                <p>{`Rp ${resultCheckout.data.gross_amount}`}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+
+
+      {/* modal adress */}
       <Modal
         isOpen={state.toggleModal}
         className="modalPositionAndSizeConfig"

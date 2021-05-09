@@ -3,6 +3,7 @@ const initialState = {
     loading: false,
     error: "",
     role: null,
+    status: false
 };
 
 const userReducer = (state = initialState, action) => {

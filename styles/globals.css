@@ -106,7 +106,10 @@ a {
   z-index: 9999;
 }
 
-
+button:disabled{
+  border-color: gray !important;
+  color: gray !important;
+}
 
 .c-pointer:hover {
   cursor: pointer;

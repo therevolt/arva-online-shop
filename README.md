@@ -1,15 +1,19 @@
 <h1 align="center">ARVA ONLINE SHOP</h1>
 
 <p align="center">
-  <img height="90" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Nextjs-logo.svg/1200px-Nextjs-logo.svg.png"/>&nbsp;
+  <img height="150" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Nextjs-logo.svg/1200px-Nextjs-logo.svg.png"/>&nbsp;
 </p>
 <p align="center">
   Built with Next Js.
 </p>
 
 
-## Related Project (Backend)
+## Backend
 * [`ARVA ONLINE SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
+
+## Deploy
+* [`COMING SOON`]
+
 
 ## Contributors
 

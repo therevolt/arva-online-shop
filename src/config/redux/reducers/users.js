@@ -1,6 +1,7 @@
 const initialState = {
   user: {},
   listAddressUser: [],
+  historyOrderUser: [],
   loading: false,
   error: "",
   role: null,
@@ -97,6 +98,18 @@ const userReducer = (state = initialState, action) => {
       };
 
     case "GET_LIST_ADDRESS_USER_FAILURE":
+      return {
+        ...state,
+        error: action.payload,
+      };
+
+    case "GET_HISTORY_ORDER_USER_SUCCESS":
+      return {
+        ...state,
+        historyOrderUser: action.payload,
+      };
+
+    case "GET_HISTORY_ORDER_USER_FAILURE":
       return {
         ...state,
         error: action.payload,

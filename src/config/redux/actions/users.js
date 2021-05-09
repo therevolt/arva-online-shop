@@ -41,6 +41,10 @@ const getListAddressUserFailure = (error) => {
   return { type: "GET_LIST_ADDRESS_USER_FAILURE", payload: error };
 };
 
+const getHistoryOderUserSuccess = (data) => {
+  return { type: "GET_HISTORY_ORDER_USER_SUCCESS", payload: data };
+};
+
 // const resetRequest = () => {
 //     return { type: "RESET_REQUEST" };
 // };
@@ -140,6 +144,7 @@ export const getListAddressUser = () => (dispatch) => {
     axiosApiInstance
       .get(`${Url}/v1/address/list`)
       .then((res) => {
+        console.log("ini jalan gak get list addressnya");
         dispatch(getListAddressUserSuccess(res.data.data));
         resolve(res);
       })
@@ -188,6 +193,21 @@ export const updateAddressUser = (id, data) => (dispatch) => {
       .then((res) => {
         resolve(res);
         dispatch(getListAddressUser());
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+export const getHistoryOrderUser = (status = "") => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.api;
+    axiosApiInstance
+      .get(`${Url}/v1/order/user?status=${status}`)
+      .then((res) => {
+        dispatch(getHistoryOderUserSuccess(res.data.data));
+        resolve(res);
       })
       .catch((err) => {
         reject(err);

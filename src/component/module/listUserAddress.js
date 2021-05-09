@@ -7,10 +7,9 @@ import Modal from "react-modal";
 import {
   deleteAddressUser,
   updateAddressUser,
-  getListAddressUser,
 } from "../../config/redux/actions/users";
 
-function listUserAddress({ item }) {
+function listUserAddress({ item, fireEvents }) {
   const dispatch = useDispatch();
   const [address, setAddress] = useState(item);
 
@@ -90,6 +89,7 @@ function listUserAddress({ item }) {
       dispatch(updateAddressUser(id, values))
         .then((res) => {
           setIsLoadingProcess(false);
+          fireEvents([]);
           Swal.fire("Success", res.data.message, "success");
         })
         .catch((err) => {
@@ -100,9 +100,9 @@ function listUserAddress({ item }) {
     },
   });
 
-  //   useEffect(() => {
-  //     dispatch(getListAddressUser());
-  //   }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getListAddressUser());
+  // }, [dispatch]);
 
   return (
     <div className="p-3 border border-danger rounded mb-3" key={address.id}>
@@ -278,6 +278,38 @@ function listUserAddress({ item }) {
           </div>
         </div>
       </Modal>
+      <style jsx>
+        {`
+          @media (max-width: 576px) {
+            .modalPositionAndSizeConfig2 {
+              min-height: 80vh;
+              overflow-y: auto !important;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              min-width: 90vw;
+              max-width: 800px !important;
+              padding: 3rem 2rem;
+              border-radius: 1rem;
+              background: white;
+            }
+          }
+
+          @media (min-width: 576px) {
+            .modalPositionAndSizeConfig2 {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              max-width: 800px;
+              padding: 3rem 2rem;
+              border-radius: 1rem;
+              background: white;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 }

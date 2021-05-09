@@ -10,13 +10,14 @@ import {
   updateProfile,
   getListAddressUser,
   insertAddressUser,
+  getHistoryOrderUser,
 } from "../../src/config/redux/actions/users";
 import { ListUserAddress } from "../../src/component/module";
 
 export default function Profil() {
   const dispatch = useDispatch();
-  const router = useRouter();
-  const api = process.env.api;
+  // const router = useRouter();
+  // const api = process.env.api;
   const { myAcount, shippingAddress, myOrder } = useSelector(
     (state) => state.Helpers
   );
@@ -31,11 +32,13 @@ export default function Profil() {
     },
     myOrder: {
       allItem: true,
+      pending: false,
       noPaid: false,
       package: false,
       send: false,
       completed: false,
       orderCancel: false,
+      orderStatus: "",
     },
   });
 
@@ -206,6 +209,8 @@ export default function Profil() {
     },
   });
 
+  //akhir dari shiipping address
+
   //kalau loading
   if (isLoadingProcess === true) {
     Swal.fire({
@@ -215,6 +220,25 @@ export default function Profil() {
       showConfirmButton: false,
     });
   }
+
+  //awal history order
+  const [localHistoryOrder, setLocalHistoryOrder] = useState([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+
+  useEffect(() => {
+    setLoadingHistory(true);
+    dispatch(getHistoryOrderUser(state.myOrder.orderStatus))
+      .then((res) => {
+        console.log("order history", res.data.data);
+        setLoadingHistory(false);
+        setLocalHistoryOrder(res.data.data);
+      })
+      .catch((err) => {
+        setLoadingHistory(false);
+        console.log(err);
+        setLocalHistoryOrder([]);
+      });
+  }, [state.myOrder.orderStatus]);
 
   return (
     <div
@@ -734,7 +758,12 @@ export default function Profil() {
                 </button>
 
                 {localListAddress.map((data, idx) => {
-                  return <ListUserAddress item={data} />;
+                  return (
+                    <ListUserAddress
+                      item={data}
+                      fireEvents={setLocalListAddress}
+                    />
+                  );
                 })}
               </div>
             </div>
@@ -749,7 +778,31 @@ export default function Profil() {
               <div className="d-flex my-4">
                 <button
                   className={
-                    state.myOrder.noPaid == true
+                    state.myOrder.allItem == true
+                      ? "bg-transparent me-4 hover-danger border-0 fw-bold text-danger"
+                      : "bg-transparent me-4 hover-danger border-0 fw-bold"
+                  }
+                  onClick={() => {
+                    setState({
+                      ...state,
+                      myOrder: {
+                        ...state.myOrder,
+                        allItem: true,
+                        pending: false,
+                        package: false,
+                        send: false,
+                        completed: false,
+                        orderCancel: false,
+                        orderStatus: "",
+                      },
+                    });
+                  }}
+                >
+                  All Items
+                </button>
+                <button
+                  className={
+                    state.myOrder.pending == true
                       ? "bg-transparent me-4 hover-danger border-0 fw-bold text-danger"
                       : "bg-transparent me-4 hover-danger border-0 fw-bold"
                   }
@@ -759,16 +812,17 @@ export default function Profil() {
                       myOrder: {
                         ...state.myOrder,
                         allItem: false,
-                        noPaid: true,
+                        pending: true,
                         package: false,
                         send: false,
                         completed: false,
                         orderCancel: false,
+                        orderStatus: "pending",
                       },
                     });
                   }}
                 >
-                  All items
+                  Pending
                 </button>
                 <button
                   className={
@@ -782,11 +836,12 @@ export default function Profil() {
                       myOrder: {
                         ...state.myOrder,
                         allItem: false,
-                        noPaid: false,
+                        pending: false,
                         package: true,
                         send: false,
                         completed: false,
                         orderCancel: false,
+                        orderStatus: "process",
                       },
                     });
                   }}
@@ -805,11 +860,12 @@ export default function Profil() {
                       myOrder: {
                         ...state.myOrder,
                         allItem: false,
-                        noPaid: false,
+                        pending: false,
                         package: false,
                         send: true,
                         completed: false,
                         orderCancel: false,
+                        orderStatus: "sending",
                       },
                     });
                   }}
@@ -828,11 +884,12 @@ export default function Profil() {
                       myOrder: {
                         ...state.myOrder,
                         allItem: false,
-                        noPaid: false,
+                        pending: false,
                         package: false,
                         send: false,
                         completed: true,
                         orderCancel: false,
+                        orderStatus: "completed",
                       },
                     });
                   }}
@@ -851,28 +908,72 @@ export default function Profil() {
                       myOrder: {
                         ...state.myOrder,
                         allItem: false,
-                        noPaid: false,
+                        pending: false,
                         package: false,
                         send: false,
                         completed: false,
                         orderCancel: true,
+                        orderStatus: "cancelled",
                       },
                     });
                   }}
                 >
-                  Order cancel
+                  Order Cancel
                 </button>
               </div>
-              <div className="w-100 h-100">
-                <div
-                  className="w-100 h-100"
-                  style={{ background: "blue", color: "white" }}
-                >
-                  <h1>
-                    kalau mau atur komponen ini, manfaatin state myorder untuk
-                    pengkondisiannya
-                  </h1>
-                </div>
+              <div className="w-100 h-100" style={{ minHeight: "550px" }}>
+                {/* disini looping history */}
+                {loadingHistory ? (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center bg-white p-4 border-0 rounded "
+                    style={{ minHeight: "500px" }}
+                  >
+                    <div
+                      className="spinner-grow text-danger mb-3"
+                      role="status"
+                    >
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                    <h3 className="fw-bold">Wait a moment...</h3>
+                  </div>
+                ) : localHistoryOrder.length < 1 ? (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center bg-white p-4 border-0 rounded "
+                    style={{ minHeight: "500px" }}
+                  >
+                    <h3 className="fw-bold">Data not found...</h3>
+                  </div>
+                ) : (
+                  <div
+                    className="d-flex flex-column align-items-center justify-content-center bg-white  border-0 rounded"
+                    style={{
+                      height: "550px",
+                      paddingTop: "560px",
+                      overflowY: "auto",
+                    }}
+                  >
+                    {localHistoryOrder.map((data, idx) => {
+                      return (
+                        <div
+                          className="p-3 border border-danger rounded my-1 w-100"
+                          key={idx}
+                        >
+                          <h5 className="fw-bold">
+                            Id Transactions: {data.id}
+                          </h5>
+                          <p>
+                            <span>Product Name : {data.nameProduct}</span>
+                            <br /> <span>Quantity : {data.quantity}</span>
+                            <br />
+                            <span>Total Payment : Rp{data.totalPayment}</span>
+                            <br /> <span>Status : {data.status}</span>
+                            <br />
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -1038,6 +1139,34 @@ export default function Profil() {
           }
           .btn-save {
             width: 70%;
+          }
+          @media (max-width: 576px) {
+            .modalPositionAndSizeConfig2 {
+              min-height: 80vh;
+              overflow-y: auto !important;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              min-width: 90vw;
+              max-width: 800px !important;
+              padding: 3rem 2rem;
+              border-radius: 1rem;
+              background: white;
+            }
+          }
+
+          @media (min-width: 576px) {
+            .modalPositionAndSizeConfig2 {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              max-width: 800px;
+              padding: 3rem 2rem;
+              border-radius: 1rem;
+              background: white;
+            }
           }
           @media (max-width: 768px) {
             .btn-save {

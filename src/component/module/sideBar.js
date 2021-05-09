@@ -8,6 +8,8 @@ export default function SideBar() {
     })
     const router = useRouter()
     const { myAcount, shippingAddress, myOrder } = useSelector(state => state.Helpers)
+    const { user } = useSelector(state => state.user)
+
     const page = router.pathname.split('/')[2]
     const dispatch = useDispatch()
     return (
@@ -17,10 +19,10 @@ export default function SideBar() {
                     <div className="me-5">
                         <div className="d-flex mb-5">
                             <div className="rounded-circle me-3 overflow-hidden" style={{ width: "60px", height: "60px" }}>
-                                <Image src="/img/default.png" width={80} height={80} layout="responsive" />
+                                <img src={user.avatar} width={60} height={60} layout="responsive" />
                             </div>
                             <div className="align-self-center">
-                                <p className="fw-bold m-0 mb-1">Aditya Pratama</p>
+                                <p className="fw-bold m-0 mb-1">{user.name}</p>
                                 <button className="d-flex bg-transparent border-0 hover-danger">
                                     <span class="material-icons me-2" style={{ fontSize: "20px" }}>mode_edit</span>
                                     <p className="m-0 my-auto">Ubah Profil</p>

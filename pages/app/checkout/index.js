@@ -129,23 +129,24 @@ function Checkout() {
                 className="color-gray w-100 py-4 bg-transparent rounded my-4"
                 style={{ border: "3px dashed #9B9B9B" }}
                 onClick={() => {
-                  setState({ ...state, toggleModal: true });
+                  setState({ toggleModal: true })
+                  console.log("adadadada");
+
                 }}
               >
                 Add your address before shopping
             </button>
               : ""}
-
-            {localListAddress.map((data, idx) => {
-              return (
-                <ListUserAddress
-                  item={data}
-                  fireEvents={setLocalListAddress}
-                />
-              );
-            })
+            {
+              localListAddress.map((data, idx) => {
+                return (
+                  <ListUserAddress
+                    item={data}
+                    fireEvents={setLocalListAddress}
+                  />
+                );
+              })
             }
-
             {/* <button className="btn custom-btn color-gray shadow-none" onClick={() => { setState({ ...state, toggleModal: true }) }} >
               Choose another address
               </button> */}
@@ -404,7 +405,7 @@ function Checkout() {
         </Modal>
       }
 
-      {/* <Modal
+      <Modal
         isOpen={state.toggleModal}
         className="modalPositionAndSizeConfig2"
         overlayClassName="modalOverLayConfig"
@@ -423,7 +424,7 @@ function Checkout() {
           </span>
         </div>
 
-        <div className={state.addAdsress == true ? "show" : "hide"}>
+        <div className={state.toggleModal == true ? "show" : "hide"}>
           <h3 className="fw-bold text-center mb-4">Add new address</h3>
           <div className="my-2">
             <label className="color-gray">
@@ -558,7 +559,7 @@ function Checkout() {
             </div>
           </div>
         </div>
-      </Modal> */}
+      </Modal>
 
 
 

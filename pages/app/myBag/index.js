@@ -29,8 +29,9 @@ function index() {
     const data = {
       cartId: JSON.stringify(uniqueId)
     }
-    console.log(data);
     axiosApiInstance.post(`${process.env.api}/v1/cart/delete`, data)
+    setLoad(true)
+    setDataSelected([])
     // dispatch(deleteCart(data)).then((res) => {
     //   Swal.fire("Success", res, "success");
     // }).catch((err) => {
@@ -81,15 +82,23 @@ function index() {
   }
 
   useEffect(() => {
+    console.log("adadad");
     if (load) {
-      dispatch(getCart()).then(() => setLoad(false))
+      dispatch(getCart()).then(() => setLoad(false)).catch(() => {
+        setState({ dataCart: [] })
+        setLoad(false)
+      })
     }
-  }, [handleAdd, handleRemove]);
+  }, [handleAdd, handleRemove, handleDelete]);
 
   useEffect(() => {
+    console.log(carts);
     if (carts.dataCart) {
       if (carts.dataCart.length > 0) {
+        console.log(carts);
         setState(carts)
+      } else {
+        setState([])
       }
     }
   }, [carts]);

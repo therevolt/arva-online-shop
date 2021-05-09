@@ -44,9 +44,9 @@ npm run dev
 npm run build
 ```
 
-<h3 align="center">Fitur Tuku App</h3>
----
-## Register Page
+##ARVA ONLINE SHOP
+
+### Register Page
 
 ![register](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png)
 

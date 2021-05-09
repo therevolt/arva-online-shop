@@ -30,12 +30,12 @@
       </td>
       <td align="center">
         <a href="https://github.com/nevalenaginda">
-          <img width="150" src="https://media-exp1.licdn.com/dms/image/C5603AQHHGbperV6nJw/profile-displayphoto-shrink_800_800/0/1616773820523?e=1626307200&v=beta&t=fVkODopU5bg-C0gZv-AlNpcBd6zMSvDWsq_ePAwRJ2U" alt="Nevalen Aginda Prasetyo"><br/>
+          <img width="150" src="https://avatars.githubusercontent.com/u/55057008?s=400&u=fb217ef27a008e647cf48927f153dcbb266ce4d6&v=4" alt="Nevalen Aginda Prasetyo"><br/>
           <b>Nevalen Aginda Prasetyo</b>
         </a>
       </td>
       <td align="center">
-        <a href="https://github.com/m-joseph27">
+        <a href="https://github.com/heatclift77">
           <img width="150" src="https://media-exp1.licdn.com/dms/image/C5603AQFZLY_7XQ9k0A/profile-displayphoto-shrink_800_800/0/1617766337918?e=1626307200&v=beta&t=t3BBq8dehfARnHorAe1MyQyXAsJz21Ec4O6_Pmx7wSY" alt="Muhammad Aditya Pratama"><br/>
           <b>Muhammad Aditya Pratama</b>
         </a>

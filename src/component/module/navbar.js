@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 export default function Navbar({ isLogin }) {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -26,6 +27,17 @@ export default function Navbar({ isLogin }) {
 
   const handleClickProfile = () => {
     router.push("/app/profile");
+  };
+
+  //ini logic serach
+  const handleSearch = (event) => {
+    dispatch({
+      type: "SET_QUERY_SEARCH_PRODUCT",
+      payload: event.target.value,
+    });
+    if (event.target.value.length > 0) {
+      router.push("/app/searchProduct");
+    }
   };
 
   return (
@@ -68,6 +80,7 @@ export default function Navbar({ isLogin }) {
               className="border-0 me-2 px-2 w-100"
               style={{ outline: "none" }}
               placeholder="search"
+              onKeyUp={(event) => handleSearch(event)}
             />
             <button className="material-icons border-0 bg-transparent color-gray">
               search
@@ -250,6 +263,7 @@ export default function Navbar({ isLogin }) {
               className="border-0 me-2 px-2 w-100"
               style={{ outline: "none" }}
               placeholder="search"
+              onKeyUp={(event) => handleSearch(event)}
             />
             <button className="material-icons border-0 bg-transparent color-gray">
               search
@@ -292,6 +306,7 @@ export default function Navbar({ isLogin }) {
                   className="border-0 me-2 px-2 w-100"
                   style={{ outline: "none" }}
                   placeholder="search"
+                  onKeyUp={(event) => handleSearch(event)}
                 />
                 <button className="material-icons border-0 bg-transparent color-gray">
                   search

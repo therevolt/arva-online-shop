@@ -94,3 +94,17 @@ export const getRecomendationProduct = (data) => (dispatch) => {
       });
   });
 };
+
+export const searchProductProcess = (data) => (dispatch) => {
+  return new Promise((resolve, reject) => {
+    const Url = process.env.api;
+    axios
+      .post(`${Url}/v1/product/search`, data)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};

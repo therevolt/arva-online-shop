@@ -68,10 +68,6 @@ function index() {
     setDataCategory(window.location.pathname.split("/")[3]);
   }, [dispatch, dataCategory, query.name, queryPage, querySize]);
 
-  // useEffect(() => {
-  //   dispatch(getCategoryProduct(dataCategory, queryPage));
-  // }, [dispatch, queryPage]);
-
   useEffect(() => {
     if (product.product) {
       if (product.product.length > 0) {

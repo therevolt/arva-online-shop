@@ -8,6 +8,44 @@
 </p>
 
 
+## Dependencies
+- [NextJS](https://nextjs.org/)
+- [Axios](https://www.npmjs.com/package/axios)
+- [bootstrap](https://www.npmjs.com/package/bootstrap)
+- [sweetalert2](https://www.npmjs.com/package/sweetalert2)
+- [react-router-dom](https://www.npmjs.com/package/react-router-dom)
+- [redux](https://www.npmjs.com/package/redux)
+- [react-redux](https://www.npmjs.com/package/react-redux)
+- [redux-logger](https://www.npmjs.com/package/redux-logger)
+- [redux-thunk](https://www.npmjs.com/search?q=redux-thunk)
+
+---
+
+
+## Project setup
+
+- Silahkan buka terminal pada VScode dengan cara tekan tombol
+```
+CTRL + ` 
+atau
+CTRL + SHIFT + C
+```
+
+- Kemudian lakukan install npm terlebih dahulu dengan membuat perintah seperti berikut
+```
+npm install atau npm i
+```
+
+- Jika sudah, maka untuk menjalankan silahkan ketikan perintah berikut ini
+```
+npm run dev
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
 ## Backend
 * [`ARVA ONLINE SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
 
@@ -15,7 +53,7 @@
 * [`COMING SOON`]
 
 
-## Contributors
+## Kontributor
 
 <center>
   <table>
@@ -27,7 +65,7 @@
         </a>
       </td>
       <td align="center">
-        <a href="https://github.com/abudzr">
+        <a href="https://github.com/therevolt/">
           <img width="150" src="https://media-exp1.licdn.com/dms/image/C5603AQHWisyVrRhm-Q/profile-displayphoto-shrink_800_800/0/1617809629399?e=1626307200&v=beta&t=Jx9QSk3dCoVZWsdErlwIY6FuoL5tqj3vr49yTRkvoO4" alt="Rama Seftiansyah"><br/>
           <b>Rama Seftiansyah</b>
         </a>

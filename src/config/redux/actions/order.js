@@ -10,10 +10,11 @@ export const makeOrder = (data) => (dispatch) => {
             .post(`${Url}/v1/order`, data)
             .then((res) => {
                 dispatch({ type: "MAKE_ORDER", payload: res.data.data });
-                resolve(res.data.message);
+                resolve(res);
             })
             .catch((err) => {
-                reject(new Error(err.response.data.message));
+                console.log(err);
+                // reject(new Error(err.response));
             });
         // }
     });

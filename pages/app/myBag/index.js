@@ -12,13 +12,19 @@ function index() {
   const [state, setState] = useState(null);
   const [activeBtn, setActiveBtn] = useState(false);
   const [isSelected, setisSelected] = useState([]);
+  const [load, setLoad] = useState(true)
+  const [dataSelected, setDataSelected] = useState([])
 
-  // const handleSelected = (item) => {
-  //   let data = [];
-  //   data.push( item)
-  //   setisSelected(data)
-  //   console.log(data);
-  // };
+  const handleSelected = (item) => {
+    // let data = [];
+    setDataSelected([...dataSelected, item])
+    console.log(item);
+    console.log("clicked");
+    // data.push( item)
+
+    // setisSelected(item)
+    // console.log(isSelected.includes({ totalPrice: item.totalPrice }));
+  };
 
   const handleDelete = () => {
     // console.log(isSelected);
@@ -39,6 +45,7 @@ function index() {
       };
       dispatch(addCart(data))
       setActiveBtn(true);
+      setLoad(true)
     } else {
       setActiveBtn(false)
     }
@@ -56,6 +63,7 @@ function index() {
         };
         dispatch(addCart(data))
         setActiveBtn(true);
+        setLoad(true)
       } else {
         setActiveBtn(false);
       }
@@ -63,12 +71,15 @@ function index() {
   };
 
   const handleBuy = () => {
+    dispatch({ type: "ADD_CART", payload: dataSelected })
     router.push("/app/checkout")
   }
 
   useEffect(() => {
-    dispatch(getCart())
-  }, [dispatch, carts]);
+    if (load) {
+      dispatch(getCart()).then(() => setLoad(false))
+    }
+  }, [handleAdd, handleRemove]);
 
   useEffect(() => {
     if (carts.dataCart) {
@@ -121,7 +132,9 @@ function index() {
                           type="checkbox"
                           // value={item.id}
                           id="flexCheckDefault"
-                          onClick={() => handleSelected(item.id)}
+                          // onSelect={(item) => console.log(item)}
+                          // onChange={(item) => console.log(item.target)}
+                          onClick={() => handleSelected(item)}
                         />
                         <div className="d-none d-md-flex border-image ms-3">
                           <img
@@ -186,7 +199,7 @@ function index() {
                 <p className="fw-bold">Shopping summary</p>
                 <div className="d-flex justify-content-between">
                   <span className="text-muted">Total price</span>
-                  <span className="fw-bold f-18">{Rupiah(`Rp ${carts.totalPayment}`)}</span>
+                  <span className="fw-bold f-18">{Rupiah(`Rp ${dataSelected.map((item) => item.totalPrice).reduce((a, b) => a + b, 0)}`)}</span>
                 </div>
                 <div className="row justify-content-center">
                   <div className="col-sm-12 col-md-8 col-lg-12">

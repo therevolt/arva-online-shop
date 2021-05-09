@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   error: "",
   role: null,
+  status: false,
 };
 
 const userReducer = (state = initialState, action) => {
@@ -54,6 +55,9 @@ const userReducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
+
+    case "REQUEST_LOGOUT":
+      return state;
 
     case "GET_PROFILE_REQUEST":
       return {
@@ -119,5 +123,4 @@ const userReducer = (state = initialState, action) => {
       return state;
   }
 };
-
 export default userReducer;

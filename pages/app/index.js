@@ -57,11 +57,11 @@ export default function App() {
     const myArrow2 = ({ type, onClick, isEdge }) => {
         if (type === consts.PREV) {
             return (
-                <button className="material-icons btn-navigation" onClick={onClick} disabled={isEdge} style={{ position: "absolute", top: "50%", transform: "translate(0, -90%)", left: 0, zIndex: 999 }} >arrow_back_ios</button>
+                <button className="material-icons btn-navigation" onClick={onClick} disabled={isEdge} style={{ position: "absolute", top: "50%", transform: "translate(0, -90%)", left: 0, zIndex: 8 }} >arrow_back_ios</button>
             )
         } else {
             return (
-                <button className="material-icons btn-navigation" onClick={onClick} disabled={isEdge} style={{ position: "absolute", top: "50%", transform: "translate(0, -90%)", left: "65px", zIndex: 999 }} >arrow_forward_ios</button>
+                <button className="material-icons btn-navigation" onClick={onClick} disabled={isEdge} style={{ position: "absolute", top: "50%", transform: "translate(0, -90%)", left: "65px", zIndex: 8 }} >arrow_forward_ios</button>
             )
         }
     }

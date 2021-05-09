@@ -1,17 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-
-export default function Navbar({ isLogin }) {
+import { refresPage } from "../../config/redux/actions/users";
+export default function Navbar() {
+  const { status, user } = useSelector((state) => state.user);
+  console.log(status);
   const dispatch = useDispatch();
   const router = useRouter();
   const page = router.pathname.split("/")[2];
-
   const [state, setState] = useState({
     navbarMobileToggle: false,
     dropdownToggle: false,
   });
+
+  useEffect(() => {
+    dispatch(refresPage());
+  }, []);
+
   const toggleOpenNavbarMobile = () => {
     setState({ ...state, navbarMobileToggle: true });
   };
@@ -29,7 +35,6 @@ export default function Navbar({ isLogin }) {
     router.push("/app/profile");
   };
 
-  //ini logic serach
   const handleSearch = (event) => {
     dispatch({
       type: "SET_QUERY_SEARCH_PRODUCT",
@@ -40,10 +45,15 @@ export default function Navbar({ isLogin }) {
     }
   };
 
+  const handleLogout = () => {
+    dispatch({ type: "REQUEST_LOGOUT" });
+    localStorage.removeItem("token");
+    router.push("/auth/login");
+  };
   return (
     <>
       {/* Navbar Mobile after login */}
-      <div className={isLogin === false ? "hide" : "show"}>
+      <div className={status === false ? "hide" : "show"}>
         <div
           className={
             state.navbarMobileToggle == true
@@ -61,19 +71,13 @@ export default function Navbar({ isLogin }) {
           </div>
           <div className="d-flex justify-content-center">
             <button
-              className="rounded-circle overflow-hidden bg-transparent border-0 mb-3"
+              className="rounded-circle overflow-hidden bg-transparent border-0 mb-3 d-flex justify-content-center"
               style={{ width: "100px", height: "100px" }}
-              onClick={handleClickProfile}
             >
-              <Image
-                src="/img/default.png"
-                width={150}
-                height={150}
-                layout="responsive"
-              />
+              <img src={user.avatar} className="w-100 align-self-center" />
             </button>
           </div>
-          <h5 className="text-center mb-5 fw-bold">Aditya Pratama</h5>
+          <h5 className="text-center mb-5 fw-bold">{user.name}</h5>
           <div className="rounded-md border p-2 d-flex mb-4">
             <input
               type="text"
@@ -94,7 +98,7 @@ export default function Navbar({ isLogin }) {
             <span className="material-icons">notifications_none</span>{" "}
             <p className="m-0 ms-2">notifications</p>
           </button>
-          <div className={page == "profil" ? "show" : "hide"}>
+          <div className={page == "profile" ? "show" : "hide"}>
             <div className="d-flex my-4">
               <span
                 className="material-icons text-white rounded-circle p-2 me-3"
@@ -144,7 +148,7 @@ export default function Navbar({ isLogin }) {
               </button>
             </div>
           </div>
-          <div className={page == "profil-store" ? "show" : "hide"}>
+          <div className={page == "profile-store" ? "show" : "hide"}>
             <div className="d-flex my-4">
               <span
                 className="material-icons text-white rounded-circle p-2 me-3"
@@ -233,7 +237,10 @@ export default function Navbar({ isLogin }) {
             <span className="material-icons">add_shopping_cart</span>{" "}
             <p className="m-0 ms-2">My Bag</p>
           </button>
-          <button className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger">
+          <button
+            className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger"
+            onClick={handleLogout}
+          >
             <span className="material-icons">logout</span>{" "}
             <p className="m-0 ms-2">Logout</p>
           </button>
@@ -241,7 +248,7 @@ export default function Navbar({ isLogin }) {
       </div>
       {/*  */}
       {/* Navbar Mobile after Logout */}
-      <div className={isLogin === true ? "hide" : "show"}>
+      <div className={status === true ? "hide" : "show"}>
         <div
           className={
             state.navbarMobileToggle == true
@@ -289,12 +296,17 @@ export default function Navbar({ isLogin }) {
       {/* nvbar dekstop */}
       <div
         className="shadow bg-white py-4 position-fixed top-0"
-        style={{ zIndex: "2", width: "100vw" }}
+        style={{ zIndex: "9", width: "100vw" }}
       >
         <div className="container">
           <div className="row">
             <div className="col-10 col-lg-3">
-              <div className="d-flex">
+              <div
+                className="d-flex c-pointer"
+                onClick={() => {
+                  router.push("/app");
+                }}
+              >
                 <Image src="/img/logo_navbar.png" width={34} height={44} />
                 <h4 className="text-danger ms-3 my-auto fw-bold">ARVA SHOP</h4>
               </div>
@@ -316,7 +328,7 @@ export default function Navbar({ isLogin }) {
             {/* ini komponen belum login */}
             <div
               className={
-                isLogin === false
+                status === false
                   ? "col-3 col-lg-4 ms-auto hide-sm show-lg"
                   : "hide"
               }
@@ -343,7 +355,7 @@ export default function Navbar({ isLogin }) {
             {/* ini komponen sudah login */}
             <div
               className={
-                isLogin === true
+                status === true
                   ? "col-3 col-lg-4 ms-auto hide-sm show-lg"
                   : "hide"
               }
@@ -359,16 +371,17 @@ export default function Navbar({ isLogin }) {
                   mail
                 </button>
                 <button
-                  className="rounded-circle overflow-hidden bg-transparent border-0"
+                  className="rounded-circle overflow-hidden bg-transparent border-0 d-flex justify-content-center"
                   style={{ width: "50px", height: "50px" }}
-                  onClick={handleClickProfile}
+                  onClick={() => {
+                    if (user.role == "seller") {
+                      router.push("/app/profile-store");
+                    } else {
+                      router.push("/app/profile");
+                    }
+                  }}
                 >
-                  <Image
-                    src="/img/profil.jpeg"
-                    width={50}
-                    height={50}
-                    layout="responsive"
-                  />
+                  <img src={user.avatar} className="align-self-center w-100" />
                 </button>
               </div>
             </div>

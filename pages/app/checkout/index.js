@@ -1,43 +1,49 @@
 import React, { useState, useEffect } from "react";
 import Modal from 'react-modal'
 import { useDispatch, useSelector } from "react-redux";
-import { getCart } from '../../../src/config/redux/actions/carts'
+import { makeOrder } from "../../../src/config/redux/actions/order";
 import Rupiah from '../../../src/helper/rupiah'
+import Swal from 'sweetalert2'
 
 function Checkout() {
   const dispatch = useDispatch();
   const { carts } = useSelector((state) => state.carts);
-  const [dataCart, setDataCart] = useState(null);
-  // console.log(carts.dataCart[0].quantity);
   const [state, setState] = useState({
     toggleModal: false,
     addAdsress: false
   })
-
-  // const handleBuy = () => {
-  //   const data = {
-  //     productId: JSON.stringify([{
-  //       id: carts.dataCart[0].id,
-  //       quantity: carts.dataCart[0].quantity,
-  //     }]),
-  //     deliveryCost: 15000,
-  //     methodPayment: "bank_transfer",
-  //     email: "abudzaralghifari8@gmail.com",
-  //   }
-  // }
-
-  useEffect(() => {
-    dispatch(getCart())
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (carts.dataCart) {
-      if (carts.dataCart.length > 0) {
-        setDataCart(carts)
-      }
+  const [modalCheckout, setModalCheckout] = useState(false);
+  const [resultCheckout, setResultCheckout] = useState(null)
+  console.log(resultCheckout);
+  const handleBuy = () => {
+    const newData = carts.map((item) => {
+      return {
+        id: item.productId,
+        quantity: item.quantity,
+      };
+    });
+    const data = {
+      productId: JSON.stringify(newData),
+      deliveryCost: 15000,
+      methodPayment: "bank_transfer",
+      email: "abudzaralghifari8@gmail.com",
     }
-  }, [carts]);
 
+    dispatch(makeOrder(data)).then((res) => {
+      setResultCheckout(res.data)
+      // tampilin loading
+      setModalCheckout(true)
+      // Swal.fire({
+      //   title: "Success!",
+      //   text: res,
+      //   icon: "success",
+      //   confirmButtonText: "Ok",
+      //   confirmButtonColor: "#ffba33",
+      // }).catch((err) => {
+      //   Swal.fire("Something Error!", err, "error");
+      // });
+    })
+  }
   return (
     <div className="container">
       <div className="row row mt-7 mb-5">
@@ -63,7 +69,7 @@ function Checkout() {
           {/* akhir shipping addres */}
 
           {/* awal item */}
-          {dataCart && dataCart.dataCart.map((item, index) => {
+          {carts && carts.map((item, index) => {
             return (
               <>
                 <div className="card custom-card mb-3" key={index}>
@@ -105,7 +111,7 @@ function Checkout() {
               <h4 className="f-16 fw-bold mb-3">Shopping summary</h4>
               <div className="d-flex justify-content-between">
                 <div className="color-gray fw-500 f-16">Order</div>
-                <div className="f-18 fw-bold">{Rupiah(`Rp ${carts.totalPayment}`)}</div>
+                <div className="f-18 fw-bold">{Rupiah(`Rp ${carts.map((item) => item.totalPrice).reduce((a, b) => a + b, 0)}`)}</div>
               </div>
               <div className="d-flex justify-content-between">
                 <div className="color-gray fw-500 f-16">Delivery</div>
@@ -114,7 +120,7 @@ function Checkout() {
               <hr />
               <div className="d-flex justify-content-between">
                 <div className="f-16 fw-bold mb-3">Shopping summary</div>
-                <div className="color-red fw-bold f-18">{Rupiah(`Rp ${carts.totalPayment + 15000}`)}</div>
+                <div className="color-red fw-bold f-18">{Rupiah(`Rp ${carts.map((item) => item.totalPrice).reduce((a, b) => a + b, 0) + 15000}`)}</div>
               </div>
               <div className="d-grid gap-2 col-12 mx-auto">
                 <button
@@ -223,7 +229,7 @@ function Checkout() {
                   <h4 className="f-16 fw-bold mb-3">Shopping summary</h4>
                   <div className="d-flex justify-content-between">
                     <div className="color-gray fw-500 f-16">Order</div>
-                    <div className="f-18 fw-bold">{Rupiah(`Rp ${carts.totalPayment}`)}</div>
+                    <div className="f-18 fw-bold">{Rupiah(`Rp ${carts.map((item) => item.totalPrice).reduce((a, b) => a + b, 0)}`)}</div>
                   </div>
                   <div className="d-flex justify-content-between">
                     <div className="color-gray fw-500 f-16">Delivery</div>
@@ -234,7 +240,7 @@ function Checkout() {
                   <div className="d-flex justify-content-between mt-3">
                     <div className="d-flex flex-column align-self-start">
                       <div className="f-16 fw-bold">Shopping summary</div>
-                      <div className="color-red fw-bold f-18">{Rupiah(`Rp ${carts.totalPayment + 15000}`)}</div>
+                      <div className="color-red fw-bold f-18">{Rupiah(`Rp ${carts.map((item) => item.totalPrice).reduce((a, b) => a + b, 0) + 15000}`)}</div>
                     </div>
                     <div className="align-self-end">
                       <button
@@ -242,6 +248,7 @@ function Checkout() {
                         type="button "
                         className="btn  custom-red-btn shadow-none text-white"
                         style={{ width: "140px" }}
+                        onClick={handleBuy}
                       >
                         Buy
                       </button>
@@ -254,7 +261,64 @@ function Checkout() {
         </div>
         {/* end right columns */}
       </div>
-      {/* modal */}
+
+      {/* modal dari buy product detail */}
+      <Modal
+        isOpen={modalCheckout}
+        className="modalPositionAndSizeConfig"
+        overlayClassName="modalOverLayConfig"
+        closeTimeoutMS={400}
+        ariaHideApp={false}
+      >
+        <div className="w-100 d-flex mb-4"><span className="material-icons ms-auto hover-danger c-pointer" onClick={() => { setModalCheckout(false) }} >close</span></div>
+        <div className="" style={{ minHeight: "450px" }} >
+          <div style={{ display: "flex", justifyContent: "center" }} >
+            <img alt="logo success" src="/img/success.png" />
+          </div>
+          <h4 className="fw-bold text-center mt-1">{resultCheckout.message}</h4>
+
+          <div className="px-4 py3">
+            <div className="p-3 border border-black rounded">
+              <div >
+                <p className="fw-bold mb-0">Name: </p>
+                <p>Andreas Jane</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Order Id: </p>
+                <p>{resultCheckout.data.order_id}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Transaction Id: </p>
+                <p>{resultCheckout.data.transaction_id}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Status: </p>
+                <p>{resultCheckout.data.transaction_status}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Payment method: </p>
+                <p>{resultCheckout.data.payment_type === "bank_transfer" ? "Bank Transfer" : ""}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Bank: </p>
+                <p>{resultCheckout.data.va_numbers[0].bank}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Virtual Account Number: </p>
+                <p>{resultCheckout.data.va_numbers[0].va_number}</p>
+              </div>
+              <div>
+                <p className="fw-bold mb-0">Total Payment: </p>
+                <p>{`Rp ${resultCheckout.data.gross_amount}`}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+
+
+      {/* modal adress */}
       <Modal
         isOpen={state.toggleModal}
         className="modalPositionAndSizeConfig"

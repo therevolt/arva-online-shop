@@ -75,14 +75,54 @@ function ProductDetail() {
 
   const handleBuyNow = () => {
     if (!localStorage.getItem("token")) {
-      router.push("/auth/login");
+      Swal.fire({
+        title: "Warning!",
+        text: "Please Login First",
+        icon: "info",
+        confirmButtonText: "Ok",
+        confirmButtonColor: "#ffba33",
+      }).then(res => {
+        router.push("/auth/login");
+      })
     } else {
-      const data = {
-        productId: idProduct,
-        quantity: count
-      };
-      console.log(data);
-      // router.push("/app/checkout")
+      if (count === 0) {
+        Swal.fire({
+          title: "Warning!",
+          text: "Amount Not Valid",
+          icon: "info",
+          confirmButtonText: "Ok",
+          confirmButtonColor: "#ffba33",
+        })
+      } else {
+        if (count < product.stock) {
+          const data = {
+            productId: idProduct,
+            quantity: count,
+            imageProduct: product.image,
+            nameProduct: product.name,
+            nameSeller: product.sellerName,
+            totalPrice: count * product.price
+          };
+          dispatch({ type: "ADD_CART", payload: [data] })
+          // Swal.fire({
+          //   title: "Success!",
+          //   text: res,
+          //   icon: "success",
+          //   confirmButtonText: "Ok",
+          //   confirmButtonColor: "#ffba33",
+          // })
+          router.push("/app/checkout")
+        } else {
+          setCount(product.stock)
+          Swal.fire({
+            title: "Warning!",
+            text: `Stock Not ready, please order < ${product.stock} pcs`,
+            icon: "info",
+            confirmButtonText: "Ok",
+            confirmButtonColor: "#ffba33",
+          })
+        }
+      }
     }
   }
 

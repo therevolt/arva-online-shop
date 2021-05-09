@@ -5,28 +5,11 @@ import { useStore } from "../src/config/redux";
 import { Provider } from "react-redux";
 import { useRouter } from 'next/router'
 import { Navbar, SideBar } from '../src/component/module'
-// import { useSelector } from 'react-redux'
 function MyApp({ Component, pageProps }) {
-  // const { user } = useSelector((state) => state.user);
   const [status, setStatus] = useState(false);
   const store = useStore(pageProps.initialReduxState);
   const router = useRouter()
   const page = router.pathname.split('/')[2]
-  // let isAuthenticated;
-  // if (typeof window !== "undefined") {
-  //   isAuthenticated = localStorage.getItem("token");
-  // }
-
-  // useEffect(() => {
-  //   if (user) {
-  //     if (localStorage.getItem("token")) {
-  //       setStatus(true);
-  //       console.log(status);
-  //     }
-
-  //   }
-  // }, [user]);
-
   if (router.pathname.split('/')[1] === "app") {
     if (router.pathname.split('/')[2] === "profile" || router.pathname.split('/')[2] === "profile-store") {
       return (
@@ -38,7 +21,7 @@ function MyApp({ Component, pageProps }) {
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
           </Head>
-          <Navbar isLogin={status} />
+          <Navbar />
           <SideBar />
           <Component {...pageProps} />
         </Provider>
@@ -53,7 +36,7 @@ function MyApp({ Component, pageProps }) {
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous" />
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
           </Head>
-          <Navbar isLogin={status} />
+          <Navbar />
           <Component {...pageProps} />
         </Provider>
       );

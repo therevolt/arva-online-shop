@@ -12,18 +12,16 @@ function index() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (searchProduct !== "") {
-      setLoading(true);
-      dispatch(searchProductProcess({ name: searchProduct }))
-        .then((res) => {
-          setDataResult(res.data.data);
-          setLoading(false);
-        })
-        .catch((err) => {
-          setDataResult([]);
-          setLoading(false);
-        });
-    }
+    setLoading(true);
+    dispatch(searchProductProcess({ name: searchProduct }))
+      .then((res) => {
+        setDataResult(res.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setDataResult([]);
+        setLoading(false);
+      });
   }, [searchProduct]);
 
   return (

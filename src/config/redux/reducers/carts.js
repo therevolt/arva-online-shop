@@ -21,6 +21,11 @@ const cartsReducer = (state = initialState, action) => {
                 ...state,
                 carts: action.payload,
             };
+        // case "DELETE_CART":
+        // return {
+        //     ...state,
+        //     carts: action.payload,
+        // };
         default:
             return state;
     }

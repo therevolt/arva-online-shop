@@ -3,6 +3,7 @@ import Helper from './helpers'
 import reducerUser from "./users"
 import reducerProduct from './product'
 import reducerCart from './carts'
+import reducerSeller from './seller'
 import { combineReducers } from "redux";
 import orderReducer from "./order";
 const reducers = {
@@ -12,6 +13,7 @@ const reducers = {
   product: reducerProduct,
   carts: reducerCart,
   order: orderReducer,
+  seller: reducerSeller
 };
 
 export default combineReducers(reducers);

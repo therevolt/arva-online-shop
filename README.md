@@ -44,7 +44,7 @@ npm run dev
 npm run build
 ```
 
-## FITUR Tickitz  
+## Fitur ARVA Online Shop
 
 ### Register Page
 

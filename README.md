@@ -9,7 +9,7 @@
 
 
 ## Dependensi
-- [React Js](https://reactjs.org/)
+- [next Js](https://Nextjs.org/)
 - [Axios](https://www.npmjs.com/package/axios)
 - [Bootstrap](https://www.npmjs.com/package/bootstrap)
 - [Sweetalert](https://www.npmjs.com/package/sweetalert)

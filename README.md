@@ -9,10 +9,10 @@
 
 
 ## Dependensi
-- [NextJS](https://nextjs.org/)
+- [React Js](https://reactjs.org/)
 - [Axios](https://www.npmjs.com/package/axios)
 - [Bootstrap](https://www.npmjs.com/package/bootstrap)
-- [Sweetalert2](https://www.npmjs.com/package/sweetalert2)
+- [Sweetalert](https://www.npmjs.com/package/sweetalert)
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
 - [Redux](https://www.npmjs.com/package/redux)
 - [React-redux](https://www.npmjs.com/package/react-redux)
@@ -44,7 +44,7 @@ npm run dev
 npm run build
 ```
 
-## FITUR ARVA ONLINE SHOP
+## FITUR Tickitz  
 
 ### Register Page
 

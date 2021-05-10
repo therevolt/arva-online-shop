@@ -14,6 +14,7 @@ export default function App() {
     const dispatch = useDispatch();
     const { product } = useSelector((state) => state.product);
     const [homeProduct, setHomeProduct] = useState(null)
+    console.log(product);
     const isMobile = useMediaQuery({
         query: "(min-device-width: 992px)"
     })
@@ -85,8 +86,8 @@ export default function App() {
     }, [dispatch]);
 
     useEffect(() => {
-        if (product.newProduct) {
-            if (product.newProduct.length > 0) {
+        if (product.newProduct || product.popularProduct) {
+            if (product.newProduct.length > 0 || product.popularProduct.length > 0) {
                 setHomeProduct(product)
             }
         }

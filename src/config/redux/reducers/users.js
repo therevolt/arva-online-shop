@@ -57,9 +57,6 @@ const userReducer = (state = initialState, action) => {
         error: action.payload,
       };
 
-    case "REQUEST_LOGOUT":
-      return state;
-
     case "GET_PROFILE_REQUEST":
       return {
         ...state,
@@ -121,6 +118,7 @@ const userReducer = (state = initialState, action) => {
       };
 
     case "LOGOUT":
+      console.log("masuk sini");
       return {
         ...state,
         user: {},

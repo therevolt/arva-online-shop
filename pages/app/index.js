@@ -15,50 +15,46 @@ import { Navbar } from "../../src/component/module";
 import Rupiah from "../../src/helper/rupiah";
 
 export default function App() {
-    const router = useRouter();
-    const dispatch = useDispatch();
-    const { product } = useSelector((state) => state.product);
-    const [homeProduct, setHomeProduct] = useState(null)
-    console.log(product);
-    const isMobile = useMediaQuery({
-        query: "(min-device-width: 992px)"
-    })
-    const [state, setState] = useState({
-        showArrows: true
-    })
-    // config responsive carousel atas
-    const responsive = [
-        { width: 1, itemsToShow: 1 },
-        { width: 550, itemsToShow: 1, itemsToScroll: 1 },
-        { width: 850, itemsToShow: 2 },
-        { width: 1150, itemsToShow: 2, itemsToScroll: 1 },
-        { width: 1450, itemsToShow: 3 },
-        { width: 1750, itemsToShow: 4 },
-    ];
-    // ----
-    // config responsive carousel bawah
-    const responsive2 = [
-        { width: 1, itemsToShow: 4 },
-        { width: 550, itemsToShow: 4, itemsToScroll: 1 },
-        { width: 850, itemsToShow: 4 },
-        { width: 1150, itemsToShow: 4, itemsToScroll: 1 },
-        { width: 1450, itemsToShow: 6 },
-        { width: 1750, itemsToShow: 6 },
-    ];
-    // ----
-    // config posisi dan fungsi panah carousel atas
-    const myArrow = ({ type, onClick, isEdge }) => {
-        if (type === consts.PREV) {
-            return (
-                <PreviousArrow onClick={onClick} disabled={isEdge} />
-            )
-        } else {
-            return (
-                <NextArrow onClick={onClick} disabled={isEdge} />
-            )
-        }
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { product } = useSelector((state) => state.product);
+  const [homeProduct, setHomeProduct] = useState(null);
+  console.log(product);
+  const isMobile = useMediaQuery({
+    query: "(min-device-width: 992px)",
+  });
+  const [state, setState] = useState({
+    showArrows: true,
+  });
+  // config responsive carousel atas
+  const responsive = [
+    { width: 1, itemsToShow: 1 },
+    { width: 550, itemsToShow: 1, itemsToScroll: 1 },
+    { width: 850, itemsToShow: 2 },
+    { width: 1150, itemsToShow: 2, itemsToScroll: 1 },
+    { width: 1450, itemsToShow: 3 },
+    { width: 1750, itemsToShow: 4 },
+  ];
+  // ----
+  // config responsive carousel bawah
+  const responsive2 = [
+    { width: 1, itemsToShow: 4 },
+    { width: 550, itemsToShow: 4, itemsToScroll: 1 },
+    { width: 850, itemsToShow: 4 },
+    { width: 1150, itemsToShow: 4, itemsToScroll: 1 },
+    { width: 1450, itemsToShow: 6 },
+    { width: 1750, itemsToShow: 6 },
+  ];
+  // ----
+  // config posisi dan fungsi panah carousel atas
+  const myArrow = ({ type, onClick, isEdge }) => {
+    if (type === consts.PREV) {
+      return <PreviousArrow onClick={onClick} disabled={isEdge} />;
+    } else {
+      return <NextArrow onClick={onClick} disabled={isEdge} />;
     }
   };
+
   // ---
   // config posisi dan fungsi panah carousel bawah
   const myArrow2 = ({ type, onClick, isEdge }) => {
@@ -122,13 +118,13 @@ export default function App() {
     dispatch(getHomeProduct());
   }, [dispatch]);
 
-    useEffect(() => {
-        if (product.newProduct || product.popularProduct) {
-            if (product.newProduct.length > 0 || product.popularProduct.length > 0) {
-                setHomeProduct(product)
-            }
-        }
-    }, [product]);
+  useEffect(() => {
+    if (product.newProduct || product.popularProduct) {
+      if (product.newProduct.length > 0 || product.popularProduct.length > 0) {
+        setHomeProduct(product);
+      }
+    }
+  }, [product]);
 
   return (
     <div className="">

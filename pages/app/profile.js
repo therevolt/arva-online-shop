@@ -14,8 +14,9 @@ import {
   getHistoryOrderUser,
 } from "../../src/config/redux/actions/users";
 import { ListUserAddress } from "../../src/component/module";
+import withAuth from "../../src/helper/authNext";
 
-export default function Profil() {
+const Profile = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   // const api = process.env.api;
@@ -43,6 +44,21 @@ export default function Profil() {
     },
   });
 
+  //function clear object null or undefined
+  function cleanCondition(obj) {
+    for (var propName in obj) {
+      if (
+        obj[propName] === null ||
+        obj[propName] === undefined ||
+        obj[propName] === "null" ||
+        obj[propName] === ""
+      ) {
+        delete obj[propName];
+      }
+    }
+    return obj;
+  }
+
   //=============ini awal bagian edit profile user===============
   // state unable and disable edit profile
   const [profileIsDisable, setProfileIsDisabled] = useState(true);
@@ -68,19 +84,27 @@ export default function Profil() {
 
   const handleChangeImage = (event) => {
     // const imgFiles = event.target.files[0];
-
-    if (event.target.files[0].size > 2 * 1024 * 1024) {
+    const { type } = event.target.files[0];
+    if (type.match(/jpeg|png/g)) {
+      if (event.target.files[0].size > 2 * 1024 * 1024) {
+        Swal.fire(
+          "Something Error!",
+          "This file is to large. Maximum file size 2 mb.",
+          "error"
+        );
+      } else {
+        setImgUrl(URL.createObjectURL(event.target.files[0]));
+        setImgStatus(true);
+        setDataImage({
+          image: event.target.files[0],
+        });
+      }
+    } else {
       Swal.fire(
         "Something Error!",
-        "This file is to large. Maximum file size 2 mb.",
+        "Only .png, .jpg and .jpeg format allowed!",
         "error"
       );
-    } else {
-      setImgUrl(URL.createObjectURL(event.target.files[0]));
-      setImgStatus(true);
-      setDataImage({
-        image: event.target.files[0],
-      });
     }
   };
 
@@ -98,10 +122,16 @@ export default function Profil() {
     event.preventDefault();
     const formData = new FormData();
     formData.append("name", profileUser.name);
-    formData.append("phone", profileUser.phone);
+
     formData.append("email", profileUser.email);
     formData.append("gender", profileUser.gender);
-    formData.append("birthday", profileUser.birthday);
+
+    if (profileUser.phone) {
+      formData.append("phone", profileUser.phone);
+    }
+    if (profileUser.birthday) {
+      formData.append("birthday", profileUser.birthday);
+    }
     if (imgStatus) {
       formData.append("avatar", dataImage.image);
     }
@@ -119,15 +149,17 @@ export default function Profil() {
 
   //fetch data user dari api
   useEffect(() => {
-    dispatch(getProfile())
-      .then((res) => {
-        // console.log(res);
-        // Swal.fire("Success", res, "success");
-      })
-      .catch((err) => {
-        // console.log(err);
-        // Swal.fire("Something Error!", err, "error");
-      });
+    if (localStorage.getItem("token")) {
+      dispatch(getProfile())
+        .then((res) => {
+          // console.log(res);
+          // Swal.fire("Success", res, "success");
+        })
+        .catch((err) => {
+          // console.log(err);
+          // Swal.fire("Something Error!", err, "error");
+        });
+    }
   }, [dispatch]);
 
   //set data user dari state global ke state lokal profileUser
@@ -151,7 +183,9 @@ export default function Profil() {
 
   //fetch data address user dari api
   useEffect(() => {
-    dispatch(getListAddressUser());
+    if (localStorage.getItem("token")) {
+      dispatch(getListAddressUser());
+    }
   }, [dispatch]);
 
   //useEffect menampung list address ke state lokal
@@ -228,17 +262,19 @@ export default function Profil() {
 
   useEffect(() => {
     setLoadingHistory(true);
-    dispatch(getHistoryOrderUser(state.myOrder.orderStatus))
-      .then((res) => {
-        console.log("order history", res.data.data);
-        setLoadingHistory(false);
-        setLocalHistoryOrder(res.data.data);
-      })
-      .catch((err) => {
-        setLoadingHistory(false);
-        console.log(err);
-        setLocalHistoryOrder([]);
-      });
+    if (localStorage.getItem("token")) {
+      dispatch(getHistoryOrderUser(state.myOrder.orderStatus))
+        .then((res) => {
+          console.log("order history", res.data.data);
+          setLoadingHistory(false);
+          setLocalHistoryOrder(res.data.data);
+        })
+        .catch((err) => {
+          setLoadingHistory(false);
+          console.log(err);
+          setLocalHistoryOrder([]);
+        });
+    }
   }, [state.myOrder.orderStatus]);
 
   return (
@@ -612,7 +648,7 @@ export default function Profil() {
                                 profileIsDisable && "text-muted"
                               }`}
                             >
-                              Laki Laki
+                              Laki-laki
                             </label>
                           </div>
                           <div className="d-flex">
@@ -1177,4 +1213,6 @@ export default function Profil() {
       </style>
     </div>
   );
-}
+};
+
+export default withAuth(Profile);

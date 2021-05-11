@@ -11,6 +11,7 @@ import {
 import Rupiah from "../../../src/helper/rupiah";
 import { ListUserAddress } from "../../../src/component/module";
 import Swal from "sweetalert2";
+import withAuth from "../../../src/helper/authNext";
 
 function Checkout() {
   const dispatch = useDispatch();
@@ -46,7 +47,9 @@ function Checkout() {
   const [localListAddress, setLocalListAddress] = useState([]);
   console.log(localListAddress);
   useEffect(() => {
-    dispatch(getListAddressUser());
+    if (localStorage.getItem("token")) {
+      dispatch(getListAddressUser());
+    }
   }, [dispatch]);
 
   //useEffect menampung list address ke state lokal
@@ -138,9 +141,14 @@ function Checkout() {
               ""
             )}
             {localListAddress.map((data, idx) => {
-              return (
-                <ListUserAddress item={data} fireEvents={setLocalListAddress} />
-              );
+              if (data.isPrimary) {
+                return (
+                  <ListUserAddress
+                    item={data}
+                    fireEvents={setLocalListAddress}
+                  />
+                );
+              }
             })}
             {/* <button className="btn custom-btn color-gray shadow-none" onClick={() => { setState({ ...state, toggleModal: true }) }} >
               Choose another address
@@ -718,4 +726,4 @@ function Checkout() {
   );
 }
 
-export default Checkout;
+export default withAuth(Checkout);

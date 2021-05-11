@@ -32,8 +32,8 @@ export default function Navbar() {
     router.push("/auth/register");
   };
   const handleMyBag = () => {
-    router.push("/app/myBag")
-  }
+    router.push("/app/myBag");
+  };
 
   const handleClickProfile = () => {
     router.push("/app/profile");
@@ -238,7 +238,10 @@ export default function Navbar() {
             </div>
           </div>
 
-          <button className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger" onClick={handleMyBag}>
+          <button
+            className="bg-transparent border-0 border-top border-bottom py-3 d-flex w-100 text-danger"
+            onClick={handleMyBag}
+          >
             <span className="material-icons">add_shopping_cart</span>{" "}
             <p className="m-0 ms-2">My Bag</p>
           </button>
@@ -330,7 +333,7 @@ export default function Navbar() {
                 </button>
               </div>
             </div>
-            <div className="col">
+            {/* <div className="col">
               <div className="d-flex justify-content-center align-items-center ">
                 <button
                   className="material-icons border-0 bg-transparent mt-2 color-gray filter"
@@ -344,7 +347,7 @@ export default function Navbar() {
                   filter_alt
                 </button>
               </div>
-            </div>
+            </div> */}
 
             {/* ini komponen belum login */}
             <div
@@ -355,7 +358,10 @@ export default function Navbar() {
               }
             >
               <div className="d-flex justify-content-end">
-                <button className="material-icons bg-transparent border-0 my-auto me-4 color-gray" onClick={handleMyBag}>
+                <button
+                  className="material-icons bg-transparent border-0 my-auto me-4 color-gray"
+                  onClick={handleMyBag}
+                >
                   add_shopping_cart
                 </button>
                 <button
@@ -382,7 +388,10 @@ export default function Navbar() {
               }
             >
               <div className="d-flex justify-content-end">
-                <button className="material-icons bg-transparent border-0 mt-2 me-4 hover-danger" onClick={handleMyBag}>
+                <button
+                  className="material-icons bg-transparent border-0 mt-2 me-4 hover-danger"
+                  onClick={handleMyBag}
+                >
                   add_shopping_cart
                 </button>
                 <button className="material-icons bg-transparent border-0 mt-2 me-4 hover-danger">

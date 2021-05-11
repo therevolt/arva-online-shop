@@ -120,6 +120,18 @@ const userReducer = (state = initialState, action) => {
         error: action.payload,
       };
 
+    case "LOGOUT":
+      return {
+        ...state,
+        user: {},
+        listAddressUser: [],
+        historyOrderUser: [],
+        loading: false,
+        error: "",
+        role: null,
+        status: false,
+      };
+
     default:
       return state;
   }

@@ -9,10 +9,10 @@
 
 
 ## Dependensi
-- [NextJS](https://nextjs.org/)
+- [next Js](https://Nextjs.org/)
 - [Axios](https://www.npmjs.com/package/axios)
 - [Bootstrap](https://www.npmjs.com/package/bootstrap)
-- [Sweetalert2](https://www.npmjs.com/package/sweetalert2)
+- [Sweetalert](https://www.npmjs.com/package/sweetalert)
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
 - [Redux](https://www.npmjs.com/package/redux)
 - [React-redux](https://www.npmjs.com/package/react-redux)
@@ -44,7 +44,7 @@ npm run dev
 npm run build
 ```
 
-## FITUR ARVA ONLINE SHOP
+## Fitur ARVA Online Shop
 
 ### Register Page
 
@@ -79,7 +79,7 @@ npm run build
 * [`Backend ARVA ONLINE SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
 
 ## Deploy
-* [`COMING SOON`]
+* [`Web ARVA ONLINE SHOP`](https://arva-online-shop.vercel.app/app)
 
 
 ## Kontributor

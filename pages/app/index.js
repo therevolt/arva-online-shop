@@ -239,7 +239,7 @@ export default function App() {
                     }}
                   />
                   <p className="mx-auto fs-2 my-auto" style={{ zIndex: "3" }}>
-                    glasses
+                    Glasses
                   </p>
                 </div>
                 <div

@@ -9,7 +9,7 @@ import {
   insertAddressUser,
 } from "../../../src/config/redux/actions/users";
 import Rupiah from "../../../src/helper/rupiah";
-import { ListUserAddress } from "../../../src/component/module";
+import { ListAddressCheckout } from "../../../src/component/module";
 import Swal from "sweetalert2";
 import withAuth from "../../../src/helper/authNext";
 
@@ -45,7 +45,6 @@ function Checkout() {
 
   const [isLoadingProcess, setIsLoadingProcess] = useState(false);
   const [localListAddress, setLocalListAddress] = useState([]);
-  console.log(localListAddress);
   useEffect(() => {
     if (localStorage.getItem("token")) {
       dispatch(getListAddressUser());
@@ -128,11 +127,10 @@ function Checkout() {
             {/* <div className="card-body "> */}
             {localListAddress.length === 0 ? (
               <button
-                className="color-gray w-100 py-4 bg-transparent rounded my-4"
+                className="color-gray w-100 py-4 bg-transparent rounded"
                 style={{ border: "3px dashed #9B9B9B" }}
                 onClick={() => {
                   setState({ toggleModal: true });
-                  console.log("adadadada");
                 }}
               >
                 Add your address before shopping
@@ -143,7 +141,7 @@ function Checkout() {
             {localListAddress.map((data, idx) => {
               if (data.isPrimary) {
                 return (
-                  <ListUserAddress
+                  <ListAddressCheckout
                     item={data}
                     fireEvents={setLocalListAddress}
                   />
@@ -222,10 +220,9 @@ function Checkout() {
                 <div className="f-16 fw-bold mb-3">Shopping summary</div>
                 <div className="color-red fw-bold f-18">
                   {Rupiah(
-                    `Rp ${
-                      carts
-                        .map((item) => item.totalPrice)
-                        .reduce((a, b) => a + b, 0) + 15000
+                    `Rp ${carts
+                      .map((item) => item.totalPrice)
+                      .reduce((a, b) => a + b, 0) + 15000
                     }`
                   )}
                 </div>
@@ -356,10 +353,9 @@ function Checkout() {
                       <div className="f-16 fw-bold">Shopping summary</div>
                       <div className="color-red fw-bold f-18">
                         {Rupiah(
-                          `Rp ${
-                            carts
-                              .map((item) => item.totalPrice)
-                              .reduce((a, b) => a + b, 0) + 15000
+                          `Rp ${carts
+                            .map((item) => item.totalPrice)
+                            .reduce((a, b) => a + b, 0) + 15000
                           }`
                         )}
                       </div>

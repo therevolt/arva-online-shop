@@ -19,7 +19,6 @@ export default function App() {
   const dispatch = useDispatch();
   const { product } = useSelector((state) => state.product);
   const [homeProduct, setHomeProduct] = useState(null);
-  console.log(product);
   const isMobile = useMediaQuery({
     query: "(min-device-width: 992px)",
   });

@@ -24,7 +24,6 @@ function index() {
   const [activeBtn, setActiveBtn] = useState("");
 
   const handleSelected = (item) => {
-
     setDataSelected([...dataSelected, item]);
     const newId = isSelected.push(String(item.id));
   };
@@ -40,20 +39,23 @@ function index() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        const uniqueId = [...new Set(isSelected)];
+        // const uniqueId = [...new Set(isSelected)];
         const data = {
-          cartId: JSON.stringify(uniqueId),
+          cartId: JSON.stringify(check),
         };
-        axiosApiInstance.post(`${process.env.api}/v1/cart/delete`, data).then((res) => {
-          setLoad(true);
-          setDataSelected([]);
-          Swal.fire("Success", res, "success");
-        }).catch((err) => {
-          Swal.fire("Something Error!", err, "error");
-        });
-      };
+        axiosApiInstance
+          .post(`${process.env.api}/v1/cart/delete`, data)
+          .then((res) => {
+            setLoad(true);
+            setCheck([]);
+            Swal.fire("Success", res, "success");
+          })
+          .catch((err) => {
+            Swal.fire("Something Error!", err, "error");
+          });
+      }
     });
-  }
+  };
 
   const handleCheck = (e) => {
     if (check.includes(e.target.id)) {
@@ -61,11 +63,11 @@ function index() {
       if (index > -1) {
         check.splice(index, 1);
       }
-      setCheck(check)
+      setCheck(check);
     } else {
-      setCheck([...check, e.target.id])
+      setCheck([...check, e.target.id]);
     }
-  }
+  };
 
   const handleAdd = (item) => {
     if (item.quantity < item.stockProduct) {
@@ -97,14 +99,17 @@ function index() {
           const data = {
             cartId: JSON.stringify(item.id),
           };
-          axiosApiInstance.post(`${process.env.api}/v1/cart/delete`, data).then((res) => {
-            setLoad(true);
-            setDataSelected([]);
-            Swal.fire("Success", res, "success");
-          }).catch((err) => {
-            Swal.fire("Something Error!", err, "error");
-          });
-        };
+          axiosApiInstance
+            .post(`${process.env.api}/v1/cart/delete`, data)
+            .then((res) => {
+              setLoad(true);
+              setDataSelected([]);
+              Swal.fire("Success", res, "success");
+            })
+            .catch((err) => {
+              Swal.fire("Something Error!", err, "error");
+            });
+        }
       });
       // setActiveBtn(false);
     } else {
@@ -123,7 +128,19 @@ function index() {
   };
 
   const handleBuy = () => {
-    dispatch({ type: "ADD_CART", payload: dataSelected });
+    // console.log(
+    //   check.map(
+    //     (item) =>
+    //       state.dataCart.filter((item2) => item2.id.toString() === item)[0]
+    //   )
+    // );
+    dispatch({
+      type: "ADD_CART",
+      payload: check.map(
+        (item) =>
+          state.dataCart.filter((item2) => item2.id.toString() === item)[0]
+      ),
+    });
     router.push("/app/checkout");
   };
 
@@ -165,13 +182,18 @@ function index() {
                     id="flexCheckDefault"
                     onClick={(e) => {
                       if (check.length === state.dataCart.length) {
-                        console.log("mau kesini ga?");
-                        setCheck([])
+                        setCheck([]);
                       } else {
-                        setCheck(state.dataCart.map((item, index) => index.toString()))
+                        setCheck(
+                          state.dataCart.map((item) => item.id.toString())
+                        );
                       }
                     }}
-                    checked={state && check.length === state.dataCart.length ? true : false}
+                    checked={
+                      state && check.length === state.dataCart.length
+                        ? true
+                        : false
+                    }
                   />
                   <span className="fw-bold ms-3 me-auto me-md-0">
                     Select all items
@@ -182,6 +204,7 @@ function index() {
                   <button
                     className="btn text-danger fw-bold shadow-none"
                     onClick={handleDelete}
+                    disabled={check.length === 0 ? true : false}
                   >
                     Delete
                   </button>
@@ -200,12 +223,9 @@ function index() {
                           <input
                             className="d-sm-inline-block form-check-input bg-danger border-0 rounded-0 shadow-none"
                             type="checkbox"
-                            // value={item.id}
-                            id={index}
+                            id={item.id}
                             onChange={handleCheck}
-                            checked={check.includes(index.toString())}
-                            // onSelect={(item) => console.log(item)}
-                            // onChange={(item) => console.log(item.target)}
+                            checked={check.includes(item.id.toString())}
                             onClick={() => handleSelected(item)}
                           />
                           <div className="d-none d-md-flex border-image ms-3">
@@ -233,11 +253,14 @@ function index() {
                             style={{ width: "180px" }}
                           >
                             <button
-                              className={`btn btn-grup radius-50 shadow-none  ${activeBtn === `remove-${index}` ? "btn-active" : ""
-                                }`}
+                              className={`btn btn-grup radius-50 shadow-none  ${
+                                activeBtn === `remove-${index}`
+                                  ? "btn-active"
+                                  : ""
+                              }`}
                               onClick={(e) => {
-                                handleRemove(item)
-                                setActiveBtn(`remove-${index}`)
+                                handleRemove(item);
+                                setActiveBtn(`remove-${index}`);
                               }}
                             >
                               <span className="material-icons f-14 ">
@@ -251,11 +274,12 @@ function index() {
                               {item.quantity}
                             </p>
                             <button
-                              className={`btn btn-grup radius-50 text-center shadow-none  ${activeBtn === `add-${index}` ? "btn-active" : ""
-                                }`}
+                              className={`btn btn-grup radius-50 text-center shadow-none  ${
+                                activeBtn === `add-${index}` ? "btn-active" : ""
+                              }`}
                               onClick={(e) => {
-                                handleAdd(item)
-                                setActiveBtn(`add-${index}`)
+                                handleAdd(item);
+                                setActiveBtn(`add-${index}`);
                               }}
                             >
                               <span className="material-icons f-14 fw-bold">
@@ -285,10 +309,18 @@ function index() {
                 <div className="d-flex justify-content-between">
                   <span className="text-muted">Total price</span>
                   <span className="fw-bold f-18">
-                    {Rupiah(
-                      `Rp ${check.map((item) => state.dataCart[parseInt(item)].totalPrice).reduce((a, b) => a + b, 0)}`
-
-                    )}
+                    {state &&
+                      check.length > 0 &&
+                      Rupiah(
+                        `Rp ${check
+                          .map(
+                            (item) =>
+                              state.dataCart.filter(
+                                (item2) => item2.id.toString() === item
+                              )[0].totalPrice
+                          )
+                          .reduce((a, b) => a + b, 0)}`
+                      )}
                   </span>
                 </div>
                 <div className="row justify-content-center">
@@ -296,6 +328,7 @@ function index() {
                     <button
                       className="mt-3 btn w-100 bg-danger round text-white shadow-none btn-hover"
                       onClick={handleBuy}
+                      disabled={check.length === 0 ? true : false}
                     >
                       Buy
                     </button>

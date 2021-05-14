@@ -21,6 +21,7 @@ export default function Login() {
         initialValues: {
             email: "",
             password: "",
+            role: "user"
         },
         validationSchema: Yup.object({
             email: Yup.string()
@@ -44,6 +45,7 @@ export default function Login() {
         initialValues: {
             email: "",
             password: "",
+            role: "seller"
         },
         validationSchema: Yup.object({
             email: Yup.string()

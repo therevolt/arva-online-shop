@@ -115,6 +115,14 @@ button:disabled {
   cursor: pointer;
 }
 
+.dropzone{
+  width: 100%;
+  border: 3px #c4c0c0 dashed ;
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+
 @media (max-width: 576px) {
   .show-sm {
     display: block !important;
@@ -253,9 +261,16 @@ button:disabled {
     border-radius: 2rem;
   }
 
+  .w-40-lg {
+    width: 40%;
+  }
   .w-50-lg {
     width: 50%;
   }
+  .w-60-lg {
+    width: 60%;
+  }
+
 }
 
 @media (min-width: 1200px) {

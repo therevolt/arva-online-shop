@@ -82,8 +82,31 @@ function index() {
   };
 
   const handleRemove = (item) => {
-    if (item.quantity < 1) {
-      setActiveBtn(false);
+    if (item.quantity <= 1) {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // const uniqueId = [...new Set(isSelected)];
+          const data = {
+            cartId: JSON.stringify(item.id),
+          };
+          axiosApiInstance.post(`${process.env.api}/v1/cart/delete`, data).then((res) => {
+            setLoad(true);
+            setDataSelected([]);
+            Swal.fire("Success", res, "success");
+          }).catch((err) => {
+            Swal.fire("Something Error!", err, "error");
+          });
+        };
+      });
+      // setActiveBtn(false);
     } else {
       if (item.quantity >= 1) {
         const data = {

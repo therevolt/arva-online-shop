@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 import { useFormik } from "formik";
 import Link from "next/link"
 import { useRouter } from 'next/router'
-import axios from 'axios'
+// import axios from 'axios'
 import Image from "next/image";
 import { useDispatch } from 'react-redux'
 import { login } from '../../src/config/redux/actions/users'

@@ -16,26 +16,20 @@ function index() {
   const dispatch = useDispatch();
   const { carts } = useSelector((state) => state.carts);
   const [state, setState] = useState(null);
-  const [activeBtn, setActiveBtn] = useState(false);
   const [isSelected, setisSelected] = useState([]);
   const [load, setLoad] = useState(true);
   const [dataSelected, setDataSelected] = useState([]);
   const [count, setCount] = useState(0);
-  console.log(carts);
+  const [check, setCheck] = useState([]);
+  const [activeBtn, setActiveBtn] = useState("");
 
   const handleSelected = (item) => {
+
     setDataSelected([...dataSelected, item]);
     const newId = isSelected.push(String(item.id));
   };
 
   const handleDelete = () => {
-    // const uniqueId = [...new Set(isSelected)];
-    // const data = {
-    //   cartId: JSON.stringify(uniqueId),
-    // };
-    // axiosApiInstance.post(`${process.env.api}/v1/cart/delete`, data).then
-    // setLoad(true);
-    // setDataSelected([]);
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -59,6 +53,18 @@ function index() {
         });
       };
     });
+  }
+
+  const handleCheck = (e) => {
+    if (check.includes(e.target.id)) {
+      const index = check.indexOf(e.target.id);
+      if (index > -1) {
+        check.splice(index, 1);
+      }
+      setCheck(check)
+    } else {
+      setCheck([...check, e.target.id])
+    }
   }
 
   const handleAdd = (item) => {
@@ -134,12 +140,21 @@ function index() {
                     type="checkbox"
                     value=""
                     id="flexCheckDefault"
+                    onClick={(e) => {
+                      if (check.length === state.dataCart.length) {
+                        console.log("mau kesini ga?");
+                        setCheck([])
+                      } else {
+                        setCheck(state.dataCart.map((item, index) => index.toString()))
+                      }
+                    }}
+                    checked={state && check.length === state.dataCart.length ? true : false}
                   />
                   <span className="fw-bold ms-3 me-auto me-md-0">
                     Select all items
                   </span>
                   <span className="text-muted ms-1 me-auto d-none d-md-block">
-                    (2 items selected)
+                    ({check.length} items selected)
                   </span>
                   <button
                     className="btn text-danger fw-bold shadow-none"
@@ -163,7 +178,9 @@ function index() {
                             className="d-sm-inline-block form-check-input bg-danger border-0 rounded-0 shadow-none"
                             type="checkbox"
                             // value={item.id}
-                            id="flexCheckDefault"
+                            id={index}
+                            onChange={handleCheck}
+                            checked={check.includes(index.toString())}
                             // onSelect={(item) => console.log(item)}
                             // onChange={(item) => console.log(item.target)}
                             onClick={() => handleSelected(item)}
@@ -193,9 +210,12 @@ function index() {
                             style={{ width: "180px" }}
                           >
                             <button
-                              className={`btn btn-grup radius-50 shadow-none  ${activeBtn ? "" : "btn-active"
+                              className={`btn btn-grup radius-50 shadow-none  ${activeBtn === `remove-${index}` ? "btn-active" : ""
                                 }`}
-                              onClick={(e) => handleRemove(item)}
+                              onClick={(e) => {
+                                handleRemove(item)
+                                setActiveBtn(`remove-${index}`)
+                              }}
                             >
                               <span className="material-icons f-14 ">
                                 remove
@@ -208,9 +228,12 @@ function index() {
                               {item.quantity}
                             </p>
                             <button
-                              className={`btn btn-grup radius-50 text-center shadow-none  ${activeBtn ? "btn-active" : ""
+                              className={`btn btn-grup radius-50 text-center shadow-none  ${activeBtn === `add-${index}` ? "btn-active" : ""
                                 }`}
-                              onClick={(e) => handleAdd(item)}
+                              onClick={(e) => {
+                                handleAdd(item)
+                                setActiveBtn(`add-${index}`)
+                              }}
                             >
                               <span className="material-icons f-14 fw-bold">
                                 add
@@ -240,9 +263,8 @@ function index() {
                   <span className="text-muted">Total price</span>
                   <span className="fw-bold f-18">
                     {Rupiah(
-                      `Rp ${dataSelected
-                        .map((item) => item.totalPrice)
-                        .reduce((a, b) => a + b, 0)}`
+                      `Rp ${check.map((item) => state.dataCart[parseInt(item)].totalPrice).reduce((a, b) => a + b, 0)}`
+
                     )}
                   </span>
                 </div>

@@ -83,6 +83,7 @@ function listAddressCheckout({ item, fireEvents }) {
             address: data.address,
             isPrimary: data.isPrimary,
         },
+        enableReinitialize: true,
         validationSchema: Yup.object({
             saveAs: Yup.string()
                 .min(2, "Mininum 2 characters")
@@ -224,32 +225,31 @@ function listAddressCheckout({ item, fireEvents }) {
                                 Add new address
                             </button>
                             <div className="all-list-address">
-                                {localListAddress.map((data, idx) => {
+                                {localListAddress.map((item, idx) => {
                                     return (
                                         <>
-                                            <div className="p-3 border border-danger rounded mb-2" key={data.id}>
+                                            <div className="p-3 border border-danger rounded mb-2" key={item.id}>
                                                 <p className="fw-bold">
-                                                    {data.recipientName}{" "}
-                                                    {data.isPrimary && <span className="text-danger">[Utama]</span>}
+                                                    {item.recipientName}{" "}
+                                                    {item.isPrimary && <span className="text-danger">[Utama]</span>}
                                                 </p>
                                                 <p>
-                                                    {`${data.recipientPhone} `} <br />
-                                                    {`${data.address}, Kota ${data.city}, Pos ${data.postalCode}. [${data.saveAs}]`}
+                                                    {`${item.recipientPhone} `} <br />
+                                                    {`${item.address}, Kota ${item.city}, Pos ${item.postalCode}. [${item.saveAs}]`}
                                                 </p>
 
                                                 <button
                                                     className="btn fw-bold text-danger rounded-pill border-danger me-2 "
                                                     onClick={() => {
+                                                        setData(item)
                                                         setToggleModal3(true)
-                                                        setData(data)
-                                                        console.log(data.id);
                                                     }}
                                                 >
                                                     Change Adress
                                                 </button>
                                                 <button
                                                     className="btn btn-danger border-0 rounded-pill fw-bold "
-                                                    onClick={(e) => handleDeleteAddress(data.id)}
+                                                    onClick={(e) => handleDeleteAddress(item.id)}
                                                 >
                                                     Delete Address
                                                 </button>
@@ -415,158 +415,162 @@ function listAddressCheckout({ item, fireEvents }) {
                     </div>
                 </div>
             </Modal>
-            <Modal
-                isOpen={toggleModal3}
-                className="modalPositionAndSizeConfig2"
-                overlayClassName="modalOverLayConfig"
-                closeTimeoutMS={400}
-                ariaHideApp={false}
-                style={{ maxHeight: "60px" }}
-            >
-                <div className="w-100 d-flex mb-4 ">
-                    <span
-                        className="material-icons ms-auto hover-danger c-pointer"
-                        onClick={() => setToggleModal3(false)}
-                    >
-                        close
+
+            {data.saveAs &&
+                <Modal
+                    isOpen={toggleModal3}
+                    className="modalPositionAndSizeConfig2"
+                    overlayClassName="modalOverLayConfig"
+                    closeTimeoutMS={400}
+                    ariaHideApp={false}
+                    style={{ maxHeight: "60px" }}
+                >
+                    {console.log(data)}
+                    <div className="w-100 d-flex mb-4 ">
+                        <span
+                            className="material-icons ms-auto hover-danger c-pointer"
+                            onClick={() => setToggleModal3(false)}
+                        >
+                            close
                     </span>
-                </div>
-                <div>
-                    <h3 className="fw-bold text-center mb-4">Change address</h3>
-                    <div className="my-2">
-                        <label className="color-gray">
-                            Save address as (ex : home address, office address)
-            </label>
-                        <input
-                            type="text"
-                            className="w-100 border p-2"
-                            style={{ outline: "nonde" }}
-                            name="saveAs"
-                            value={formik.values.saveAs}
-                            onChange={formik.handleChange}
-                        />
-                        {formik.errors.saveAs && formik.touched.saveAs && (
-                            <p className="text-danger">{formik.errors.saveAs}</p>
-                        )}
                     </div>
-                    <div className="row">
-                        <div className="col-12 col-md-12 col-lg-6  my-2">
-                            <label htmlFor="name" className="color-gray mb-2">
-                                Recipient’s name
-              </label>
+                    <div>
+                        <h3 className="fw-bold text-center mb-4">Change address</h3>
+                        <div className="my-2">
+                            <label className="color-gray">
+                                Save address as (ex : home address, office address)
+            </label>
                             <input
                                 type="text"
-                                className="p-2 border rounded w-100"
+                                className="w-100 border p-2"
                                 style={{ outline: "nonde" }}
-                                name="recipientName"
-                                value={formik.values.recipientName}
+                                name="saveAs"
+                                value={formik.values.saveAs}
                                 onChange={formik.handleChange}
                             />
-                            {formik.errors.recipientName && formik.touched.recipientName && (
-                                <p className="text-danger">{formik.errors.recipientName}</p>
+                            {formik.errors.saveAs && formik.touched.saveAs && (
+                                <p className="text-danger">{formik.errors.saveAs}</p>
                             )}
                         </div>
-                        <div className="col-12 col-md-12 col-lg-6  my-2">
-                            <label htmlFor="name" className="color-gray mb-2">
-                                Recipient's telephone number
+                        <div className="row">
+                            <div className="col-12 col-md-12 col-lg-6  my-2">
+                                <label htmlFor="name" className="color-gray mb-2">
+                                    Recipient’s name
               </label>
-                            <input
-                                type="text"
-                                className="p-2 border rounded w-100"
-                                style={{ outline: "nonde" }}
-                                name="recipientPhone"
-                                value={formik.values.recipientPhone}
-                                onChange={formik.handleChange}
-                            />
-                            {formik.errors.recipientPhone &&
-                                formik.touched.recipientPhone && (
-                                    <p className="text-danger">{formik.errors.recipientPhone}</p>
+                                <input
+                                    type="text"
+                                    className="p-2 border rounded w-100"
+                                    style={{ outline: "nonde" }}
+                                    name="recipientName"
+                                    value={formik.values.recipientName}
+                                    onChange={formik.handleChange}
+                                />
+                                {formik.errors.recipientName && formik.touched.recipientName && (
+                                    <p className="text-danger">{formik.errors.recipientName}</p>
                                 )}
-                        </div>
-                        <div className="col-12 col-md-12 col-lg-6  my-2">
-                            <label htmlFor="name" className="color-gray mb-2">
-                                Address
+                            </div>
+                            <div className="col-12 col-md-12 col-lg-6  my-2">
+                                <label htmlFor="name" className="color-gray mb-2">
+                                    Recipient's telephone number
+              </label>
+                                <input
+                                    type="text"
+                                    className="p-2 border rounded w-100"
+                                    style={{ outline: "nonde" }}
+                                    name="recipientPhone"
+                                    value={formik.values.recipientPhone}
+                                    onChange={formik.handleChange}
+                                />
+                                {formik.errors.recipientPhone &&
+                                    formik.touched.recipientPhone && (
+                                        <p className="text-danger">{formik.errors.recipientPhone}</p>
+                                    )}
+                            </div>
+                            <div className="col-12 col-md-12 col-lg-6  my-2">
+                                <label htmlFor="name" className="color-gray mb-2">
+                                    Address
                             </label>
-                            <input
-                                type="text"
-                                className="p-2 border col-lg-6 rounded w-100"
-                                style={{ outline: "nonde" }}
-                                name="address"
-                                value={formik.values.address}
-                                onChange={formik.handleChange}
-                            />
-                            {formik.errors.address && formik.touched.address && (
-                                <p className="text-danger">{formik.errors.address}</p>
-                            )}
-                        </div>
-                        <div className="col-12 col-md-12 col-lg-6 my-2">
-                            <label htmlFor="name" className="color-gray mb-2">
-                                Postal code
+                                <input
+                                    type="text"
+                                    className="p-2 border col-lg-6 rounded w-100"
+                                    style={{ outline: "nonde" }}
+                                    name="address"
+                                    value={formik.values.address}
+                                    onChange={formik.handleChange}
+                                />
+                                {formik.errors.address && formik.touched.address && (
+                                    <p className="text-danger">{formik.errors.address}</p>
+                                )}
+                            </div>
+                            <div className="col-12 col-md-12 col-lg-6 my-2">
+                                <label htmlFor="name" className="color-gray mb-2">
+                                    Postal code
               </label>
-                            <input
-                                type="text"
-                                className="p-2 border rounded w-100"
-                                style={{ outline: "nonde" }}
-                                name="postalCode"
-                                value={formik.values.postalCode}
-                                onChange={formik.handleChange}
-                            />
-                            {formik.errors.postalCode && formik.touched.postalCode && (
-                                <p className="text-danger">{formik.errors.postalCode}</p>
-                            )}
-                        </div>
-                        <div className="col-12 col-md-12 my-2">
-                            <label htmlFor="name" className="color-gray mb-2">
-                                City or Subdistrict
+                                <input
+                                    type="text"
+                                    className="p-2 border rounded w-100"
+                                    style={{ outline: "nonde" }}
+                                    name="postalCode"
+                                    value={formik.values.postalCode}
+                                    onChange={formik.handleChange}
+                                />
+                                {formik.errors.postalCode && formik.touched.postalCode && (
+                                    <p className="text-danger">{formik.errors.postalCode}</p>
+                                )}
+                            </div>
+                            <div className="col-12 col-md-12 my-2">
+                                <label htmlFor="name" className="color-gray mb-2">
+                                    City or Subdistrict
               </label>
-                            <input
-                                type="text"
-                                className="p-2 border rounded w-100"
-                                style={{ outline: "nonde" }}
-                                name="city"
-                                value={formik.values.city}
-                                onChange={formik.handleChange}
-                            />
-                            {formik.errors.city && formik.touched.city && (
-                                <p className="text-danger">{formik.errors.city}</p>
-                            )}
-                        </div>
-                        <div className="col-12 my-2">
-                            <input
-                                type="checkbox"
-                                className="me-2"
-                                name="isPrimary"
-                                value={formik.values.isPrimary}
-                                onChange={formik.handleChange}
-                            />
-                            <label htmlFor="name" className="color-gray">
-                                Make it the primary address
+                                <input
+                                    type="text"
+                                    className="p-2 border rounded w-100"
+                                    style={{ outline: "nonde" }}
+                                    name="city"
+                                    value={formik.values.city}
+                                    onChange={formik.handleChange}
+                                />
+                                {formik.errors.city && formik.touched.city && (
+                                    <p className="text-danger">{formik.errors.city}</p>
+                                )}
+                            </div>
+                            <div className="col-12 my-2">
+                                <input
+                                    type="checkbox"
+                                    className="me-2"
+                                    name="isPrimary"
+                                    value={formik.values.isPrimary}
+                                    onChange={formik.handleChange}
+                                />
+                                <label htmlFor="name" className="color-gray">
+                                    Make it the primary address
               </label>
-                        </div>
-                        <div className="col-12 my-2">
-                            <div className="d-flex justify-content-end">
-                                <div>
-                                    <button
-                                        className="btn-danger text-white border-0 rounded-pill px-5 py-2 me-3"
-                                        type="submit"
-                                        onClick={formik.handleSubmit}
-                                    >
-                                        Save
+                            </div>
+                            <div className="col-12 my-2">
+                                <div className="d-flex justify-content-end">
+                                    <div>
+                                        <button
+                                            className="btn-danger text-white border-0 rounded-pill px-5 py-2 me-3"
+                                            type="submit"
+                                            onClick={formik.handleSubmit}
+                                        >
+                                            Save
                   </button>
-                                    <button
-                                        className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden"
-                                        onClick={() => {
-                                            setToggleModal3(false);
-                                        }}
-                                    >
-                                        Cancel
+                                        <button
+                                            className="border-danger rounded-pill py-2 px-5 bg-transparent text-danger overflow-hidden"
+                                            onClick={() => {
+                                                setToggleModal3(false);
+                                            }}
+                                        >
+                                            Cancel
                   </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </Modal>
+                </Modal>
+            }
             <style jsx>
                 {`
                 .all-list-address {

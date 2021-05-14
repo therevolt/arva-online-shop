@@ -52,9 +52,7 @@ const Profile = () => {
   const [isLoadingProcess, setIsLoadingProcess] = useState(false);
 
   //state menampung alamat gambar
-  const [imgUrl, setImgUrl] = useState(
-    "https://www.jewishinteractive.org/wp-content/uploads/2016/03/person.png"
-  );
+  const [imgUrl, setImgUrl] = useState(null);
 
   // state untuk nampung data user
   const [profileUser, setProfileUser] = useState({});
@@ -142,13 +140,16 @@ const Profile = () => {
   useEffect(() => {
     if (user) {
       setProfileUser(user);
+      setImgUrl(user.avatar);
     }
   }, [user]);
 
   //set url profile user
   useEffect(() => {
-    if (profileUser.avatar) {
-      setImgUrl(profileUser.avatar);
+    if (!imgUrl) {
+      setImgUrl(
+        "https://www.jewishinteractive.org/wp-content/uploads/2016/03/person.png"
+      );
     }
   }, [profileUser]);
   //===========ini akhir bagian edit profile user========
@@ -292,7 +293,7 @@ const Profile = () => {
               </div>
               <div className="align-self-center">
                 {profileUser.name ? (
-                  <p className="fw-bold m-0 mb-1">{profileUser.name}</p>
+                  <p className="fw-bold m-0 mb-1">{user.name}</p>
                 ) : (
                   <p className="fw-bold m-0 mb-1">username</p>
                 )}
@@ -549,6 +550,7 @@ const Profile = () => {
                           className="p-2 border rounded"
                           style={{ outline: "none", width: "70%" }}
                           name="name"
+                          onChange={handleChangeDataProfile}
                           disabled={profileIsDisable}
                         />
                       )}

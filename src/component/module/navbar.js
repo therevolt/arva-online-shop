@@ -6,13 +6,13 @@ import { refresPage } from "../../config/redux/actions/users";
 
 export default function Navbar() {
   const { status, user } = useSelector((state) => state.user);
-  console.log(status);
   const dispatch = useDispatch();
   const router = useRouter();
   const page = router.pathname.split("/")[2];
   const [state, setState] = useState({
     navbarMobileToggle: false,
     dropdownToggle: false,
+    openWindowNavbar:false
   });
 
   useEffect(() => {
@@ -330,10 +330,10 @@ export default function Navbar() {
                 </button>
               </div>
             </div>
-            <div className="col">
+            <div className="col hide-sm show-lg">
               <div className="d-flex justify-content-center align-items-center ">
                 <button
-                  className="material-icons border-0 bg-transparent mt-2 color-gray filter"
+                  className="material-icons border-0 bg-transparent mt-2 color-gray filter "
                   style={{
                     width: "auto",
                     height: "30px",
@@ -395,15 +395,31 @@ export default function Navbar() {
                   className="rounded-circle overflow-hidden bg-transparent border-0 d-flex justify-content-center"
                   style={{ width: "50px", height: "50px" }}
                   onClick={() => {
-                    if (user.role == "seller") {
-                      router.push("/app/profile-store");
-                    } else {
-                      router.push("/app/profile");
+                    if(state.openWindowNavbar){
+                      setState({...state, openWindowNavbar:false})
+                    }else{
+                      setState({...state, openWindowNavbar:true})
                     }
                   }}
                 >
                   <img src={user.avatar} className="align-self-center w-100" />
                 </button>
+                <div className={state.openWindowNavbar === true ? "bg-white rounded-sm shadow overflow-hidden": "hide"} style={{background:"white", position:"absolute", top:"110%"}}>
+                  <div className="py-2 px-3 d-flex hover-danger c-pointer hover-bg-gray" style={{minWidth:"300px"}} onClick={()=>{
+                    if (user.role == "seller") {
+                      router.push("/app/profile-store");
+                    } else {
+                      router.push("/app/profile");
+                    }
+                  }} >
+                    <span className="material-icons me-3">person</span>
+                    <p className="m-0 fw-bold">profile</p>
+                  </div>
+                  <div className="py-2 px-3 d-flex hover-danger c-pointer hover-bg-gray" style={{minWidth:"300px"}} onClick={handleLogout} >
+                    <span className="material-icons me-3">logout</span>
+                    <span className="fw-bold">logout</span>
+                  </div>
+                </div>
               </div>
             </div>
             {/* -------- */}

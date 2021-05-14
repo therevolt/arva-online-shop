@@ -20,32 +20,46 @@ function index() {
   const [isSelected, setisSelected] = useState([]);
   const [load, setLoad] = useState(true);
   const [dataSelected, setDataSelected] = useState([]);
+  const [count, setCount] = useState(0);
+  console.log(carts);
 
   const handleSelected = (item) => {
     setDataSelected([...dataSelected, item]);
     const newId = isSelected.push(String(item.id));
-    // const uniqueId = [...new Set(isSelected)];
-    // console.log(uniqueId);
   };
 
   const handleDelete = () => {
-    const uniqueId = [...new Set(isSelected)];
-    console.log(uniqueId);
-    const data = {
-      cartId: JSON.stringify(uniqueId),
-    };
-    axiosApiInstance.post(`${process.env.api}/v1/cart/delete`, data);
-    setLoad(true);
-    setDataSelected([]);
-    // dispatch(deleteCart(data)).then((res) => {
-    //   Swal.fire("Success", res, "success");
-    // }).catch((err) => {
-    //   console.log(err);
-    // })
-    // .catch((err) => {
-    //   Swal.fire("Something Error!", err, "error");
-    // });
-  };
+    // const uniqueId = [...new Set(isSelected)];
+    // const data = {
+    //   cartId: JSON.stringify(uniqueId),
+    // };
+    // axiosApiInstance.post(`${process.env.api}/v1/cart/delete`, data).then
+    // setLoad(true);
+    // setDataSelected([]);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const uniqueId = [...new Set(isSelected)];
+        const data = {
+          cartId: JSON.stringify(uniqueId),
+        };
+        axiosApiInstance.post(`${process.env.api}/v1/cart/delete`, data).then((res) => {
+          setLoad(true);
+          setDataSelected([]);
+          Swal.fire("Success", res, "success");
+        }).catch((err) => {
+          Swal.fire("Something Error!", err, "error");
+        });
+      };
+    });
+  }
 
   const handleAdd = (item) => {
     if (item.quantity < item.stockProduct) {
@@ -62,7 +76,7 @@ function index() {
   };
 
   const handleRemove = (item) => {
-    if (item.quantity === 0) {
+    if (item.quantity < 1) {
       setActiveBtn(false);
     } else {
       if (item.quantity >= 1) {
@@ -85,7 +99,6 @@ function index() {
   };
 
   useEffect(() => {
-    console.log("adadad");
     if (load) {
       dispatch(getCart())
         .then(() => setLoad(false))
@@ -97,10 +110,8 @@ function index() {
   }, [handleAdd, handleRemove, handleDelete]);
 
   useEffect(() => {
-    console.log(carts);
     if (carts.dataCart) {
       if (carts.dataCart.length > 0) {
-        console.log(carts);
         setState(carts);
       } else {
         setState([]);
@@ -182,9 +193,8 @@ function index() {
                             style={{ width: "180px" }}
                           >
                             <button
-                              className={`btn btn-grup radius-50 shadow-none  ${
-                                activeBtn ? "" : "btn-active"
-                              }`}
+                              className={`btn btn-grup radius-50 shadow-none  ${activeBtn ? "" : "btn-active"
+                                }`}
                               onClick={(e) => handleRemove(item)}
                             >
                               <span className="material-icons f-14 ">
@@ -198,9 +208,8 @@ function index() {
                               {item.quantity}
                             </p>
                             <button
-                              className={`btn btn-grup radius-50 text-center shadow-none  ${
-                                activeBtn ? "btn-active" : ""
-                              }`}
+                              className={`btn btn-grup radius-50 text-center shadow-none  ${activeBtn ? "btn-active" : ""
+                                }`}
                               onClick={(e) => handleAdd(item)}
                             >
                               <span className="material-icons f-14 fw-bold">

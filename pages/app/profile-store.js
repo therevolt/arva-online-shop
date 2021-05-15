@@ -7,7 +7,7 @@ import axiosApiInstance from "../../src/helper/axios";
 import { AddProductSeller, OrderSeller } from "../../src/component/module";
 import Withauth from "../../src/helper/authNext";
 import { getProfile } from "../../src/config/redux/actions/users";
-import {useRouter} from "next/router"
+import { useRouter } from "next/router"
 const profil_store = () => {
     const router = useRouter();
     const Url = process.env.api;
@@ -55,7 +55,7 @@ const profil_store = () => {
     });
     const [loadingUpdate, setLoadingUpdate] = useState(false)
     useEffect(() => {
-        if(user.role !== "seller"){
+        if (user.role !== "seller") {
             router.push("/app/profile")
         }
         setDataProfil({
@@ -114,10 +114,10 @@ const profil_store = () => {
         if (event.target.files && event.target.files[0]) {
             let reader = new FileReader();
             reader.onload = (e) => {
-                if(event.target.files[0].type === "image/png" || event.target.files[0].type === "image/jpg" || event.target.files[0].type === "image/jpeg"){
+                if (event.target.files[0].type === "image/png" || event.target.files[0].type === "image/jpg" || event.target.files[0].type === "image/jpeg") {
                     setState({ ...state, dataImg: event.target.files[0] });
                     setDataProfil({ ...dataProfil, avatar: e.target.result });
-                }else{
+                } else {
                     swal("Oops", "hanya mendukung format gambar", "error")
                 }
             };
@@ -287,22 +287,46 @@ const profil_store = () => {
             });
         }
     };
+    const deletepProduct = () => {
+        swal({
+            title: "anda yakin?",
+            text: "data akan dihapus!!!",
+            icon: "warning",
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+                axiosApiInstance
+                    .delete(`${Url}/v1/product?id=${item.id}`)
+                    .then((err) => {
+                        axiosApiInstance
+                            .get(`${Url}/v1/product/product`)
+                            .then((res) => {
+                                setState({
+                                    ...state,
+                                    dataProduct: {
+                                        ...state.dataProduct,
+                                        allItem: res.data.data,
+                                        allItemBackup: res.data.data,
+                                    },
+                                });
+                            })
+                            .catch((err) => { });
+                    });
+                swal(
+                    "Deleted!",
+                    "delete berhasil",
+                    "success"
+                );
+            }
+        });
+    }
     return (
-        <div
-            style={{ background: "#F5F5F5", minHeight: "100vh", paddingTop: "10rem" }}
-        >
+        <div style={{ background: "#F5F5F5", minHeight: "100vh", paddingTop: "10rem" }}>
             <div className="container">
                 <div className="row">
                     {/* my product */}
-                    <div
-                        className={
-                            profilStore.product == true ? "col-12 col-lg-8 ms-auto" : "hide"
-                        }
-                    >
-                        <div
-                            className="bg-white p-4 border rounded"
-                            style={{ minHeight: "550px" }}
-                        >
+                    <div className={profilStore.product == true ? "col-12 col-lg-8 ms-auto" : "hide"}>
+                        <div className="bg-white p-4 border rounded" style={{ minHeight: "550px" }}>
                             <h4 className="fw-bold">My Product</h4>
                             <div className="d-flex my-4">
                                 <button
@@ -379,279 +403,222 @@ const profil_store = () => {
                                     disabled={state.myProduct.allItem === true ? false : true}
                                 />
                             </div>
-                            <div className="w-100 border mb-5">
-                                <div
-                                    className="w-100 d-flex justify-content-between"
-                                    style={{ background: "#F6F6F6" }}
-                                >
-                                    <div
-                                        className="c-pointer px-4 py-3 d-flex h-100 hover-bg-gray"
-                                        onClick={sortByNameProduct}
-                                    >
-                                        <p className="m-0 me-3">Product name</p>
-                                        <span className="material-icons">sort</span>
-                                    </div>
-                                    <div className="d-flex">
-                                        <div
-                                            className="c-pointer px-4 py-3 d-flex h-100 hover-bg-gray"
-                                            onClick={sortByPrice}
-                                        >
-                                            <p className="m-0 me-3">Price</p>
-                                            <span className="material-icons">sort</span>
+                            <div style={{ overflow: "auto" }}>
+                                <div style={{ minWidth: "620px" }}>
+                                    <div className="row border" style={{ background: "#F6F6F6" }}>
+                                        <div className="col-4 c-pointer py-3 hover-bg-gray" onClick={sortByNameProduct}>
+                                            <div className="d-flex justify-content-center">
+                                                <p className="m-0 me-3">Product name</p>
+                                                <span className="material-icons">sort</span>
+                                            </div>
                                         </div>
-                                        <div
-                                            className="c-pointer px-4 py-3 d-flex h-100 hover-bg-gray"
-                                            onClick={sortByStock}
-                                        >
-                                            <p className="m-0 me-3">Stock</p>
-                                            <span className="material-icons">sort</span>
+                                        <div className="col-2 ms-auto c-pointer py-3 hover-bg-gray" onClick={sortByPrice}>
+                                            <div className="d-flex justify-content-center">
+                                                <p className="m-0 me-3">Price</p>
+                                                <span className="material-icons">sort</span>
+                                            </div>
                                         </div>
-                                        <div className={state.myProduct.archived === true ? "hide" : "px-4 py-3"}>
+                                        <div className="col-2 ms-auto c-pointer px-4 py-3 d-flex h-100 hover-bg-gray" onClick={sortByStock}>
+                                            <div className="d-flex justify-content-center">
+                                                <p className="m-0 me-3">Stock</p>
+                                                <span className="material-icons">sort</span>
+                                            </div>
+                                        </div>
+                                        <div className={state.myProduct.archived === true ? "hide" : "col-2 ms-auto px-4 py-3"}>
                                             <span>action</span>
                                         </div>
                                     </div>
-                                </div>
-                                {state.myProduct.loading ? 
-                                <div className="d-flex flex-column align-items-center justify-content-center bg-white p-4 border rounded " style={{ minHeight: "300px" }}>
-                                    <div className="spinner-grow text-danger mb-3" role="status">
-                                        <span className="visually-hidden">Loading...</span>
-                                    </div>
-                                    <h3 className="fw-bold">Wait a moment...</h3>
-                                </div>
-                                : 
-                                <div>
-                                    {/* all_item */}
-                                    <div
-                                        className={
-                                            state.myProduct.allItem === true
-                                                ? "w-100 justify-content-center overflow-auto"
-                                                : "hide"
-                                        }
-                                        style={{ maxHeight: "300px" }}
-                                    >
-                                        {state.dataProduct.allItem.map((item) => {
-                                            const price = item.price.toString();
-                                            const sisa = price.length % 3;
-                                            let rupiah = price.substr(0, sisa);
-                                            const ribuan = price.substr(sisa).match(/\d{3}/g);
-                                            if (ribuan) {
-                                                const separator = sisa ? "." : "";
-                                                rupiah += separator + ribuan.join(".");
-                                            }
-                                            return (
+                                    {state.myProduct.loading ?
+                                        <div className="d-flex flex-column align-items-center justify-content-center bg-white p-4 border rounded " style={{ minHeight: "300px" }}>
+                                            <div className="spinner-grow text-danger mb-3" role="status">
+                                                <span className="visually-hidden">Loading...</span>
+                                            </div>
+                                            <h3 className="fw-bold">Wait a moment...</h3>
+                                        </div>
+                                        :
+                                        <div>
+                                            {/* all_item */}
+                                            <div className={state.myProduct.allItem === true ? "justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
+                                                {state.dataProduct.allItem.map((item) => {
+                                                    const price = item.price.toString();
+                                                    const sisa = price.length % 3;
+                                                    let rupiah = price.substr(0, sisa);
+                                                    const ribuan = price.substr(sisa).match(/\d{3}/g);
+                                                    if (ribuan) {
+                                                        const separator = sisa ? "." : "";
+                                                        rupiah += separator + ribuan.join(".");
+                                                    }
+                                                    return (
+                                                        <div className="row  hover-bg-gray border-top" style={{ background: "#F6F6F6" }}>
+                                                            <div className="col-4 py-2 my-auto">
+                                                                <span className="d-inline-block text-truncate text-table-responsive text-center ps-4">
+                                                                    {item.name}
+                                                                </span>
+                                                            </div>
+                                                            <div className="col-4 ms-auto pe-4">
+                                                                <div>
+                                                                    <p className="py-2 m-0 ms-auto my-auto text-center">Rp.{rupiah}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-2 ms-auto my-auto">
+                                                                <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                    {item.stock}
+                                                                </p>
+                                                            </div>
+                                                            <div className="col-2 ms-auto my-auto">
+                                                                <button className="border-danger text-danger rounded-pill bg-transparent px-3 my-auto" onClick={() => { deletepProduct }}>delete</button>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
                                                 <div
-                                                    className="d-flex  hover-bg-gray border-top  justify-content-between w-100"
-                                                    style={{ background: "#F6F6F6" }}
+                                                    className={
+                                                        state.dataProduct.allItem.length === 0 ? "show" : "hide"
+                                                    }
                                                 >
                                                     <div
-                                                        className="py-2 ps-4 my-auto"
-                                                        style={{ width: "50%" }}
+                                                        className="d-flex justify-content-center"
+                                                        style={{ height: "300px" }}
                                                     >
-                                                        <span
-                                                            className="d-inline-block text-truncate"
-                                                            style={{ maxWidth: "250px" }}
+                                                        <div
+                                                            className="my-auto"
+                                                            style={{ width: "224px", height: "177px" }}
                                                         >
-                                                            {item.name}
-                                                        </span>
-                                                    </div>
-                                                    <div className="d-flex pe-4" style={{ width: "50%" }}>
-                                                        <p className="py-2 m-0 ms-auto my-auto px-4">
-                                                            Rp. {rupiah}
-                                                        </p>
-                                                        <p className="py-2 m-0 ms-auto my-auto px-4">
-                                                            {item.stock}
-                                                        </p>
-                                                        <div className="my-auto">
-                                                            <button
-                                                                className="border-danger text-danger rounded-pill px-2 bg-transparent"
-                                                                onClick={() => {
-                                                                    swal({
-                                                                        title: "anda yakin?",
-                                                                        text: "data akan dihapus!!!",
-                                                                        icon: "warning",
-                                                                        dangerMode: true,
-                                                                    }).then((willDelete) => {
-                                                                        if (willDelete) {
-                                                                            axiosApiInstance
-                                                                                .delete(`${Url}/v1/product?id=${item.id}`)
-                                                                                .then((err) => {
-                                                                                    axiosApiInstance
-                                                                                        .get(`${Url}/v1/product/product`)
-                                                                                        .then((res) => {
-                                                                                            setState({
-                                                                                                ...state,
-                                                                                                dataProduct: {
-                                                                                                    ...state.dataProduct,
-                                                                                                    allItem: res.data.data,
-                                                                                                    allItemBackup: res.data.data,
-                                                                                                },
-                                                                                            });
-                                                                                        })
-                                                                                        .catch((err) => { });
-                                                                                });
-                                                                            swal(
-                                                                                "Deleted!",
-                                                                                "delete berhasil",
-                                                                                "success"
-                                                                            );
-                                                                        }
-                                                                    });
-                                                                }}
-                                                            >
-                                                                delete
-                                </button>
+                                                            <Image
+                                                                src="/img/data_null.png"
+                                                                width={224}
+                                                                height={177}
+                                                                layout="responsive"
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>
-                                            );
-                                        })}
-                                        <div
-                                            className={
-                                                state.dataProduct.allItem.length === 0 ? "show" : "hide"
-                                            }
-                                        >
-                                            <div
-                                                className="d-flex justify-content-center"
-                                                style={{ height: "300px" }}
-                                            >
-                                                <div
-                                                    className="my-auto"
-                                                    style={{ width: "224px", height: "177px" }}
-                                                >
-                                                    <Image
-                                                        src="/img/data_null.png"
-                                                        width={224}
-                                                        height={177}
-                                                        layout="responsive"
-                                                    />
-                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    {/*  */}
-                                    {/* sold out */}
-                                    <div
-                                        className={
-                                            state.myProduct.soldOut === true
-                                                ? "w-100 justify-content-center overflow-auto"
-                                                : "hide"
-                                        }
-                                        style={{ maxHeight: "300px" }}
-                                    >
-                                        {state.dataProduct.soldOut.map((item) => {
-                                            const price = item.price.toString();
-                                            const sisa = price.length % 3;
-                                            let rupiah = price.substr(0, sisa);
-                                            const ribuan = price.substr(sisa).match(/\d{3}/g);
-                                            if (ribuan) {
-                                                const separator = sisa ? "." : "";
-                                                rupiah += separator + ribuan.join(".");
-                                            }
-                                            return (
-                                                <div
-                                                    className="d-flex  hover-bg-gray border-top  justify-content-between w-100"
-                                                    style={{ background: "#F6F6F6" }}
-                                                >
-                                                    <div className="py-2 ps-4" style={{ width: "60%" }}>
-                                                        <span
-                                                            className="d-inline-block text-truncate"
-                                                            style={{ maxWidth: "200px" }}
-                                                        >
-                                                            {item.name}
-                                                        </span>
-                                                    </div>
-                                                    <div className="d-flex pe-4" style={{ width: "40%" }}>
-                                                        <p className="py-2 m-0 ms-auto">Rp. {rupiah}</p>
-                                                        <p className="py-2 m-0 ms-auto">{item.stock}</p>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                        <div
-                                            className="d-flex justify-content-center"
-                                            style={{ height: "300px" }}
-                                        >
+                                            {/*  */}
+                                            {/* sold out */}
                                             <div
                                                 className={
-                                                    state.dataProduct.soldOut.length === 0
-                                                        ? "my-auto"
+                                                    state.myProduct.soldOut === true
+                                                        ? "w-100 justify-content-center overflow-auto"
                                                         : "hide"
                                                 }
-                                                style={{ width: "224px", height: "177px" }}
+                                                style={{ maxHeight: "300px" }}
                                             >
-                                                <Image
-                                                    src="/img/data_null.png"
-                                                    width={224}
-                                                    height={177}
-                                                    layout="responsive"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    {/*  */}
-                                    {/* archived */}
-                                    <div
-                                    className={
-                                        state.myProduct.archived === true
-                                            ? "w-100 justify-content-center overflow-auto"
-                                            : "hide"
-                                    }
-                                    style={{ maxHeight: "300px" }}
-                                >
-                                    {state.dataProduct.allItem.map((item) => {
-                                        const price = item.price.toString();
-                                        const sisa = price.length % 3;
-                                        let rupiah = price.substr(0, sisa);
-                                        const ribuan = price.substr(sisa).match(/\d{3}/g);
-                                        if (ribuan) {
-                                            const separator = sisa ? "." : "";
-                                            rupiah += separator + ribuan.join(".");
-                                        }
-                                        if (item.isArchive === true) {
-                                            return (
-                                                <div
-                                                    className="d-flex  hover-bg-gray border-top  justify-content-between w-100"
-                                                    style={{ background: "#F6F6F6" }}
-                                                >
-                                                    <div className="py-2 ps-4" style={{ width: "60%" }}>
-                                                        <span
-                                                            className="d-inline-block text-truncate"
-                                                            style={{ maxWidth: "200px" }}
+                                                {state.dataProduct.soldOut.map((item) => {
+                                                    const price = item.price.toString();
+                                                    const sisa = price.length % 3;
+                                                    let rupiah = price.substr(0, sisa);
+                                                    const ribuan = price.substr(sisa).match(/\d{3}/g);
+                                                    if (ribuan) {
+                                                        const separator = sisa ? "." : "";
+                                                        rupiah += separator + ribuan.join(".");
+                                                    }
+                                                    return (
+                                                        <div
+                                                            className="d-flex  hover-bg-gray border-top  justify-content-between w-100"
+                                                            style={{ background: "#F6F6F6" }}
                                                         >
-                                                            {item.name}
-                                                        </span>
-                                                    </div>
-                                                    <div className="d-flex pe-4" style={{ width: "40%" }}>
-                                                        <p className="py-2 m-0 ms-auto">Rp. {rupiah}</p>
-                                                        <p className="py-2 m-0 ms-auto">{item.stock}</p>
+                                                            <div className="py-2 ps-4" style={{ width: "60%" }}>
+                                                                <span
+                                                                    className="d-inline-block text-truncate"
+                                                                    style={{ maxWidth: "200px" }}
+                                                                >
+                                                                    {item.name}
+                                                                </span>
+                                                            </div>
+                                                            <div className="d-flex pe-4" style={{ width: "40%" }}>
+                                                                <p className="py-2 m-0 ms-auto">Rp. {rupiah}</p>
+                                                                <p className="py-2 m-0 ms-auto">{item.stock}</p>
+                                                            </div>
+                                                        </div>
+                                                    );
+                                                })}
+                                                <div
+                                                    className="d-flex justify-content-center"
+                                                    style={{ height: "300px" }}
+                                                >
+                                                    <div
+                                                        className={
+                                                            state.dataProduct.soldOut.length === 0
+                                                                ? "my-auto"
+                                                                : "hide"
+                                                        }
+                                                        style={{ width: "224px", height: "177px" }}
+                                                    >
+                                                        <Image
+                                                            src="/img/data_null.png"
+                                                            width={224}
+                                                            height={177}
+                                                            layout="responsive"
+                                                        />
                                                     </div>
                                                 </div>
-                                            );
-                                        }
-                                    })}
-                                    <div
-                                        className="d-flex justify-content-center"
-                                        style={{ height: "300px" }}
-                                    >
-                                        <div
-                                            className={
-                                                state.dataProduct.archived.length === 0
-                                                    ? "my-auto"
-                                                    : "hide"
-                                            }
-                                            style={{ width: "224px", height: "177px" }}
-                                        >
-                                            <Image
-                                                src="/img/data_null.png"
-                                                width={224}
-                                                height={177}
-                                                layout="responsive"
-                                            />
+                                            </div>
+                                            {/*  */}
+                                            {/* archived */}
+                                            <div
+                                                className={
+                                                    state.myProduct.archived === true
+                                                        ? "w-100 justify-content-center overflow-auto"
+                                                        : "hide"
+                                                }
+                                                style={{ maxHeight: "300px" }}
+                                            >
+                                                {state.dataProduct.allItem.map((item) => {
+                                                    const price = item.price.toString();
+                                                    const sisa = price.length % 3;
+                                                    let rupiah = price.substr(0, sisa);
+                                                    const ribuan = price.substr(sisa).match(/\d{3}/g);
+                                                    if (ribuan) {
+                                                        const separator = sisa ? "." : "";
+                                                        rupiah += separator + ribuan.join(".");
+                                                    }
+                                                    if (item.isArchive === true) {
+                                                        return (
+                                                            <div
+                                                                className="d-flex  hover-bg-gray border-top  justify-content-between w-100"
+                                                                style={{ background: "#F6F6F6" }}
+                                                            >
+                                                                <div className="py-2 ps-4" style={{ width: "60%" }}>
+                                                                    <span
+                                                                        className="d-inline-block text-truncate"
+                                                                        style={{ maxWidth: "200px" }}
+                                                                    >
+                                                                        {item.name}
+                                                                    </span>
+                                                                </div>
+                                                                <div className="d-flex pe-4" style={{ width: "40%" }}>
+                                                                    <p className="py-2 m-0 ms-auto">Rp. {rupiah}</p>
+                                                                    <p className="py-2 m-0 ms-auto">{item.stock}</p>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    }
+                                                })}
+                                                <div
+                                                    className="d-flex justify-content-center"
+                                                    style={{ height: "300px" }}
+                                                >
+                                                    <div
+                                                        className={
+                                                            state.dataProduct.archived.length === 0
+                                                                ? "my-auto"
+                                                                : "hide"
+                                                        }
+                                                        style={{ width: "224px", height: "177px" }}
+                                                    >
+                                                        <Image
+                                                            src="/img/data_null.png"
+                                                            width={224}
+                                                            height={177}
+                                                            layout="responsive"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
-                                </div>
-                                }
                             </div>
                         </div>
                     </div>

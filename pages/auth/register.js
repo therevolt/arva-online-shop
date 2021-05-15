@@ -38,7 +38,11 @@ export default function Register() {
           router.push("/auth/login");
         })
         .catch((err) => {
-          Swal.fire("Something Error!", err.response.data.message, "error");
+          if (err.response) {
+            Swal.fire("Something Error!", err.response.data.message, "error");
+          } else {
+            Swal.fire("Internal Server Error!.", "", "error");
+          }
         });
     },
   });

@@ -1,5 +1,6 @@
 import axios from "axios";
 import axiosApiInstance from "../../../helper/axios";
+import Swal from "sweetalert2";
 
 const signUpRequest = () => {
   return { type: "SIGN_UP_REQUEST" };
@@ -124,7 +125,11 @@ export const login = (data) => (dispatch) => {
         resolve(res.data.message);
       })
       .catch((err) => {
-        reject(err.response.data.message);
+        if (err.response) {
+          reject(err.response.data.message);
+        } else {
+          Swal.fire("Internal Server Error!.", "", "error");
+        }
       });
   });
 };

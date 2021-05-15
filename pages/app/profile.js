@@ -24,6 +24,12 @@ const Profile = () => {
     (state) => state.Helpers
   );
   const { user, loading, listAddressUser } = useSelector((state) => state.user);
+  
+  useEffect(()=>{
+    if(user.role === "seller"){
+      router.push("/app/profile-store")
+    }
+  }, [user])
 
   const [state, setState] = useState({
     toggleModal: false,

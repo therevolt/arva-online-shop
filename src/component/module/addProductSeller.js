@@ -210,7 +210,13 @@ export default function AddProductSeller() {
       axiosApiInstance
         .post(`${Url}/v1/product`, form)
         .then((res) => {
-          setState({ ...state, loading: false });
+          setState({ ...state, loading: false, createProduct:{ ...state.createProduct,
+            name: "",
+            price: "",
+            stock: "",
+            desc: "",
+            img: ""
+        } });
           swal("success", res.data.message, "success");
         })
         .catch((err) => {});

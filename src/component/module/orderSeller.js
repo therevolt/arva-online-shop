@@ -19,7 +19,7 @@ export default function OrderSeller() {
     })
     const [dataOrder, setDataOrder] = useState({
         dataHistoryOrder: [],
-        dataHistoryOrderBackup:[]
+        dataHistoryOrderBackup: []
     });
     useEffect(() => {
         setState({ ...state, loading: true })
@@ -53,7 +53,7 @@ export default function OrderSeller() {
                 ...state,
                 isSortedByStock: false,
             });
-            setDataOrder({...dataOrder, dataHistoryOrder: result })
+            setDataOrder({ ...dataOrder, dataHistoryOrder: result })
         } else {
             const result = dataOrder.dataHistoryOrder.sort((a, b) => {
                 const stockA = a.quantity;
@@ -70,7 +70,7 @@ export default function OrderSeller() {
                 ...state,
                 isSortedByStock: true,
             });
-            setDataOrder({...dataOrder,  dataHistoryOrder: result })
+            setDataOrder({ ...dataOrder, dataHistoryOrder: result })
             console.log(result);
         }
     };
@@ -91,7 +91,7 @@ export default function OrderSeller() {
                 ...state,
                 isSortedByProductName: false,
             });
-            setDataOrder({...dataOrder, dataHistoryOrder: result })
+            setDataOrder({ ...dataOrder, dataHistoryOrder: result })
         } else {
             const result = dataOrder.dataHistoryOrder.sort((a, b) => {
                 const nameA = a.nameProduct.toUpperCase();
@@ -108,7 +108,7 @@ export default function OrderSeller() {
                 ...state,
                 isSortedByProductName: true,
             });
-            setDataOrder({...dataOrder, dataHistoryOrder: result })
+            setDataOrder({ ...dataOrder, dataHistoryOrder: result })
         }
     }
     const searchProductSeller = (e) => {
@@ -118,13 +118,13 @@ export default function OrderSeller() {
                 return item;
             }
         });
-        setDataOrder({...dataOrder, dataHistoryOrder:result})
+        setDataOrder({ ...dataOrder, dataHistoryOrder: result })
     };
     return (
         <div>
             <div className="bg-white p-4 border rounded" style={{ minHeight: "550px" }}>
                 <h4 className="fw-bold">My order</h4>
-                <div className="d-flex my-4">
+                <div className="d-flex my-4" style={{ overflowX: "auto" }}>
                     {/* link button */}
                     <button
                         className={
@@ -285,164 +285,45 @@ export default function OrderSeller() {
                         />
                     </div>
                     {/*  */}
-                    <div style={{overflow:"auto"}}>
-                    <div style={{minWidth:"640px"}}>
-                        <div style={{ background: "#F6F6F6" }}>
-                            <div className="row">
-                                <div className="col-4">
-                                    <div className="c-pointer py-3 d-flex justify-content-center hover-bg-gray" onClick={sortByNameProduct} >
-                                        <p className="m-0 me-3">Product name</p>
-                                        <span className="material-icons">sort</span>
-                                    </div>
-                                </div>
-                                <div className="col-1 col-sm-2 ms-auto">
-                                    <div className="c-pointer py-3 d-flex justify-content-center hover-bg-gray" onClick={sortByStock} >
-                                        <p className="m-0 me-3">Stock</p>
-                                        <span className="material-icons">sort</span>
-                                    </div>
-                                </div>
-                                <div className="col-1 col-sm-2 ms-auto d-flex justify-content-center">
-                                    <div className="px-4 py-3 ms-auto text-center">
-                                        <span>status</span>
-                                    </div>
-                                </div>
-                                <div className={state.myOrder.getPaid === true || state.myOrder.send === true || state.myOrder.completed === true || state.myOrder.orderCancel === true ? "hide" : "col-2 ms-auto pe-4 py-3 ms-auto text-center"}>
-                                    <div>
-                                        <span>action</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {state.loading ?
-                            <div className="d-flex flex-column align-items-center justify-content-center bg-white p-4 border rounded " style={{ minHeight: "300px" }}>
-                                <div className="spinner-grow text-danger mb-3" role="status">
-                                    <span className="visually-hidden">Loading...</span>
-                                </div>
-                                <h3 className="fw-bold">Wait a moment...</h3>
-                            </div>
-                            :
-                            <div>
-                                <div className={state.myOrder.allItem === true ? "justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
-                                    {dataOrder.dataHistoryOrder.map((item) => {
-                                        return (
-                                            <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
-                                                <div className="col-4 py-2 my-auto">
-                                                    <span
-                                                        className="d-inline-block text-truncate text-table-responsive text-center ps-4"
-                                                    >
-                                                        {item.nameProduct}
-                                                    </span>
-                                                </div>
-                                                <div className="col-2 ms-auto pe-4">
-                                                    <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                        {item.quantity}
-                                                    </p>
-                                                </div>
-                                                <div className="col-2 ms-auto">
-                                                    <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                        {item.status}
-                                                    </p>
-                                                </div>
-                                                <div className="col-2 ms-auto my-auto">
-                                                    <button
-                                                        className="border-primary bg-transparent rounded-pill text-primary px-3 py-1"
-                                                        disabled={item.status == "completed" || item.status == "cancelled" || item.status == "pending" ? true : false}
-                                                        onClick={(e) => {
-                                                            swal({
-                                                                title: "anda yakin?",
-                                                                text: "status akan diubah",
-                                                                icon: "warning",
-                                                                dangerMode: true,
-                                                            }).then((willDelete) => {
-                                                                if (willDelete) {
-                                                                    axiosApiInstance
-                                                                        .put(`${Url}/v1/order`, {
-                                                                            status: "completed",
-                                                                            orderId: item.orderId,
-                                                                        })
-                                                                        .then((res) => {
-                                                                            swal(
-                                                                                "updated!",
-                                                                                "data updated",
-                                                                                "success"
-                                                                            );
-                                                                            axiosApiInstance
-                                                                                .get(`${Url}/v1/order/get`)
-                                                                                .then((res) => {
-                                                                                    setDataOrder({
-                                                                                        dataHistoryOrder: res.data.data,
-                                                                                    });
-                                                                                })
-                                                                                .catch((err) => { });
-                                                                        })
-                                                                        .catch((err) => {
-                                                                            swal("err", err.response, "error");
-                                                                        });
-                                                                }
-                                                            });
-                                                        }}
-                                                    >
-                                                        done
-                                                        </button>
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                    {/* gambar */}
-                                    <div
-                                        className={
-                                            dataOrder.dataHistoryOrder.length === 0 ? "show" : "hide"
-                                        }
-                                    >
-                                        <div
-                                            className="d-flex justify-content-center"
-                                            style={{ height: "300px" }}
-                                        >
-                                            <div
-                                                className="my-auto"
-                                                style={{ width: "224px", height: "177px" }}
-                                            >
-                                                <Image
-                                                    src="/img/data_null.png"
-                                                    width={224}
-                                                    height={177}
-                                                    layout="responsive"
-                                                />
-                                            </div>
+                    <div style={{ overflow: "auto" }}>
+                        <div style={{ minWidth: "640px" }}>
+                            <div style={{ background: "#F6F6F6" }}>
+                                <div className="row">
+                                    <div className="col-4">
+                                        <div className="c-pointer py-3 d-flex justify-content-center hover-bg-gray" onClick={sortByNameProduct} >
+                                            <p className="m-0 me-3">Product name</p>
+                                            <span className="material-icons">sort</span>
                                         </div>
                                     </div>
-                                    {/* --- */}
+                                    <div className="col-1 col-sm-2 ms-auto">
+                                        <div className="c-pointer py-3 d-flex justify-content-center hover-bg-gray" onClick={sortByStock} >
+                                            <p className="m-0 me-3">Stock</p>
+                                            <span className="material-icons">sort</span>
+                                        </div>
+                                    </div>
+                                    <div className="col-1 col-sm-2 ms-auto d-flex justify-content-center">
+                                        <div className="px-4 py-3 ms-auto text-center">
+                                            <span>status</span>
+                                        </div>
+                                    </div>
+                                    <div className={state.myOrder.getPaid === true || state.myOrder.send === true || state.myOrder.completed === true || state.myOrder.orderCancel === true ? "hide" : "col-2 ms-auto pe-4 py-3 ms-auto text-center"}>
+                                        <div>
+                                            <span>action</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className={state.myOrder.getPaid === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
-                                    {dataOrder.dataHistoryOrder.map((item) => {
-                                        if (item.status === "pending") {
-                                            return (
-                                                <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
-                                                <div className="col-4 py-2 my-auto">
-                                                    <span
-                                                        className="d-inline-block text-truncate text-table-responsive text-center ps-4"
-                                                    >
-                                                        {item.nameProduct}
-                                                    </span>
-                                                </div>
-                                                <div className="col-2 ms-auto pe-4">
-                                                    <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                        {item.quantity}
-                                                    </p>
-                                                </div>
-                                                <div className="col-2 ms-auto">
-                                                    <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                        {item.status}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            );
-                                        }
-                                    })}
+                            </div>
+                            {state.loading ?
+                                <div className="d-flex flex-column align-items-center justify-content-center bg-white p-4 border rounded " style={{ minHeight: "300px" }}>
+                                    <div className="spinner-grow text-danger mb-3" role="status">
+                                        <span className="visually-hidden">Loading...</span>
+                                    </div>
+                                    <h3 className="fw-bold">Wait a moment...</h3>
                                 </div>
-                                <div className={state.myOrder.process === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
-                                    {dataOrder.dataHistoryOrder.map((item) => {
-                                        if (item.status === "process") {
+                                :
+                                <div>
+                                    <div className={state.myOrder.allItem === true ? "justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
+                                        {dataOrder.dataHistoryOrder.map((item) => {
                                             return (
                                                 <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
                                                     <div className="col-4 py-2 my-auto">
@@ -502,97 +383,216 @@ export default function OrderSeller() {
                                                             }}
                                                         >
                                                             done
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                        {/* gambar */}
+                                        <div
+                                            className={
+                                                dataOrder.dataHistoryOrder.length === 0 ? "show" : "hide"
+                                            }
+                                        >
+                                            <div
+                                                className="d-flex justify-content-center"
+                                                style={{ height: "300px" }}
+                                            >
+                                                <div
+                                                    className="my-auto"
+                                                    style={{ width: "224px", height: "177px" }}
+                                                >
+                                                    <Image
+                                                        src="/img/data_null.png"
+                                                        width={224}
+                                                        height={177}
+                                                        layout="responsive"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {/* --- */}
+                                    </div>
+                                    <div className={state.myOrder.getPaid === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
+                                        {dataOrder.dataHistoryOrder.map((item) => {
+                                            if (item.status === "pending") {
+                                                return (
+                                                    <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
+                                                        <div className="col-4 py-2 my-auto">
+                                                            <span
+                                                                className="d-inline-block text-truncate text-table-responsive text-center ps-4"
+                                                            >
+                                                                {item.nameProduct}
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-2 ms-auto pe-4">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.quantity}
+                                                            </p>
+                                                        </div>
+                                                        <div className="col-2 ms-auto">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.status}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            }
+                                        })}
+                                    </div>
+                                    <div className={state.myOrder.process === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
+                                        {dataOrder.dataHistoryOrder.map((item) => {
+                                            if (item.status === "process") {
+                                                return (
+                                                    <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
+                                                        <div className="col-4 py-2 my-auto">
+                                                            <span
+                                                                className="d-inline-block text-truncate text-table-responsive text-center ps-4"
+                                                            >
+                                                                {item.nameProduct}
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-2 ms-auto pe-4">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.quantity}
+                                                            </p>
+                                                        </div>
+                                                        <div className="col-2 ms-auto">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.status}
+                                                            </p>
+                                                        </div>
+                                                        <div className="col-2 ms-auto my-auto">
+                                                            <button
+                                                                className="border-primary bg-transparent rounded-pill text-primary px-3 py-1"
+                                                                disabled={item.status == "completed" || item.status == "cancelled" || item.status == "pending" ? true : false}
+                                                                onClick={(e) => {
+                                                                    swal({
+                                                                        title: "anda yakin?",
+                                                                        text: "status akan diubah",
+                                                                        icon: "warning",
+                                                                        dangerMode: true,
+                                                                    }).then((willDelete) => {
+                                                                        if (willDelete) {
+                                                                            axiosApiInstance
+                                                                                .put(`${Url}/v1/order`, {
+                                                                                    status: "completed",
+                                                                                    orderId: item.orderId,
+                                                                                })
+                                                                                .then((res) => {
+                                                                                    swal(
+                                                                                        "updated!",
+                                                                                        "data updated",
+                                                                                        "success"
+                                                                                    );
+                                                                                    axiosApiInstance
+                                                                                        .get(`${Url}/v1/order/get`)
+                                                                                        .then((res) => {
+                                                                                            setDataOrder({
+                                                                                                dataHistoryOrder: res.data.data,
+                                                                                            });
+                                                                                        })
+                                                                                        .catch((err) => { });
+                                                                                })
+                                                                                .catch((err) => {
+                                                                                    swal("err", err.response, "error");
+                                                                                });
+                                                                        }
+                                                                    });
+                                                                }}
+                                                            >
+                                                                done
                                                             </button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            );
-                                        }
-                                    })}
+                                                );
+                                            }
+                                        })}
+                                    </div>
+                                    <div className={state.myOrder.send === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
+                                        {dataOrder.dataHistoryOrder.map((item) => {
+                                            if (item.status === "sending") {
+                                                return (
+                                                    <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
+                                                        <div className="col-4 py-2 my-auto">
+                                                            <span
+                                                                className="d-inline-block text-truncate text-table-responsive text-center ps-4"
+                                                            >
+                                                                {item.nameProduct}
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-2 ms-auto pe-4">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.quantity}
+                                                            </p>
+                                                        </div>
+                                                        <div className="col-2 ms-auto">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.status}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            }
+                                        })}
+                                    </div>
+                                    <div className={state.myOrder.completed === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
+                                        {dataOrder.dataHistoryOrder.map((item) => {
+                                            if (item.status === "completed") {
+                                                return (
+                                                    <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
+                                                        <div className="col-4 py-2 my-auto">
+                                                            <span
+                                                                className="d-inline-block text-truncate text-table-responsive text-center ps-4"
+                                                            >
+                                                                {item.nameProduct}
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-2 ms-auto pe-4">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.quantity}
+                                                            </p>
+                                                        </div>
+                                                        <div className="col-2 ms-auto">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.status}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            }
+                                        })}
+                                    </div>
+                                    <div className={state.myOrder.orderCancel === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
+                                        {dataOrder.dataHistoryOrder.map((item) => {
+                                            if (item.status === "cancelled") {
+                                                return (
+                                                    <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
+                                                        <div className="col-4 py-2 my-auto">
+                                                            <span
+                                                                className="d-inline-block text-truncate text-table-responsive text-center ps-4"
+                                                            >
+                                                                {item.nameProduct}
+                                                            </span>
+                                                        </div>
+                                                        <div className="col-2 ms-auto pe-4">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.quantity}
+                                                            </p>
+                                                        </div>
+                                                        <div className="col-2 ms-auto">
+                                                            <p className="py-2 m-0 ms-auto my-auto text-center">
+                                                                {item.status}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            }
+                                        })}
+                                    </div>
                                 </div>
-                                <div className={state.myOrder.send === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
-                                    {dataOrder.dataHistoryOrder.map((item) => {
-                                        if (item.status === "sending") {
-                                            return (
-                                                <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
-                                                    <div className="col-4 py-2 my-auto">
-                                                        <span
-                                                            className="d-inline-block text-truncate text-table-responsive text-center ps-4"
-                                                        >
-                                                            {item.nameProduct}
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-2 ms-auto pe-4">
-                                                        <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                            {item.quantity}
-                                                        </p>
-                                                    </div>
-                                                    <div className="col-2 ms-auto">
-                                                        <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                            {item.status}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            );
-                                        }
-                                    })}
-                                </div>
-                                <div className={state.myOrder.completed === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
-                                    {dataOrder.dataHistoryOrder.map((item) => {
-                                        if (item.status === "completed") {
-                                            return (
-                                                <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
-                                                    <div className="col-4 py-2 my-auto">
-                                                        <span
-                                                            className="d-inline-block text-truncate text-table-responsive text-center ps-4"
-                                                        >
-                                                            {item.nameProduct}
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-2 ms-auto pe-4">
-                                                        <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                            {item.quantity}
-                                                        </p>
-                                                    </div>
-                                                    <div className="col-2 ms-auto">
-                                                        <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                            {item.status}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            );
-                                        }
-                                    })}
-                                </div>
-                                <div className={state.myOrder.orderCancel === true ? "w-100 justify-content-center overflow-auto" : "hide"} style={{ maxHeight: "300px" }}>
-                                    {dataOrder.dataHistoryOrder.map((item) => {
-                                        if (item.status === "cancelled") {
-                                            return (
-                                                <div className="row  hover-bg-gray border-top  justify-content-between" style={{ background: "#F6F6F6" }}>
-                                                    <div className="col-4 py-2 my-auto">
-                                                        <span
-                                                            className="d-inline-block text-truncate text-table-responsive text-center ps-4"
-                                                        >
-                                                            {item.nameProduct}
-                                                        </span>
-                                                    </div>
-                                                    <div className="col-2 ms-auto pe-4">
-                                                        <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                            {item.quantity}
-                                                        </p>
-                                                    </div>
-                                                    <div className="col-2 ms-auto">
-                                                        <p className="py-2 m-0 ms-auto my-auto text-center">
-                                                            {item.status}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            );
-                                        }
-                                    })}
-                                </div>
-                            </div>
-                        }
-                    </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

@@ -366,7 +366,7 @@ const profil_store = () => {
                     openSoldOut();
                   }}
                 >
-                  Sould out
+                  Sold out
                 </button>
                 <button
                   className={

@@ -48,13 +48,13 @@ npm run build
 
 <p align="center">
   <span>
- <img height="500" width="500" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png"> 
-<img height="500" width="500" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">
-<img height="500" width="500" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png">
-<img height="500" width="500" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-2021-05-10-02_08_00.png">
-	  <img  height="500" width="500" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png">
-	   <img height="500" width="500" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-product-7-2021-05-10-02_25_06.png">
-	   <img  height="500" width="500" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png">
+	  <img height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png">
+	  <img height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">
+	  <img height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png">
+	  <img height="430" width="400" src="https://i.ibb.co/FVTKk3N/screencapture-localhost-3000-app-2021-05-10-02-08-00-png-1366-3793.png">
+	  <img  height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png">
+	   <img height="430" width="400" src="https://i.ibb.co/g37vWcf/screencapture-localhost-3000-app-product-7-2021-05-10-02-25-06-png-1366-2367.png">
+	   <img  height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png">
   </span>
 </p>
 
@@ -70,9 +70,15 @@ npm run build
 <center>
   <table>
     <tr>
+      <th>Frontend/PM</th>
+      <th>Backend</th>
+      <th>Frontend</th>
+      <th>Frontend</th>
+    </tr>
+    <tr>
       <td align="center">
         <a href="https://github.com/abudzr">
-          <img width="150" src="https://media-exp1.licdn.com/dms/image/C5603AQHJkatPPZkv3w/profile-displayphoto-shrink_800_800/0/1616558810228?e=1626307200&v=beta&t=ZvN_rhdGzPqdvpsJoOWBwWHZ_-l0MslxoSmu7D3YcYM"><br/>
+          <img width="150" style="background-size: contain;" src="https://media-exp1.licdn.com/dms/image/C5603AQHJkatPPZkv3w/profile-displayphoto-shrink_800_800/0/1616558810228?e=1626307200&v=beta&t=ZvN_rhdGzPqdvpsJoOWBwWHZ_-l0MslxoSmu7D3YcYM"><br/>
           <b>Abu Dzar Al Ghifari</b>
         </a>
       </td>

@@ -47,11 +47,6 @@ npm run build
 ## Fitur ARVA Online Shop
 
 
-
-### Login Page
-
-![login](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png)
-
 ### Reset Password
 
 ![forgot-password](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png?raw=true)
@@ -76,16 +71,12 @@ npm run build
 
 <p align="center">
   <span>
-	  <div style="width:400px;height:400px;display: flex;justify-content: center;align-items: center; overflow: hidden;"> <img style="flex-shrink: 0; min-width: 100%; min-height: 100%" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png">  </div>
-     
-    <img width="400" height="400" style="object-fit:cover"  src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">
-    <img width="400" height="400" style="object-fit:cover"  src="https://user-images.githubusercontent.com/55057008/118862762-4ac16f80-b908-11eb-8d53-0c1330cd20e0.png">
-    <img width="400" height="400" style="object-fit:cover"  src="https://user-images.githubusercontent.com/55057008/117717605-380eb280-b205-11eb-8030-d91028c0f26d.png">  
-	<img width="400" height="400" style="object-fit:cover"  src="https://user-images.githubusercontent.com/55057008/117717894-99368600-b205-11eb-8dc1-aaa283209b6f.png">
-	<img width="400" height="400" style="object-fit:cover"  src="https://user-images.githubusercontent.com/55057008/117718025-bff4bc80-b205-11eb-82f5-7e44f03321d2.png">
-	  <img width="400" height="400" style="object-fit:cover"  src="https://user-images.githubusercontent.com/55057008/117717728-61c7d980-b205-11eb-96d1-8f588d5ff13a.png">  
-	<img width="400" height="400" style="object-fit:cover"  src="https://user-images.githubusercontent.com/55057008/117717795-7b692100-b205-11eb-972d-471c30892dd5.png">
-	<img width="400" height="400" style="object-fit:cover"  src="https://user-images.githubusercontent.com/55057008/117718081-d7cc4080-b205-11eb-87d9-1579c544d90c.png">
+	  <div style="width:400px;height:400px;display: flex;justify-content: center;align-items: center; overflow: hidden;">
+		  <img style="flex-shrink: 0; min-width: 100%; min-height: 100%" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png">
+	  </div>
+   <div style="width:400px;height:400px;display: flex;justify-content: center;align-items: center; overflow: hidden;"> 
+	   <img style="flex-shrink: 0; min-width: 100%; min-height: 100%" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">  
+	  </div>
   </span>
 </p>
 

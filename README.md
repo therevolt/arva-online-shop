@@ -1,7 +1,7 @@
 <h1 align="center">ARVA ONLINE SHOP</h1>
 
 <p align="center">
-  <img height="150" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Nextjs-logo.svg/1200px-Nextjs-logo.svg.png"/>&nbsp;
+  <img height="150" src="https://i.ibb.co/0m3XJDP/Pink-and-Purple-Charity-Store-Logo.png"/>
 </p>
 <p align="center">
   Built with Next Js.

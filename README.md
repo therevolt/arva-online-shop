@@ -71,10 +71,10 @@ npm run build
 
 <p align="center">
   <span>
-	  <div style="width:400px;height:400px;display: flex;justify-content: center;align-items: center; overflow: hidden;">
+	  <div style="width:300px;height:300px;display: flex;justify-content: center;align-items: center; overflow: hidden;">
 		  <img style="flex-shrink: 0; min-width: 100%; min-height: 100%" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png">
 	  </div>
-   <div style="width:400px;height:400px;display: flex;justify-content: center;align-items: center; overflow: hidden;"> 
+   <div style="width:300px;height:300px;display: flex;justify-content: center;align-items: center; overflow: hidden;"> 
 	   <img style="flex-shrink: 0; min-width: 100%; min-height: 100%" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">  
 	  </div>
   </span>

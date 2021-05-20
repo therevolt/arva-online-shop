@@ -79,7 +79,7 @@ npm run build
 * [`Backend ARVA ONLINE SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
 
 ## Deploy
-* [`Web ARVA ONLINE SHOP`](https://arva-online-shop.vercel.app/app)
+* [`Web ARVA ONLINE SHOP`](https://arva-online-shop-theta.vercel.app/)
 
 
 ## Kontributor

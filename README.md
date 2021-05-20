@@ -71,12 +71,13 @@ npm run build
 
 <p align="center">
   <span>
-	  <div style="width:300px;height:300px;display: flex;justify-content: center;align-items: center; overflow: hidden; background:black">
-		  <img style="flex-shrink: 0; min-width: 100%; min-height: 100%" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png">
-	  </div>
-   <div style="width:300px;height:300px;display: flex;justify-content: center;align-items: center; overflow: hidden;"> 
-	   <img style="flex-shrink: 0; min-width: 100%; min-height: 100%" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">  
-	  </div>
+ <img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png"> 
+<img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">
+<img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png">
+<img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-2021-05-10-02_08_00.png">
+	  <img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png">
+	   <img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-product-7-2021-05-10-02_25_06.png">
+	   <img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png">
   </span>
 </p>
 

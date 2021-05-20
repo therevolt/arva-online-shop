@@ -44,40 +44,17 @@ npm run dev
 npm run build
 ```
 
-## Fitur ARVA Online Shop
-
-
-### Reset Password
-
-![forgot-password](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png?raw=true)
-
-### Home Page
-
-![home](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-2021-05-10-02_08_00.png)
-
-### Category Page
-
-![category](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png)
-
-### Product Details
-
-![product-details](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-product-7-2021-05-10-02_25_06.png)
-
-### Search Product
-
-![mybag](https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png)
-
 ## Screenshots
 
 <p align="center">
   <span>
- <img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png"> 
-<img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">
-<img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png">
-<img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-2021-05-10-02_08_00.png">
-	  <img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png">
-	   <img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-product-7-2021-05-10-02_25_06.png">
-	   <img width="400" height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png">
+ <img height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png"> 
+<img height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">
+<img height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png">
+<img height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-2021-05-10-02_08_00.png">
+	  <img  height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png">
+	   <img height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-product-7-2021-05-10-02_25_06.png">
+	   <img  height="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png">
   </span>
 </p>
 

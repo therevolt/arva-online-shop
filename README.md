@@ -75,8 +75,9 @@ npm run build
 ## Screenshots
 
 <p align="center">
-  <span>  
-    <img width="400" height="400" style="object-fit:cover" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png">  
+  <span>
+	  <div style="width:400px;height:400px;display: flex;justify-content: center;align-items: center; overflow: hidden;"> <img style="flex-shrink: 0; min-width: 100%; min-height: 100%" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png">  </div>
+     
     <img width="400" height="400" style="object-fit:cover"  src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">
     <img width="400" height="400" style="object-fit:cover"  src="https://user-images.githubusercontent.com/55057008/118862762-4ac16f80-b908-11eb-8d53-0c1330cd20e0.png">
     <img width="400" height="400" style="object-fit:cover"  src="https://user-images.githubusercontent.com/55057008/117717605-380eb280-b205-11eb-8030-d91028c0f26d.png">  

@@ -45,18 +45,15 @@ npm run build
 ```
 
 ## Screenshots
-
-<p align="center">
   <span>
-	  <img height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png">
-	  <img height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">
-	  <img height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png">
-	  <img height="430" width="400" src="https://i.ibb.co/FVTKk3N/screencapture-localhost-3000-app-2021-05-10-02-08-00-png-1366-3793.png">
-	  <img  height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png">
-	   <img height="430" width="400" src="https://i.ibb.co/g37vWcf/screencapture-localhost-3000-app-product-7-2021-05-10-02-25-06-png-1366-2367.png">
-	   <img  height="430" width="400" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png">
+	  <img width="415" height="197" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-register-2021-05-10-02_06_36.png">
+	  <img width="415" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-login-2021-05-10-02_04_06.png">
+	  <img width="415" height="234" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-auth-reset-password-2021-05-10-02_13_19.png">
+	  <img width="415" src="https://i.ibb.co/FVTKk3N/screencapture-localhost-3000-app-2021-05-10-02-08-00-png-1366-3793.png">
+	  <img width="415" height="351" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-category-cap-2021-05-10-02_09_38.png">
+	   <img width="415" src="https://i.ibb.co/g37vWcf/screencapture-localhost-3000-app-product-7-2021-05-10-02-25-06-png-1366-2367.png">
+	   <img width="415" src="https://github.com/abudzr/arva-online-shop/blob/upload-image/screencapture-localhost-3000-app-searchProduct-2021-05-10-02_10_44.png">
   </span>
-</p>
 
 ## Backend
 * [`BACKEND ARVA SHOP`](https://github.com/therevolt/BE-ARVA-Shop)

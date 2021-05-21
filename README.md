@@ -1,4 +1,4 @@
-<h1 align="center">ARVA ONLINE SHOP</h1>
+<h1 align="center">ARVA SHOP</h1>
 
 <p align="center">
   <img height="150" src="https://i.ibb.co/0m3XJDP/Pink-and-Purple-Charity-Store-Logo.png"/>
@@ -59,10 +59,10 @@ npm run build
 </p>
 
 ## Backend
-* [`Backend ARVA ONLINE SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
+* [`BACKEND ARVA SHOP`](https://github.com/therevolt/BE-ARVA-Shop)
 
 ## Deploy
-* [`Web ARVA ONLINE SHOP`](https://arva-online-shop-theta.vercel.app/)
+* [`WEB ARVA SHOP`](https://arva-online-shop-theta.vercel.app/)
 
 
 ## Kontributor

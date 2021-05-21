@@ -22,19 +22,17 @@
 
 ## Setting Project
 
-- Silahkan buka terminal pada VScode dengan cara tekan tombol
+- Clone repo ini
 ```
-CTRL + ` 
-atau
-CTRL + SHIFT + C
+git clone https://github.com/therevolt/arva-online-shop/
 ```
 
-- Kemudian lakukan install npm terlebih dahulu dengan membuat perintah seperti berikut
+- Kemudian lakukan install module terlebih dahulu
 ```
-npm install atau npm i
+npm install
 ```
 
-- Jika sudah, maka untuk menjalankan silahkan ketikan perintah berikut ini
+- Jalankan project
 ```
 npm run dev
 ```

@@ -7,6 +7,8 @@
   Built with Next Js.
 </p>
 
+## About
+ARVA SHOP is an online shopping website that provides various features for buyers and sellers of goods, and is also integrated with a payment gateway which makes payments easier and more flexible. Created by the ARVA team and serves as Backend. Built with NextJS, ExpressJS, MySQL, and Sequelize.
 
 ## Dependensi
 - [next Js](https://Nextjs.org/)
@@ -20,24 +22,24 @@
 - [Redux-thunk](https://www.npmjs.com/search?q=redux-thunk)
 
 
-## Setting Project
+## How To Install
 
-- Clone repo ini
+- Clone
 ```
 git clone https://github.com/therevolt/arva-online-shop/
 ```
 
-- Kemudian lakukan install module terlebih dahulu
+- Install Module
 ```
 npm install
 ```
 
-- Jalankan project
+- Run Project
 ```
 npm run dev
 ```
 
-### Kompilasi dan Produksi
+### Build Project
 ```
 npm run build
 ```
